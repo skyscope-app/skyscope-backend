@@ -3,6 +3,7 @@ import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { Module } from '@nestjs/common';
 import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
+import { NetworksModule } from './networks/networks.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { v4 } from 'uuid';
       },
     }),
     ConfigurationsModule,
+    NetworksModule,
   ],
   providers: [LoggingInterceptor],
 })
