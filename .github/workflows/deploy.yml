@@ -61,5 +61,6 @@ jobs:
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
           git checkout $LATEST_TAG
           docker build -t skyscopeapi:$LATEST_TAG .
-          docker tag skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG -t skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:latest
+          docker tag skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG 
+          docker tag skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:latest
           docker push us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi --all-tags
