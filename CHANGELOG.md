@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.0.1...v1.0.2) (2024-01-27)
+
+
+### Bug Fixes
+
+* **airports:** remove not used airport service method ([b6150f7](https://github.com/skyscope-app/skyscope-backend/commit/b6150f7649360ff2ac7847109341ddbe8000182f))
+
 ## [1.0.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.0.0...v1.0.1) (2024-01-27)
 
 
