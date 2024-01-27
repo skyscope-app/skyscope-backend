@@ -1,5 +1,6 @@
 import { Network } from '@/networks/domain/network';
 import { LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { IVAOService } from '@/networks/services/ivao.service';
 import { VATSIMService } from '@/networks/services/vatsim.service';
 import {
   Controller,
@@ -12,7 +13,10 @@ import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 @Controller('networks')
 @ApiTags('Networks')
 export class NetworksController {
-  constructor(private readonly vatsimService: VATSIMService) {}
+  constructor(
+    private readonly vatsimService: VATSIMService,
+    private readonly ivaoService: IVAOService,
+  ) {}
 
   @Get(':network/flights')
   @ApiParam({ name: 'network', enum: Network })
@@ -23,6 +27,8 @@ export class NetworksController {
     switch (network) {
       case Network.VATSIM:
         return this.vatsimService.fetchCurrentLive();
+      case Network.IVAO:
+        return this.ivaoService.fetchCurrentLive();
       default:
         throw new NotImplementedException();
     }

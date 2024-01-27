@@ -1,6 +1,6 @@
+import { Airport } from '@/airports/airports.entity';
 import { Injectable } from '@nestjs/common';
 import { readFile } from 'fs/promises';
-import { Airport } from '@/airports/airports.entity';
 import * as path from 'path';
 
 @Injectable()
