@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.0.2...v1.1.0) (2024-01-27)
+
+
+### Features
+
+* **ivao:** add endpoint to get current status of ivao network ([#2](https://github.com/skyscope-app/skyscope-backend/issues/2)) ([00c049b](https://github.com/skyscope-app/skyscope-backend/commit/00c049b08877adbaf2b639a0e907ab5fd7df70ee))
+
 ## [1.0.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.0.1...v1.0.2) (2024-01-27)
 
 
