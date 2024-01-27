@@ -54,7 +54,7 @@ export class FlightPlan {
   @ApiProperty()
   flightType: string;
   @ApiProperty()
-  level: string;
+  level: number;
   @ApiProperty({ type: () => Airport })
   departure: Airport;
   @ApiProperty({ type: () => Airport })
