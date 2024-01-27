@@ -5,12 +5,6 @@ import * as path from 'path';
 
 @Injectable()
 export class AirportsService {
-  async get(icao: string): Promise<Airport> {
-    const airports = await this.getAirportsMap();
-
-    return airports.get(icao);
-  }
-
   async getAirportsMap() {
     const filePath = path.join(__dirname, '../../../data/airports.json');
 
