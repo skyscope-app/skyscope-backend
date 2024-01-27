@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.0.0...v1.0.1) (2024-01-27)
+
+
+### Bug Fixes
+
+* **vatsim:** add missing data in api ([1b8c206](https://github.com/skyscope-app/skyscope-backend/commit/1b8c206609bfd9b19463d6835bc33cf86486cf24))
+
 # 1.0.0 (2024-01-25)
 
 

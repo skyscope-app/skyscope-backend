@@ -1,16 +1,10 @@
+import { Airport } from '@/airports/airports.entity';
 import { Injectable } from '@nestjs/common';
 import { readFile } from 'fs/promises';
-import { Airport } from '@/airports/airports.entity';
 import * as path from 'path';
 
 @Injectable()
 export class AirportsService {
-  async get(icao: string) {
-    const airports = await this.getAirportsMap();
-
-    return airports.get(icao);
-  }
-
   async getAirportsMap() {
     const filePath = path.join(__dirname, '../../../data/airports.json');
 
