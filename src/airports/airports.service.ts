@@ -5,7 +5,7 @@ import * as path from 'path';
 
 @Injectable()
 export class AirportsService {
-  async get(icao: string): Promise<Airport> {
+  async get(icao: string) {
     const airports = await this.getAirportsMap();
 
     return airports.get(icao);
