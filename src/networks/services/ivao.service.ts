@@ -1,6 +1,6 @@
 import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
-import { IVAOResponse, IvaoPilot } from '@/networks/dtos/ivao.dto';
+import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
 import { LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
@@ -48,11 +48,11 @@ export class IVAOService {
     pilots: IvaoPilot[],
     airports: Map<string, Airport>,
   ): LiveFlight[] {
-    return pilots.map((pilot) => {
-      const departure = airports.get(pilot.flightPlan.departureId);
-      const arrival = airports.get(pilot.flightPlan.arrivalId);
-      const alternate = airports.get(pilot.flightPlan.alternativeId);
-      const alternate2 = airports.get(pilot.flightPlan.alternative2Id);
+    return pilots.map((pilot): LiveFlight => {
+      const departure = airports.get(pilot.flightPlan?.departureId ?? '');
+      const arrival = airports.get(pilot.flightPlan?.arrivalId ?? '');
+      const alternate = airports.get(pilot.flightPlan?.alternativeId ?? '');
+      const alternate2 = airports.get(pilot.flightPlan?.alternative2Id ?? '');
 
       return {
         id: `${pilot.id}`,
@@ -75,8 +75,8 @@ export class IVAOService {
           transponder: String(pilot.lastTrack?.transponder).padStart(4, '0'),
         },
         flightPlan: {
-          flightRules: pilot.flightPlan.flightRules,
-          flightType: pilot.flightPlan.flightType,
+          flightRules: pilot.flightPlan?.flightRules ?? '',
+          flightType: pilot.flightPlan?.flightType ?? '',
           departure: {
             icao: departure?.icao ?? '',
             iata: departure?.iata ?? '',
@@ -90,25 +90,28 @@ export class IVAOService {
             coordinates: [arrival?.lat ?? 0, arrival?.lng ?? 0],
           },
           aircraft: {
-            icao: pilot.flightPlan.aircraft.icaoCode,
-            wakeTurbulence: pilot.flightPlan.aircraft.wakeTurbulence,
+            icao: pilot.flightPlan?.aircraft?.icaoCode ?? '',
+            wakeTurbulence: pilot.flightPlan?.aircraft?.wakeTurbulence ?? '',
             registration:
-              (pilot.flightPlan.remarks.match(/REG\/(\w+)/) || [])[1] || '',
-            transponderTypes: pilot.flightPlan.aircraftTransponderTypes,
-            equipment: pilot.flightPlan.aircraft.icaoCode,
+              ((pilot.flightPlan?.remarks ?? '').match(/REG\/(\w+)/) ||
+                [])[1] || '',
+            transponderTypes: pilot.flightPlan?.aircraftTransponderTypes ?? '',
+            equipment: pilot.flightPlan?.aircraft?.icaoCode ?? '',
           },
-          level: Number(pilot.flightPlan.level.slice(1)) * 100,
-          route: pilot.flightPlan.route,
-          remarks: pilot.flightPlan.remarks,
-          cruiseTas: pilot.flightPlan.speed.slice(1),
-          departureTime: String(pilot.flightPlan.departureTime / 60).padStart(
+          level: Number((pilot.flightPlan?.level ?? '').slice(1)) * 100,
+          route: pilot.flightPlan?.route ?? '',
+          remarks: pilot.flightPlan?.remarks ?? '',
+          cruiseTas: (pilot.flightPlan?.speed ?? '').slice(1) ?? '',
+          departureTime: String(
+            pilot.flightPlan?.departureTime ?? 0 / 60,
+          ).padStart(4, '0'),
+          enrouteTime: String(pilot.flightPlan?.eet ?? 0 / 60).padStart(4, '0'),
+          endurance: String(pilot.flightPlan?.endurance ?? 0 / 60).padStart(
             4,
             '0',
           ),
-          enrouteTime: String(pilot.flightPlan.eet / 60).padStart(4, '0'),
-          endurance: String(pilot.flightPlan.endurance / 60).padStart(4, '0'),
           alternate:
-            pilot.flightPlan.alternativeId !== null
+            pilot.flightPlan?.alternativeId !== null
               ? {
                   icao: alternate?.icao ?? '',
                   iata: alternate?.iata ?? '',
@@ -117,7 +120,7 @@ export class IVAOService {
                 }
               : null,
           alternate2:
-            pilot.flightPlan.alternative2Id !== null
+            pilot.flightPlan?.alternative2Id !== null
               ? {
                   icao: alternate2?.icao ?? '',
                   iata: alternate2?.iata ?? '',

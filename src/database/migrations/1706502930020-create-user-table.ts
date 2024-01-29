@@ -42,6 +42,18 @@ export class CreateUserTable1706502930020 implements MigrationInterface {
             isNullable: false,
             isUnique: true,
           },
+          {
+            name: 'navigraphId',
+            type: 'varchar',
+            length: '128',
+            isNullable: true,
+          },
+          {
+            name: 'simbriefId',
+            type: 'varchar',
+            length: '128',
+            isNullable: true,
+          },
         ],
       }),
       true,

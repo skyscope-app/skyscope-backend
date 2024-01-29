@@ -1,4 +1,5 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '@/users/domain/user.entity';
 
 export const getDatabaseModule = (
   DB_HOST: string,
@@ -20,7 +21,7 @@ export const getDatabaseModule = (
       connectionLimit: DB_POOL_SIZE,
     },
     synchronize: false,
-    entities: [],
-    logging: false,
+    entities: [User],
+    logging: ENVIRONMENT === 'local',
   });
 };

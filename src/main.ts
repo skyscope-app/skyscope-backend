@@ -12,6 +12,7 @@ import * as express from 'express';
 import helmet from 'helmet';
 import { ClsService } from 'nestjs-cls';
 import { AppModule } from './app.module';
+import * as admin from 'firebase-admin';
 
 export let clsService: ClsService;
 
@@ -42,6 +43,7 @@ async function bootstrap() {
 
   clsService = app.select(AppModule).get(ClsService);
 
+  await admin.initializeApp();
   app.getHttpAdapter().getInstance().disable('x-powered-by');
   app.use(helmet());
   app.use(express.urlencoded({ extended: false }));
@@ -66,4 +68,5 @@ async function bootstrap() {
 
   await app.listen(Number(process.env.PORT ?? 8080));
 }
+
 bootstrap();

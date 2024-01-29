@@ -1,9 +1,9 @@
 import { clsService } from '@/main';
 import {
   CanActivate,
+  createParamDecorator,
   Header,
   UseGuards,
-  createParamDecorator,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -13,6 +13,7 @@ import {
   ApiNotFoundResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 export const DefaultStatusCodes = () => {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -35,6 +36,7 @@ export const DefaultStatusCodes = () => {
 };
 
 export const Authenticated = (
+  // eslint-disable-next-line @typescript-eslint/ban-types
   ...guards: (CanActivate | Function)[]
 ): MethodDecorator & ClassDecorator => {
   return (
@@ -50,6 +52,7 @@ export const Authenticated = (
       }),
       ApiBearerAuth(),
       UseGuards(...guards),
+      UseGuards(AuthGuard('firebase'), ...guards),
       ApiBearerAuth('JWT-auth'),
     ];
 
@@ -65,6 +68,10 @@ export const RequestData = (key: string) =>
     return d;
   });
 
+export const AuthenticatedDomainUser = () => RequestData('user')();
+export const AuthenticatedUser = () => RequestData('auth_user')();
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace cacheControl {
   export enum Directive {
     PUBLIC = 'public',
