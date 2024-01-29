@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.1.0...v1.2.0) (2024-01-29)
+
+
+### Bug Fixes
+
+* **nat:** add cache control ([476bdef](https://github.com/skyscope-app/skyscope-backend/commit/476bdefd72a615985b3f9159d99f675ef370f3e2))
+
+
+### Features
+
+* **nat:** implement nat endpoint ([ae99a62](https://github.com/skyscope-app/skyscope-backend/commit/ae99a629b3f096830e407d80bedfd45bc55845b8))
+
 # [1.1.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.0.2...v1.1.0) (2024-01-27)
 
 
