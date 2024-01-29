@@ -9,9 +9,11 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Authenticated } from '@/shared/decorators';
 
 @Controller('networks')
 @ApiTags('Networks')
+@Authenticated()
 export class NetworksController {
   constructor(
     private readonly vatsimService: VATSIMService,

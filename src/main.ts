@@ -1,7 +1,9 @@
 import {
   Configuration,
+  EnvironmentConfiguration,
   validateConfiguration,
 } from '@/configurations/configuration';
+import { MigrateUp } from '@/database/migrate';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -10,6 +12,7 @@ import * as express from 'express';
 import helmet from 'helmet';
 import { ClsService } from 'nestjs-cls';
 import { AppModule } from './app.module';
+import * as admin from 'firebase-admin';
 
 export let clsService: ClsService;
 
@@ -40,6 +43,7 @@ async function bootstrap() {
 
   clsService = app.select(AppModule).get(ClsService);
 
+  await admin.initializeApp();
   app.getHttpAdapter().getInstance().disable('x-powered-by');
   app.use(helmet());
   app.use(express.urlencoded({ extended: false }));
@@ -51,8 +55,18 @@ async function bootstrap() {
   app.useGlobalInterceptors(app.select(AppModule).get(LoggingInterceptor));
   app.useGlobalPipes(new ValidationPipe());
 
+  await MigrateUp(
+    EnvironmentConfiguration.POSTGRES_HOST,
+    EnvironmentConfiguration.POSTGRES_USER,
+    EnvironmentConfiguration.POSTGRES_PASSWORD,
+    Number(EnvironmentConfiguration.POSTGRES_PORT),
+    EnvironmentConfiguration.POSTGRES_DATABASE,
+    EnvironmentConfiguration.ENVIRONMENT,
+  );
+
   setupSwagger(app);
 
   await app.listen(Number(process.env.PORT ?? 8080));
 }
+
 bootstrap();

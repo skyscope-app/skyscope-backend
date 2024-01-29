@@ -15,7 +15,7 @@ export interface IvaoPilot {
   rating: number;
   createdAt: string;
   lastTrack?: Track;
-  flightPlan: FlightPlan;
+  flightPlan?: FlightPlan;
   pilotSession: PilotSession;
 }
 

@@ -6,7 +6,7 @@ permissions:
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 env:
   GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
@@ -64,3 +64,4 @@ jobs:
           docker tag skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG 
           docker tag skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:latest
           docker push us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi --all-tags
+          gcloud run services update main-skyscope-api --image=us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG
