@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.3.0...v1.3.1) (2024-01-29)
+
+
+### Bug Fixes
+
+* **database:** ssl mode ([4d43f9a](https://github.com/skyscope-app/skyscope-backend/commit/4d43f9aae7b23e2d45d8e737dc947135326d1b89))
+
 # [1.3.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.2.0...v1.3.0) (2024-01-29)
 
 
