@@ -19,6 +19,9 @@ export const getDatabaseModule = (
     database: DB_NAME,
     extra: {
       connectionLimit: DB_POOL_SIZE,
+      ...(ENVIRONMENT === 'local'
+        ? {}
+        : { ssl: { rejectUnauthorized: false } }),
     },
     synchronize: false,
     entities: [User],
