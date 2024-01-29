@@ -1,5 +1,10 @@
 import { clsService } from '@/main';
-import { CanActivate, UseGuards, createParamDecorator } from '@nestjs/common';
+import {
+  CanActivate,
+  Header,
+  UseGuards,
+  createParamDecorator,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -60,4 +65,23 @@ export const RequestData = (key: string) =>
     return d;
   });
 
-export const AuthenticatedDriver = () => RequestData('driver')();
+export namespace cacheControl {
+  export enum Directive {
+    PUBLIC = 'public',
+    PRIVATE = 'private',
+    NO_CACHE = 'no-cache',
+    ONLY_IF_CACHED = 'only-if-cached',
+  }
+
+  export interface Options {
+    directive: Directive;
+    maxAge: number;
+  }
+
+  export const CacheControl = (options: Options) => {
+    return Header(
+      'Cache-Control',
+      `${options.directive}, max-age=${options.maxAge}`,
+    );
+  };
+}
