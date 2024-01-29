@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "make:migration": "typeorm migration:create src/database/migrations/$name",
+    "migration:revert": "typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.2.0",
@@ -25,6 +27,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.2.0",
+    "@nestjs/typeorm": "^10.0.1",
     "axios": "^1.6.5",
     "cache-manager": "^5.4.0",
     "class-transformer": "^0.5.1",
@@ -33,9 +36,11 @@
     "fast-xml-parser": "^4.3.3",
     "helmet": "^7.1.0",
     "nestjs-cls": "^3.6.0",
+    "pg": "^8.11.3",
     "redact-object": "^3.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

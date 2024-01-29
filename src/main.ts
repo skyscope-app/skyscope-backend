@@ -1,7 +1,9 @@
 import {
   Configuration,
+  EnvironmentConfiguration,
   validateConfiguration,
 } from '@/configurations/configuration';
+import { MigrateUp } from '@/database/migrate';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -50,6 +52,15 @@ async function bootstrap() {
   app.setGlobalPrefix('/api/v1');
   app.useGlobalInterceptors(app.select(AppModule).get(LoggingInterceptor));
   app.useGlobalPipes(new ValidationPipe());
+
+  await MigrateUp(
+    EnvironmentConfiguration.POSTGRES_HOST,
+    EnvironmentConfiguration.POSTGRES_USER,
+    EnvironmentConfiguration.POSTGRES_PASSWORD,
+    Number(EnvironmentConfiguration.POSTGRES_PORT),
+    EnvironmentConfiguration.POSTGRES_DATABASE,
+    EnvironmentConfiguration.ENVIRONMENT,
+  );
 
   setupSwagger(app);
 
