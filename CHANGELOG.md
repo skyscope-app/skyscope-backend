@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.2.0...v1.3.0) (2024-01-29)
+
+
+### Features
+
+* **users:** add users and friends table ([4bb133e](https://github.com/skyscope-app/skyscope-backend/commit/4bb133e85a338944bb464383c64afc9711bc556b))
+* **users:** add users feature ([09cefd1](https://github.com/skyscope-app/skyscope-backend/commit/09cefd17b87354f63685b8abce36fd00274dc367))
+
 # [1.2.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.1.0...v1.2.0) (2024-01-29)
 
 
