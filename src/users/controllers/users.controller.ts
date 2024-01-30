@@ -3,7 +3,7 @@ import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
 import { UpdateUserProfileDto } from '@/users/dtos/user-update.dto';
-import { UsersService } from '@/users/users.service';
+import { UsersService } from '@/users/services/users.service';
 import {
   Body,
   Controller,

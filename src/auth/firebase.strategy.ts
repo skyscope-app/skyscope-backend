@@ -5,7 +5,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { auth } from 'firebase-admin';
 import { ClsService } from 'nestjs-cls';
 import { ExtractJwt, Strategy } from 'passport-firebase-jwt';
-import { UsersService } from '@/users/users.service';
+import { UsersService } from '@/users/services/users.service';
 import { AuthService } from '@/auth/auth.service';
 
 @Injectable()

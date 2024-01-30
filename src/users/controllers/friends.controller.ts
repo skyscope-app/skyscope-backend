@@ -1,7 +1,7 @@
 import { Authenticated, AuthenticatedUser } from '@/shared/decorators';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
-import { FriendsService } from '@/users/friends.service';
+import { FriendsService } from '@/users/services/friends.service';
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 

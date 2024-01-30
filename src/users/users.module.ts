@@ -1,11 +1,11 @@
 import { AuthModule } from '@/auth/auth.module';
 import { LoggerModule } from '@/logger/logger.module';
 import { User } from '@/users/domain/user.entity';
-import { FriendsController } from '@/users/friends.controller';
-import { FriendsService } from '@/users/friends.service';
-import { UsersController } from '@/users/users.controller';
-import { UsersService } from '@/users/users.service';
-import { Module, forwardRef } from '@nestjs/common';
+import { FriendsController } from '@/users/controllers/friends.controller';
+import { FriendsService } from '@/users/services/friends.service';
+import { UsersController } from '@/users/controllers/users.controller';
+import { UsersService } from '@/users/services/users.service';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
