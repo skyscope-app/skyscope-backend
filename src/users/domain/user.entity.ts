@@ -1,5 +1,5 @@
 import { BaseEntity } from '@/shared/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 export class UserOptions {
   ivaoId?: string;
@@ -24,6 +24,18 @@ export class User extends BaseEntity {
   @Column() navigraphId?: string;
 
   @Column() simbriefId?: string;
+
+  @ManyToMany(() => User, (user) => user.friends)
+  @JoinTable({
+    name: 'friends',
+    joinColumn: {
+      name: 'friendId',
+    },
+    inverseJoinColumn: {
+      name: 'ownerId',
+    },
+  })
+  friends: User[];
 
   photo: string;
   name: string;

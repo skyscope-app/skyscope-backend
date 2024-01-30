@@ -22,7 +22,7 @@ export class Profile {
   simbriefId?: string;
 
   constructor(user: User) {
-    this.id = user.authenticationId;
+    this.id = user.id;
     this.name = user.name ?? '';
     this.email = user.email;
     this.photo = user.photo ?? '';
