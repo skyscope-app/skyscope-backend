@@ -2,8 +2,10 @@ import { Authenticated, AuthenticatedUser } from '@/shared/decorators';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
 import { FriendsService } from '@/users/services/friends.service';
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
+import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
 
 @Controller('friends')
 @ApiTags('friends')
@@ -13,18 +15,17 @@ export class FriendsController {
 
   @Get()
   @ApiOperation({ description: 'List friends' })
-  listFriends(@AuthenticatedUser() user: User) {
-    return this.friendsService
-      .list(user.id)
-      .then((users) => users.map((user) => new Profile(user)));
+  async listFriends(@AuthenticatedUser() user: User) {
+    const users = await this.friendsService.list(user.id);
+    return users.map((user) => new Profile(user));
   }
 
-  @Post(':friendId')
+  @Post()
   @ApiOperation({ description: 'Add friend' })
   addFriend(
     @AuthenticatedUser() user: User,
-    @Param('friendId') friendId: string,
+    @Body(new BodyParserPipe(ProfileOptionsDto)) body: ProfileOptionsDto,
   ) {
-    return this.friendsService.add(user.id, friendId);
+    return this.friendsService.add(user.id, body);
   }
 }

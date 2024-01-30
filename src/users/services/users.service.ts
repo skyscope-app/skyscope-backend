@@ -12,21 +12,22 @@ export class UsersService {
     private readonly authService: AuthService,
   ) {}
 
-  create(
+  async create(
     email: string,
     authenticationId: string,
     options?: UserOptions,
   ): Promise<User> {
-    const user = new User(email, authenticationId, options);
-    return this.userRepository.save(user).then((user) => this.enrichUser(user));
+    const user = await this.userRepository.save(
+      new User(email, authenticationId, options),
+    );
+    return await this.enrichUser(user);
   }
 
-  findByAuthenticationID(authenticationId: string) {
-    return this.userRepository.findOneBy({ authenticationId }).then((user) => {
-      if (user) {
-        return this.enrichUser(user);
-      }
-    });
+  async findByAuthenticationID(authenticationId: string) {
+    const user = await this.userRepository.findOneBy({ authenticationId });
+    if (user) {
+      return this.enrichUser(user);
+    }
   }
 
   async updateProfile(user: User, options: UserOptions) {

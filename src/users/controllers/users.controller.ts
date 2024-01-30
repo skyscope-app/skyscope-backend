@@ -2,7 +2,7 @@ import { Authenticated, AuthenticatedUser } from '@/shared/decorators';
 import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
-import { UpdateUserProfileDto } from '@/users/dtos/user-update.dto';
+import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
 import { UsersService } from '@/users/services/users.service';
 import {
   Body,
@@ -30,7 +30,7 @@ export class UsersController {
   @ApiNoContentResponse({ description: 'User profile updated' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateProfile(
-    @Body(new BodyParserPipe(UpdateUserProfileDto)) body: UpdateUserProfileDto,
+    @Body(new BodyParserPipe(ProfileOptionsDto)) body: ProfileOptionsDto,
     @AuthenticatedUser() user: User,
   ) {
     await this.userService.updateProfile(user, body);
