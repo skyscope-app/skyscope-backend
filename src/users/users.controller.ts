@@ -1,10 +1,23 @@
-import { Body, Controller, Patch } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Authenticated, AuthenticatedDomainUser } from '@/shared/decorators';
-import { UpdateUserProfileDto } from '@/users/dtos/user-update.dto';
+import { Authenticated, AuthenticatedUser } from '@/shared/decorators';
 import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
 import { User } from '@/users/domain/user.entity';
+import { Profile } from '@/users/dtos/profile.dto';
+import { UpdateUserProfileDto } from '@/users/dtos/user-update.dto';
 import { UsersService } from '@/users/users.service';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Patch,
+} from '@nestjs/common';
+import {
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('Users')
@@ -14,10 +27,19 @@ export class UsersController {
 
   @Patch('profile')
   @ApiOperation({ description: 'Update user profile' })
+  @ApiNoContentResponse({ description: 'User profile updated' })
+  @HttpCode(HttpStatus.NO_CONTENT)
   async updateProfile(
     @Body(new BodyParserPipe(UpdateUserProfileDto)) body: UpdateUserProfileDto,
-    @AuthenticatedDomainUser() user: User,
+    @AuthenticatedUser() user: User,
   ) {
     await this.userService.updateProfile(user, body);
+  }
+
+  @Get('profile')
+  @ApiOperation({ description: 'Get authenticated user profile' })
+  @ApiOkResponse({ description: 'User profile', type: Profile })
+  async getProfile(@AuthenticatedUser() user: User) {
+    return new Profile(user);
   }
 }

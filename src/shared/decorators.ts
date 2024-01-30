@@ -5,6 +5,7 @@ import {
   Header,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -13,7 +14,6 @@ import {
   ApiNotFoundResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 
 export const DefaultStatusCodes = () => {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -68,8 +68,7 @@ export const RequestData = (key: string) =>
     return d;
   });
 
-export const AuthenticatedDomainUser = () => RequestData('user')();
-export const AuthenticatedUser = () => RequestData('auth_user')();
+export const AuthenticatedUser = () => RequestData('user')();
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace cacheControl {
