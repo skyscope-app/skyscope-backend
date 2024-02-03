@@ -1,3 +1,12 @@
+# [1.4.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.3.1...v1.4.0) (2024-02-03)
+
+
+### Features
+
+* **friends:** add endpoint to add friend ([daedd38](https://github.com/skyscope-app/skyscope-backend/commit/daedd38fdcc40aefea559201b31cd1547a419b80))
+* **friends:** allow friend addition by search params ([1c9f942](https://github.com/skyscope-app/skyscope-backend/commit/1c9f9420c22819328ed191c8c9938b8056a24d65))
+* **user:** add endpoint to get user profile ([8136fd6](https://github.com/skyscope-app/skyscope-backend/commit/8136fd621df089ea9dec3847f9d7495eb3ea5fea))
+
 ## [1.3.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.3.0...v1.3.1) (2024-01-29)
 
 
