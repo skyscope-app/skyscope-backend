@@ -1,10 +1,9 @@
-import { BaseMigrationTable } from '@/database/base.migration';
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateFriendsTable1706503931880 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
-      new BaseMigrationTable({
+      new Table({
         name: 'friends',
         columns: [
           {
