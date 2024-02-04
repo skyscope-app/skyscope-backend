@@ -11,11 +11,21 @@ import { UsersModule } from '@/users/users.module';
 import { getDatabaseModule } from '@/database/typeorm.module';
 import { EnvironmentConfiguration } from '@/configurations/configuration';
 import { AuthModule } from '@/auth/auth.module';
+import { PostgresStore } from '@/cache/postgres.store';
 
 @Module({
   imports: [
     CacheModule.register({
       isGlobal: true,
+      store: new PostgresStore({
+        host: EnvironmentConfiguration.POSTGRES_HOST,
+        database: EnvironmentConfiguration.POSTGRES_DATABASE,
+        password: EnvironmentConfiguration.POSTGRES_PASSWORD,
+        port: Number(EnvironmentConfiguration.POSTGRES_PORT),
+        user: EnvironmentConfiguration.POSTGRES_USER,
+        poolSize: 10,
+        sslMode: EnvironmentConfiguration.POSTGRES_SSL_MODE,
+      }),
     }),
     ClsModule.forRoot({
       global: true,
