@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.4.0...v1.5.0) (2024-02-04)
+
+
+### Features
+
+* **airports:** add second source of data to airports ([53844dd](https://github.com/skyscope-app/skyscope-backend/commit/53844dd28e67c90a38a694687d774602fb82d2a8))
+
 # [1.4.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.3.1...v1.4.0) (2024-02-03)
 
 
