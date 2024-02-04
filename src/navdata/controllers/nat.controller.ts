@@ -1,6 +1,6 @@
 import { Nat } from '@/navdata/dtos/nat.dto';
 import { NatService } from '@/navdata/services/nat.service';
-import { Authenticated, cacheControl } from '@/shared/decorators';
+import { Authenticated, cacheControl } from '@/shared/utils/decorators';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 

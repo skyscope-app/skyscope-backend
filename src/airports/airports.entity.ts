@@ -5,11 +5,17 @@ export class Airport {
   lat: number;
   lng: number;
 
-  constructor(obj: any) {
-    this.icao = obj.icao;
-    this.iata = obj.iata;
-    this.name = obj.name;
-    this.lat = Number(obj.lat);
-    this.lng = Number(obj.lon);
+  constructor(
+    icao: string,
+    iata: string,
+    name: string,
+    lat: number,
+    lng: number,
+  ) {
+    this.icao = icao;
+    this.iata = iata;
+    this.name = name;
+    this.lat = lat;
+    this.lng = lng;
   }
 }

@@ -4,7 +4,7 @@ import {
   VatsimDataFlightPlan,
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
-import { Optional } from '@/shared/types';
+import { Optional } from '@/shared/utils/types';
 import { Injectable } from '@nestjs/common';
 import { AirportsService } from '@/airports/airports.service';
 import { Airport } from '@/airports/airports.entity';

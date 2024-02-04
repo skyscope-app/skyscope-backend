@@ -9,7 +9,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Authenticated } from '@/shared/decorators';
+import { Authenticated } from '@/shared/utils/decorators';
 
 @Controller('networks')
 @ApiTags('Networks')

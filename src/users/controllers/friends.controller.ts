@@ -1,4 +1,4 @@
-import { Authenticated, AuthenticatedUser } from '@/shared/decorators';
+import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
 import { FriendsService } from '@/users/services/friends.service';
