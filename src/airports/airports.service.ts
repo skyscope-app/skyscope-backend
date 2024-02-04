@@ -22,7 +22,7 @@ export class AirportsService {
   }
 
   async getAirportsMapFromCSV(): Promise<Map<string, Airport>> {
-    return this.cacheService.handle(
+    const airports = await this.cacheService.handle(
       'airports_map_csv',
       async () => {
         const rawString = await this.axios
@@ -39,10 +39,12 @@ export class AirportsService {
           );
         });
 
-        return new Map(airports.map((airport) => [airport.icao, airport]));
+        return airports;
       },
       12 * 60 * 60,
     );
+
+    return new Map(airports.map((airport) => [airport.icao, airport]));
   }
 
   async getAirportsMapFromJSON() {
