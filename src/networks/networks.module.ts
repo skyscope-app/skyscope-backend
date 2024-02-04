@@ -4,9 +4,10 @@ import { NetworksController } from '@/networks/controllers/networks.controller';
 import { IVAOService } from '@/networks/services/ivao.service';
 import { VATSIMService } from '@/networks/services/vatsim.service';
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@/cache/cache.module';
 
 @Module({
-  imports: [HttpModule, AirportsModule],
+  imports: [HttpModule, AirportsModule, CacheModule],
   controllers: [NetworksController],
   providers: [VATSIMService, IVAOService],
 })

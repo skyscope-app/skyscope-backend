@@ -2,25 +2,46 @@ import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
 import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
 import { LiveFlight } from '@/networks/dtos/live-flight.dto';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { CacheService } from '@/cache/cache.service';
 
 @Injectable()
 export class IVAOService {
   public readonly axios: AxiosInstance;
   private url = 'https://api.ivao.aero/v2/tracker/whazzup';
 
-  constructor(private readonly airportsService: AirportsService) {
+  constructor(
+    private readonly airportsService: AirportsService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly cacheService: CacheService,
+  ) {
     this.axios = axios.create({});
   }
 
   public async fetchCurrentLive() {
-    const [{ data }, airports] = await Promise.all([
-      this.axios.get<IVAOResponse>(this.url),
-      this.airportsService.getAirportsMap(),
-    ]);
+    return this.cacheService.handle(
+      'ivao_flights',
+      async () => {
+        const [{ data }, airports] = await Promise.all([
+          this.axios.get<IVAOResponse>(this.url),
+          this.airportsService.getAirportsMap(),
+        ]);
 
-    return this.parse(data.clients.pilots, airports);
+        const flights = this.parse(data.clients.pilots, airports);
+
+        await Promise.all(
+          flights.map((flight) => {
+            return this.cacheManager.set(flight.id, flight, 15 * 1000);
+          }),
+        );
+
+        return flights;
+      },
+      15,
+    );
   }
 
   private parseVatsimAircraftWakeTurbulence(aircraft: string) {

@@ -5,27 +5,48 @@ import {
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
 import { Optional } from '@/shared/utils/types';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AirportsService } from '@/airports/airports.service';
 import { Airport } from '@/airports/airports.entity';
 import axios, { AxiosInstance } from 'axios';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { CacheService } from '@/cache/cache.service';
 
 @Injectable()
 export class VATSIMService {
   public readonly axios: AxiosInstance;
   private url = 'https://data.vatsim.net/v3/vatsim-data.json';
 
-  constructor(private readonly airportsService: AirportsService) {
+  constructor(
+    private readonly airportsService: AirportsService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly cacheService: CacheService,
+  ) {
     this.axios = axios.create({});
   }
 
   public async fetchCurrentLive(): Promise<Array<LiveFlight>> {
-    const [{ data }, airports] = await Promise.all([
-      this.axios.get<VatsimData>(this.url),
-      this.airportsService.getAirportsMap(),
-    ]);
+    return this.cacheService.handle(
+      'vatsim_flights',
+      async () => {
+        const [{ data }, airports] = await Promise.all([
+          this.axios.get<VatsimData>(this.url),
+          this.airportsService.getAirportsMap(),
+        ]);
 
-    return this.parse(data.pilots, airports);
+        const flights = this.parse(data.pilots, airports);
+
+        await Promise.all(
+          flights.map((flight) => {
+            return this.cacheManager.set(flight.id, flight, 15 * 1000);
+          }),
+        );
+
+        return flights;
+      },
+      15,
+    );
   }
 
   private parseVatsimAircraftWakeTurbulence(aircraft: string) {
