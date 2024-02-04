@@ -1,4 +1,4 @@
-import { BaseEntity } from '@/shared/base.entity';
+import { BaseEntity } from '@/shared/entities/base.entity';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 export class UserOptions {
