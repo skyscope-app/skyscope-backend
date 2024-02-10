@@ -10,10 +10,10 @@ import { v4 } from 'uuid';
 
 export class BaseEntity {
   @PrimaryGeneratedColumn()
-  public iid: number;
+  public id: number;
 
   @Column()
-  public id: string;
+  public uid: string;
 
   @CreateDateColumn()
   public createdAt: Date;
@@ -26,6 +26,6 @@ export class BaseEntity {
 
   @BeforeInsert()
   private beforeInsert() {
-    this.id = this.id ?? v4();
+    this.uid = this.uid ?? v4();
   }
 }

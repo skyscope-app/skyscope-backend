@@ -1,30 +1,15 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateCacheTable1707067709993 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.createTable(
-      new Table({
-        name: 'cache',
-        columns: [
-          {
-            name: 'key',
-            isUnique: true,
-            isNullable: false,
-            type: 'varchar',
-          },
-          {
-            name: 'value',
-            type: 'json',
-            isNullable: false,
-          },
-          {
-            name: 'expiresAt',
-            type: 'timestamptz',
-            isNullable: false,
-          },
-        ],
-      }),
-    );
+    await queryRunner.query(`
+        CREATE UNLOGGED TABLE cache (
+          key varchar(255) NOT NULL,
+          value jsonb NOT NULL,
+          "expiresAt" timestamptz NOT NULL,
+          CONSTRAINT uk_cache_key UNIQUE (key)
+        )
+    `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

@@ -7,6 +7,8 @@ import axios, { AxiosInstance } from 'axios';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CacheService } from '@/cache/cache.service';
+import * as crypto from 'crypto';
+import { v4, v5 } from 'uuid';
 
 @Injectable()
 export class IVAOService {
@@ -76,7 +78,13 @@ export class IVAOService {
       const alternate2 = airports.get(pilot.flightPlan?.alternative2Id ?? '');
 
       return {
-        id: `${pilot.id}`,
+        id: v5(
+          crypto
+            .createHash('md5')
+            .update(`${pilot.flightPlan?.id ?? v4()}`)
+            .digest('hex'),
+          '820aabf8-e662-4075-8e9f-8a94dc1f5148',
+        ),
         pilot: {
           id: pilot.userId,
           name: '',

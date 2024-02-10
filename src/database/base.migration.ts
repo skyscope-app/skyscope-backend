@@ -6,7 +6,7 @@ export class BaseMigrationTable extends Table {
       ...options,
       columns: [
         {
-          name: 'iid',
+          name: 'id',
           type: 'bigint',
           isPrimary: true,
           isGenerated: true,
@@ -15,7 +15,7 @@ export class BaseMigrationTable extends Table {
           isUnique: true,
         },
         {
-          name: 'id',
+          name: 'uid',
           type: 'uuid',
           default: 'gen_random_uuid()',
           isUnique: true,

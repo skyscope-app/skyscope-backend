@@ -16,7 +16,7 @@ export class FriendsController {
   @Get()
   @ApiOperation({ description: 'List friends' })
   async listFriends(@AuthenticatedUser() user: User) {
-    const users = await this.friendsService.list(user.id);
+    const users = await this.friendsService.list(user.uid);
     return users.map((user) => new Profile(user));
   }
 
@@ -26,6 +26,6 @@ export class FriendsController {
     @AuthenticatedUser() user: User,
     @Body(new BodyParserPipe(ProfileOptionsDto)) body: ProfileOptionsDto,
   ) {
-    return this.friendsService.add(user.id, body);
+    return this.friendsService.add(user.uid, body);
   }
 }

@@ -23,4 +23,8 @@ export class CacheService {
 
     return nonCachedData;
   }
+
+  async get<T>(key: string) {
+    return this.cacheManager.get<T>(key);
+  }
 }

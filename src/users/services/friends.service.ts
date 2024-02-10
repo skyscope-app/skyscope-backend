@@ -12,7 +12,7 @@ export class FriendsService {
 
   async list(userId: string) {
     const user = await this.userRepository.findOne({
-      where: { id: userId },
+      where: { uid: userId },
       relations: ['friends'],
       select: [],
     });
@@ -26,7 +26,7 @@ export class FriendsService {
       await this.userRepository
         .query(
           'INSERT INTO friends ("ownerId", "friendId") VALUES ((SELECT iid FROM users WHERE id = $1), $2)',
-          [ownerId, user.iid],
+          [ownerId, user.id],
         )
         .catch(() => {});
     }

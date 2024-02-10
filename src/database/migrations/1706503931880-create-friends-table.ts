@@ -28,13 +28,13 @@ export class CreateFriendsTable1706503931880 implements MigrationInterface {
           {
             columnNames: ['ownerId'],
             referencedTableName: 'users',
-            referencedColumnNames: ['iid'],
+            referencedColumnNames: ['id'],
             name: 'fk_ownerId_friends',
           },
           {
             columnNames: ['friendId'],
             referencedTableName: 'users',
-            referencedColumnNames: ['iid'],
+            referencedColumnNames: ['id'],
             name: 'fk_friendId_friends',
           },
         ],
