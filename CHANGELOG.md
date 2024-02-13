@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.2...v1.6.3) (2024-02-13)
+
+
+### Bug Fixes
+
+* use uid instead of token as cache key ([d7087fa](https://github.com/skyscope-app/skyscope-backend/commit/d7087fa35c5f2f0fc29938126b6e2346082502ad))
+
 ## [1.6.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.1...v1.6.2) (2024-02-13)
 
 
