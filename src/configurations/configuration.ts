@@ -66,10 +66,6 @@ export class Configuration {
   @IsString()
   @IsNotEmpty()
   ENVIRONMENT: string;
-
-  @IsString()
-  @IsNotEmpty()
-  POSTGRES_SSL_MODE: string;
 }
 
 export const EnvironmentConfiguration = getConfiguration(Configuration);
