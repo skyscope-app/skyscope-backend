@@ -8,11 +8,12 @@ import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
+import * as admin from 'firebase-admin';
 import helmet from 'helmet';
 import { ClsService } from 'nestjs-cls';
 import { AppModule } from './app.module';
-import * as admin from 'firebase-admin';
 
 export let clsService: ClsService;
 
@@ -48,6 +49,7 @@ async function bootstrap() {
   app.use(helmet());
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json({ limit: '32mb' }));
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors();

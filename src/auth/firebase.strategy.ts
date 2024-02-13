@@ -1,12 +1,23 @@
+import { AuthService } from '@/auth/auth.service';
 import { CacheService } from '@/cache/cache.service';
 import { Configuration } from '@/configurations/configuration';
+import { UsersService } from '@/users/services/users.service';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { Request } from 'express';
 import { auth } from 'firebase-admin';
 import { ClsService } from 'nestjs-cls';
 import { ExtractJwt, Strategy } from 'passport-firebase-jwt';
-import { UsersService } from '@/users/services/users.service';
-import { AuthService } from '@/auth/auth.service';
+
+function extractJWTFromCookie(request: Request): string | null {
+  const cookies = request.cookies;
+
+  if (cookies && cookies.accessToken) {
+    return cookies.accessToken;
+  }
+
+  return null;
+}
 
 @Injectable()
 export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
@@ -22,6 +33,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
       jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         ExtractJwt.fromUrlQueryParameter('bearer'),
+        extractJWTFromCookie,
       ]),
       passReqToCallback: true,
     });
