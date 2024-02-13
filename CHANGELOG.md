@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.1...v1.6.2) (2024-02-13)
+
+
+### Bug Fixes
+
+* ssl mode disable in configuration ([22ff8a6](https://github.com/skyscope-app/skyscope-backend/commit/22ff8a67e55985007f6e107b73feb532775c5257))
+
 ## [1.6.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.0...v1.6.1) (2024-02-13)
 
 
