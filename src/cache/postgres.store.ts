@@ -1,7 +1,7 @@
 import { CacheStore } from '@nestjs/cache-manager';
-import * as Pool from 'pg-pool';
-import { Client } from 'pg';
 import * as moment from 'moment-timezone';
+import { Client } from 'pg';
+import * as Pool from 'pg-pool';
 
 export interface PostgresStoreOptions {
   host: string;
@@ -10,7 +10,6 @@ export interface PostgresStoreOptions {
   password: string;
   database: string;
   poolSize: number;
-  sslMode: string;
 }
 
 export class PostgresStore implements CacheStore {

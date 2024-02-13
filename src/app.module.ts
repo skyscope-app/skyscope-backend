@@ -1,17 +1,17 @@
+import { AuthModule } from '@/auth/auth.module';
 import { CacheModule as InternalCacheModule } from '@/cache/cache.module';
+import { PostgresStore } from '@/cache/postgres.store';
+import { EnvironmentConfiguration } from '@/configurations/configuration';
 import { ConfigurationsModule } from '@/configurations/configuration.module';
+import { getDatabaseModule } from '@/database/typeorm.module';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { NavdataModule } from '@/navdata/navdata.module';
+import { UsersModule } from '@/users/users.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
 import { NetworksModule } from './networks/networks.module';
-import { UsersModule } from '@/users/users.module';
-import { getDatabaseModule } from '@/database/typeorm.module';
-import { EnvironmentConfiguration } from '@/configurations/configuration';
-import { AuthModule } from '@/auth/auth.module';
-import { PostgresStore } from '@/cache/postgres.store';
 
 @Module({
   imports: [
@@ -24,7 +24,6 @@ import { PostgresStore } from '@/cache/postgres.store';
         port: Number(EnvironmentConfiguration.POSTGRES_PORT),
         user: EnvironmentConfiguration.POSTGRES_USER,
         poolSize: 10,
-        sslMode: EnvironmentConfiguration.POSTGRES_SSL_MODE,
       }),
     }),
     ClsModule.forRoot({
