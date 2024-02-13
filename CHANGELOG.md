@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.0...v1.6.1) (2024-02-13)
+
+
+### Bug Fixes
+
+* remove database ssl mode required configuration ([7d7d4a5](https://github.com/skyscope-app/skyscope-backend/commit/7d7d4a5a363f4d8e97e765f89e3f6d7e53537417))
+
 # [1.6.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.5.0...v1.6.0) (2024-02-13)
 
 
