@@ -41,8 +41,10 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
 
   async validate(request: any, token: string) {
     try {
+      const uid = this.getTokenUid(token);
+
       const data = await this.cacheService.handle(
-        token,
+        uid,
         async () => {
           const uid = await this.validateUser(token);
           const authUser = await this.authService.findByUid(uid);
@@ -113,6 +115,6 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
       .map((segment) =>
         JSON.parse(Buffer.from(segment, 'base64').toString('ascii')),
       )[1];
-    return parsedToken['sub'];
+    return parsedToken['sub'] as string;
   }
 }

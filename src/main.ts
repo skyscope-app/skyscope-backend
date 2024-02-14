@@ -5,6 +5,7 @@ import {
 } from '@/configurations/configuration';
 import { MigrateUp } from '@/database/migrate';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
+import { InternalLogger } from '@/logger/logger.service';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -40,11 +41,19 @@ function setupSwagger(app: INestApplication) {
 async function bootstrap() {
   await validateConfiguration(Configuration);
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(
+    AppModule,
+    EnvironmentConfiguration.ENVIRONMENT === 'main'
+      ? {
+          logger: new InternalLogger(EnvironmentConfiguration, clsService),
+        }
+      : {},
+  );
 
   clsService = app.select(AppModule).get(ClsService);
 
-  await admin.initializeApp();
+  admin.initializeApp();
+
   app.getHttpAdapter().getInstance().disable('x-powered-by');
   app.use(helmet());
   app.use(express.urlencoded({ extended: false }));

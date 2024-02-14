@@ -1,3 +1,46 @@
+## [1.6.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.3...v1.6.4) (2024-02-14)
+
+
+### Bug Fixes
+
+* **auth:** update token cookie key ([#19](https://github.com/skyscope-app/skyscope-backend/issues/19)) ([b8d1e45](https://github.com/skyscope-app/skyscope-backend/commit/b8d1e452d3879a3b4d98fc18768b338f30a5d4d1))
+
+## [1.6.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.2...v1.6.3) (2024-02-13)
+
+
+### Bug Fixes
+
+* use uid instead of token as cache key ([d7087fa](https://github.com/skyscope-app/skyscope-backend/commit/d7087fa35c5f2f0fc29938126b6e2346082502ad))
+
+## [1.6.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.1...v1.6.2) (2024-02-13)
+
+
+### Bug Fixes
+
+* ssl mode disable in configuration ([22ff8a6](https://github.com/skyscope-app/skyscope-backend/commit/22ff8a67e55985007f6e107b73feb532775c5257))
+
+## [1.6.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.0...v1.6.1) (2024-02-13)
+
+
+### Bug Fixes
+
+* remove database ssl mode required configuration ([7d7d4a5](https://github.com/skyscope-app/skyscope-backend/commit/7d7d4a5a363f4d8e97e765f89e3f6d7e53537417))
+
+# [1.6.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.5.0...v1.6.0) (2024-02-13)
+
+
+### Bug Fixes
+
+* **airport:** airport caching ([ab95fdd](https://github.com/skyscope-app/skyscope-backend/commit/ab95fdda7a36edc0c681b253162618b30fe303a5))
+
+
+### Features
+
+* add geojson and endpoint to return flight by id ([b945311](https://github.com/skyscope-app/skyscope-backend/commit/b94531190007355c6efa47f1fc911462e82add51))
+* add jwt extraction from cookie ([433bc33](https://github.com/skyscope-app/skyscope-backend/commit/433bc33eec4d8425c1220339d29809cfd38a7244))
+* **cache:** add cache via postgres ([8edb1ed](https://github.com/skyscope-app/skyscope-backend/commit/8edb1ed3aada408e158f3321a244372b76d2e6b3))
+* **network:** add network caching ([a16cc1b](https://github.com/skyscope-app/skyscope-backend/commit/a16cc1b79e9ee1459e28392559cad904211329ed))
+
 # [1.5.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.4.0...v1.5.0) (2024-02-04)
 
 
