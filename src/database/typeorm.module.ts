@@ -1,5 +1,6 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@/users/domain/user.entity';
+import { Integration } from '@/integrations/domain/integration';
 
 export const getDatabaseModule = (
   DB_HOST: string,
@@ -24,7 +25,7 @@ export const getDatabaseModule = (
         : { ssl: { rejectUnauthorized: false } }),
     },
     synchronize: false,
-    entities: [User],
+    entities: [User, Integration],
     logging: ENVIRONMENT === 'local',
   });
 };

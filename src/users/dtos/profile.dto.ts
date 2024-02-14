@@ -7,7 +7,7 @@ export class Profile {
   @ApiProperty()
   name: string;
   @ApiProperty()
-  photo: string;
+  avatarUrl: string;
   @ApiProperty()
   email: string;
   @ApiProperty({ nullable: true })
@@ -25,7 +25,7 @@ export class Profile {
     this.id = user.uid;
     this.name = user.name ?? '';
     this.email = user.email;
-    this.photo = user.photo ?? '';
+    this.avatarUrl = user.photo ?? '';
     this.ivaoId = user.ivaoId;
     this.vatsimId = user.vatsimId;
     this.posconId = user.posconId;

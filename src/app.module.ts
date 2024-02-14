@@ -12,6 +12,7 @@ import { Module } from '@nestjs/common';
 import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
 import { NetworksModule } from './networks/networks.module';
+import { IntegrationsModule } from '@/integrations/integrations.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { NetworksModule } from './networks/networks.module';
     NavdataModule,
     UsersModule,
     AuthModule,
+    IntegrationsModule,
   ],
   providers: [LoggingInterceptor],
 })
