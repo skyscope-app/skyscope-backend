@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.3...v1.6.4) (2024-02-14)
+
+
+### Bug Fixes
+
+* **auth:** update token cookie key ([#19](https://github.com/skyscope-app/skyscope-backend/issues/19)) ([b8d1e45](https://github.com/skyscope-app/skyscope-backend/commit/b8d1e452d3879a3b4d98fc18768b338f30a5d4d1))
+
 ## [1.6.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.2...v1.6.3) (2024-02-13)
 
 
