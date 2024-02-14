@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.4...v1.7.0) (2024-02-14)
+
+
+### Bug Fixes
+
+* **auth:** fix cookie keys of authentication token ([dc784a6](https://github.com/skyscope-app/skyscope-backend/commit/dc784a6b1909aee18de029b2f0035e1efb4fb2f6))
+* **auth:** update token cookie key ([8a16b57](https://github.com/skyscope-app/skyscope-backend/commit/8a16b572b4cafde59cdfdfd66a80034b7d8c2c0a))
+
+
+### Features
+
+* **integrations:** add endpoint to create integrations ([1702b5e](https://github.com/skyscope-app/skyscope-backend/commit/1702b5edfc171f62f73b9e150a8a7969913a6aad))
+
 ## [1.6.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.3...v1.6.4) (2024-02-14)
 
 
