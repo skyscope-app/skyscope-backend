@@ -23,7 +23,8 @@ function setupSwagger(app: INestApplication) {
     .setTitle('API')
     .setDescription('API documentation')
     .setVersion('1.0')
-    .addServer(`http://localhost:${process.env.PORT ?? 8080}`)
+    .addServer(`http://localhost:${process.env.PORT ?? 8080}`, 'local')
+    .addServer('https://api.skyscopeapp.com', 'production')
     .addBearerAuth({
       type: 'http',
       scheme: 'bearer',
@@ -53,7 +54,6 @@ async function bootstrap() {
   clsService = app.select(AppModule).get(ClsService);
 
   admin.initializeApp();
-
   app.getHttpAdapter().getInstance().disable('x-powered-by');
   app.use(helmet());
   app.use(express.urlencoded({ extended: false }));

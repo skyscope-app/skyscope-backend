@@ -1,5 +1,6 @@
 import { BaseEntity } from '@/shared/entities/base.entity';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Integration } from '@/integrations/domain/integration';
 
 export class UserOptions {
   ivaoId?: string;
@@ -36,6 +37,9 @@ export class User extends BaseEntity {
     },
   })
   friends: User[];
+
+  @OneToMany(() => Integration, (integration) => integration.user)
+  integrations: Integration[];
 
   photo: string;
   name: string;
