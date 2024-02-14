@@ -12,8 +12,8 @@ import { ExtractJwt, Strategy } from 'passport-firebase-jwt';
 function extractJWTFromCookie(request: Request): string | null {
   const cookies = request.cookies;
 
-  if (cookies && cookies.accessToken) {
-    return cookies.accessToken;
+  if (cookies && cookies['_Secure-access-token']) {
+    return cookies['_Secure-access-token'];
   }
 
   return null;
