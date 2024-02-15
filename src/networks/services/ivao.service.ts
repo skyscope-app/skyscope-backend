@@ -2,7 +2,7 @@ import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
 import { CacheService } from '@/cache/cache.service';
 import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
-import { LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { Aircraft, LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
@@ -118,7 +118,7 @@ export class IVAOService {
             name: arrival?.name ?? '',
             coordinates: [arrival?.lat ?? 0, arrival?.lng ?? 0],
           },
-          aircraft: {
+          aircraft: new Aircraft({
             icao: pilot.flightPlan?.aircraft?.icaoCode ?? '',
             wakeTurbulence: pilot.flightPlan?.aircraft?.wakeTurbulence ?? '',
             registration:
@@ -126,7 +126,7 @@ export class IVAOService {
                 [])[1] || '',
             transponderTypes: pilot.flightPlan?.aircraftTransponderTypes ?? '',
             equipment: pilot.flightPlan?.aircraft?.icaoCode ?? '',
-          },
+          } as Aircraft),
           level: Number((pilot.flightPlan?.level ?? '').slice(1)) * 100,
           route: pilot.flightPlan?.route ?? '',
           remarks: pilot.flightPlan?.remarks ?? '',

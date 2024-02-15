@@ -6,7 +6,13 @@ import { IVAOService } from '@/networks/services/ivao.service';
 import { PosconService } from '@/networks/services/poscon.service';
 import { VATSIMService } from '@/networks/services/vatsim.service';
 import { Authenticated, cacheControl } from '@/shared/utils/decorators';
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  NotImplementedException,
+  Param,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('networks')
@@ -39,7 +45,13 @@ export class NetworksController {
     @Param('flightId') flightId: string,
     @Param('network') network: Network,
   ) {
-    await this.serviceMap[network].fetchCurrentLive();
+    const service = this.serviceMap[network];
+
+    if (!service) {
+      throw new NotImplementedException();
+    }
+
+    await service.fetchCurrentLive();
 
     const data = await this.cacheService.get<LiveFlight>(flightId);
 
@@ -58,7 +70,13 @@ export class NetworksController {
     maxAge: 15,
   })
   private async liveFlights(@Param('network') network: Network) {
-    const data = await this.serviceMap[network].fetchCurrentLive();
+    const service = this.serviceMap[network];
+
+    if (!service) {
+      throw new NotImplementedException();
+    }
+
+    const data = await service.fetchCurrentLive();
 
     return new LiveFlightGeoJson(data);
   }

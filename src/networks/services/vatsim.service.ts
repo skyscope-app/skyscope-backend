@@ -1,17 +1,23 @@
-import { FlightPlan, LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { Airport } from '@/airports/airports.entity';
+import { AirportsService } from '@/airports/airports.service';
+import { CacheService } from '@/cache/cache.service';
+import {
+  Aircraft,
+  FlightPlan,
+  LiveFlight,
+} from '@/networks/dtos/live-flight.dto';
 import {
   VatsimData,
   VatsimDataFlightPlan,
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
 import { Optional } from '@/shared/utils/types';
-import { Inject, Injectable } from '@nestjs/common';
-import { AirportsService } from '@/airports/airports.service';
-import { Airport } from '@/airports/airports.entity';
-import axios, { AxiosInstance } from 'axios';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
+import axios, { AxiosInstance } from 'axios';
 import { Cache } from 'cache-manager';
-import { CacheService } from '@/cache/cache.service';
+import * as crypto from 'crypto';
+import { v5 } from 'uuid';
 
 @Injectable()
 export class VATSIMService {
@@ -97,7 +103,7 @@ export class VATSIMService {
         name: arrival?.name ?? '',
         coordinates: [arrival?.lat ?? 0, arrival?.lng ?? 0],
       },
-      aircraft: {
+      aircraft: new Aircraft({
         icao: flight_plan.aircraft_short,
         wakeTurbulence: this.parseVatsimAircraftWakeTurbulence(
           flight_plan.aircraft,
@@ -107,7 +113,7 @@ export class VATSIMService {
           flight_plan.aircraft,
         ),
         equipment: this.parseVatsimAircraftEquipment(flight_plan.aircraft),
-      },
+      } as Aircraft),
       level: Number(flight_plan.altitude),
       route: flight_plan.route,
       remarks: flight_plan.remarks,
@@ -137,7 +143,15 @@ export class VATSIMService {
     }
 
     return pilots.map((data) => ({
-      id: `vatsim-${data.callsign}`,
+      id: v5(
+        crypto
+          .createHash('md5')
+          .update(
+            `${data.cid + data.callsign + data.flight_plan?.departure + data.flight_plan?.arrival}`,
+          )
+          .digest('hex'),
+        '820aabf8-e662-4075-8e9f-8a94dc1f5148',
+      ),
       network: 'vatsim',
       callsign: data.callsign,
       pilot: {
