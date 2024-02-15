@@ -1,14 +1,13 @@
+import { CacheService } from '@/cache/cache.service';
 import { Network } from '@/networks/domain/network';
-import { LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { NetworkService } from '@/networks/domain/network-service';
+import { LiveFlight, LiveFlightGeoJson } from '@/networks/dtos/live-flight.dto';
 import { IVAOService } from '@/networks/services/ivao.service';
+import { PosconService } from '@/networks/services/poscon.service';
 import { VATSIMService } from '@/networks/services/vatsim.service';
+import { Authenticated, cacheControl } from '@/shared/utils/decorators';
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Authenticated, cacheControl } from '@/shared/utils/decorators';
-import { CacheService } from '@/cache/cache.service';
-import { NetworkService } from '@/networks/domain/network-service';
-import { PosconService } from '@/networks/services/poscon.service';
-import { point } from '@turf/helpers';
 
 @Controller('networks')
 @ApiTags('Networks')
@@ -17,9 +16,9 @@ export class NetworksController {
   private serviceMap: Record<Network, NetworkService>;
 
   constructor(
-    private readonly vatsimService: VATSIMService,
-    private readonly ivaoService: IVAOService,
-    private readonly posconService: PosconService,
+    vatsimService: VATSIMService,
+    ivaoService: IVAOService,
+    posconService: PosconService,
     private readonly cacheService: CacheService,
   ) {
     this.serviceMap = {
@@ -53,7 +52,7 @@ export class NetworksController {
 
   @Get(':network/flights')
   @ApiParam({ name: 'network', enum: Network })
-  @ApiOkResponse({ type: [LiveFlight] })
+  @ApiOkResponse({ type: LiveFlightGeoJson })
   @cacheControl.CacheControl({
     directive: cacheControl.Directive.PUBLIC,
     maxAge: 15,
@@ -61,13 +60,6 @@ export class NetworksController {
   private async liveFlights(@Param('network') network: Network) {
     const data = await this.serviceMap[network].fetchCurrentLive();
 
-    const features = data.map((flight) =>
-      point(flight.position.coordinates, flight),
-    );
-
-    return {
-      type: 'FeatureCollection',
-      features,
-    };
+    return new LiveFlightGeoJson(data);
   }
 }
