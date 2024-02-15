@@ -1,3 +1,4 @@
+import { getAircraftType } from '@/networks/functions/getAircraftType';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Pilot {
@@ -35,6 +36,16 @@ export class Airport {
   coordinates: number[];
 }
 
+export enum AircraftType {
+  Heavy = 'heavy',
+  Helicopter = 'helicopter',
+  Super = 'super',
+  Light = 'light',
+  Medium = 'medium',
+  Supersonic = 'supersonic',
+  Unknown = 'unknown',
+}
+
 export class Aircraft {
   @ApiProperty()
   icao: string;
@@ -46,6 +57,17 @@ export class Aircraft {
   transponderTypes: string;
   @ApiProperty()
   equipment: string;
+  @ApiProperty()
+  type: AircraftType;
+
+  constructor(aircraft: Aircraft) {
+    this.icao = aircraft.icao;
+    this.wakeTurbulence = aircraft.wakeTurbulence;
+    this.registration = aircraft.registration;
+    this.transponderTypes = aircraft.transponderTypes;
+    this.equipment = aircraft.equipment;
+    this.type = getAircraftType(aircraft);
+  }
 }
 
 export class FlightPlan {
@@ -116,10 +138,13 @@ class LiveFlightGeoJsonFeaturePropertiesAircraft {
   icao: string;
   @ApiProperty()
   registration: string;
+  @ApiProperty()
+  type: string;
 
   constructor(aircraft: Aircraft) {
     this.icao = aircraft.icao;
     this.registration = aircraft.registration;
+    this.type = aircraft.type;
   }
 }
 
