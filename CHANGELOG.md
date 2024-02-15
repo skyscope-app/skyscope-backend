@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.7.0...v1.7.1) (2024-02-15)
+
+
+### Bug Fixes
+
+* **networks:** fix ivao coordinates and remove excessive payload from geojson ([7e21130](https://github.com/skyscope-app/skyscope-backend/commit/7e21130bcd3a8ac9880fcfc8bc42fb70f363d3c0))
+
 # [1.7.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.6.4...v1.7.0) (2024-02-14)
 
 
