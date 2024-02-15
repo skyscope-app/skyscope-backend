@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.7.1...v1.8.0) (2024-02-15)
+
+
+### Features
+
+* add aircraft type property to aircraft live flight ([2402dff](https://github.com/skyscope-app/skyscope-backend/commit/2402dfff39f4059a02da8a04fa2fc99c0f36f81d))
+
 ## [1.7.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.7.0...v1.7.1) (2024-02-15)
 
 
