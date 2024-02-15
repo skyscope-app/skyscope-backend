@@ -1,12 +1,12 @@
 import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
+import { CacheService } from '@/cache/cache.service';
 import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
 import { LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { CacheService } from '@/cache/cache.service';
 import * as crypto from 'crypto';
 import { v4, v5 } from 'uuid';
 
@@ -95,8 +95,8 @@ export class IVAOService {
         position: {
           altitude: pilot.lastTrack?.altitude ?? 0,
           coordinates: [
-            pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
             pilot.lastTrack?.longitude ?? departure?.lng ?? 0,
+            pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
           ],
           groundSpeed: pilot.lastTrack?.groundSpeed ?? 0,
           heading: pilot.lastTrack?.heading ?? 0,
