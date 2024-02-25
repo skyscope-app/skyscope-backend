@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.9.0...v1.10.0) (2024-02-25)
+
+
+### Bug Fixes
+
+* add networks fetcher function ([95f6396](https://github.com/skyscope-app/skyscope-backend/commit/95f639655568a36097e9b536e040c2646aba6bde))
+
+
+### Features
+
+* add endpoint to fetch authenticated pilot route from simbrief ([294e2f9](https://github.com/skyscope-app/skyscope-backend/commit/294e2f9993178a38ce038d8529aa13d2e47ad374))
+* set networks fetcher as firebase function ([4a124f8](https://github.com/skyscope-app/skyscope-backend/commit/4a124f892fb43b3159096fc320f589381fc304e3))
+
 # [1.9.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.8.1...v1.9.0) (2024-02-25)
 
 
