@@ -1,10 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { IntegrationsService } from '@/integrations/services/integrations.service';
-import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from '@/users/domain/user.entity';
-import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
 import { CreateIntegrationDTO } from '@/integrations/dto/create-integration.dto';
+import { IntegrationsService } from '@/integrations/services/integrations.service';
+import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
+import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
+import { User } from '@/users/domain/user.entity';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Integrations')
 @Controller('integrations')
