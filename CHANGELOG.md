@@ -1,3 +1,17 @@
+# [1.9.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.8.1...v1.9.0) (2024-02-25)
+
+
+### Features
+
+* add endpoint to fetch authenticated pilot route from simbrief ([#22](https://github.com/skyscope-app/skyscope-backend/issues/22)) ([32dc2c4](https://github.com/skyscope-app/skyscope-backend/commit/32dc2c4d0d28f4399b1520a0af5fa08d1232ab02))
+
+## [1.8.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.8.0...v1.8.1) (2024-02-25)
+
+
+### Bug Fixes
+
+* **profile:** add nullable properties to profile dto ([4537040](https://github.com/skyscope-app/skyscope-backend/commit/4537040d388bcd40e08e298fac9ce477dec2c15a))
+
 # [1.8.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.7.1...v1.8.0) (2024-02-15)
 
 
