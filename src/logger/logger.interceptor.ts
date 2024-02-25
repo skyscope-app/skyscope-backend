@@ -5,18 +5,12 @@ import {
   Injectable,
   Logger,
   NestInterceptor,
-  SetMetadata,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Response } from 'express';
 import redact from 'redact-object';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { v4 } from 'uuid';
-
-type NotifiableType = 'CLIENT' | 'SERVER' | 'BOTH';
-
-export const Notifiable = (type: NotifiableType = 'BOTH') =>
-  SetMetadata('NOTIFIABLE', type);
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -124,11 +118,6 @@ export class LoggingInterceptor implements NestInterceptor {
               responseBody: this.redactData(responseBody!),
             },
             error,
-          );
-
-          const notifiableType = this.reflector.get<NotifiableType>(
-            'NOTIFIABLE',
-            context.getHandler(),
           );
 
           return throwError(() => error);

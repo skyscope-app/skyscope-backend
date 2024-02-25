@@ -1,3 +1,4 @@
+import { Nullable, assertNullable } from '@/shared/utils/nullable';
 import { User } from '@/users/domain/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -7,29 +8,29 @@ export class Profile {
   @ApiProperty()
   name: string;
   @ApiProperty()
-  avatarUrl: string;
+  avatarUrl: Nullable<string>;
   @ApiProperty()
   email: string;
   @ApiProperty({ nullable: true })
-  ivaoId?: string;
+  ivaoId: Nullable<string>;
   @ApiProperty({ nullable: true })
-  vatsimId?: string;
+  vatsimId: Nullable<string>;
   @ApiProperty({ nullable: true })
-  posconId?: string;
+  posconId: Nullable<string>;
   @ApiProperty({ nullable: true })
-  navigraphId?: string;
+  navigraphId: Nullable<string>;
   @ApiProperty({ nullable: true })
-  simbriefId?: string;
+  simbriefId: Nullable<string>;
 
   constructor(user: User) {
     this.id = user.uid;
     this.name = user.name ?? '';
     this.email = user.email;
-    this.avatarUrl = user.photo ?? '';
-    this.ivaoId = user.ivaoId;
-    this.vatsimId = user.vatsimId;
-    this.posconId = user.posconId;
-    this.navigraphId = user.navigraphId;
-    this.simbriefId = user.simbriefId;
+    this.avatarUrl = assertNullable(user.photo);
+    this.ivaoId = assertNullable(user.ivaoId);
+    this.vatsimId = assertNullable(user.vatsimId);
+    this.posconId = assertNullable(user.posconId);
+    this.navigraphId = assertNullable(user.navigraphId);
+    this.simbriefId = assertNullable(user.simbriefId);
   }
 }
