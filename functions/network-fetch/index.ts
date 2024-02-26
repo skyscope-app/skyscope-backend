@@ -2,6 +2,7 @@ import { AppModule } from '@/app.module';
 import { validateConfiguration } from '@/configurations/configuration';
 import { IVAOService } from '@/networks/services/ivao.service';
 import { VATSIMService } from '@/networks/services/vatsim.service';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { runWith } from 'firebase-functions';
 import { Configuration } from 'functions/network-fetch/configuration';
@@ -16,9 +17,17 @@ export const networksFetcher = runWith({
 
     const app = await NestFactory.createApplicationContext(AppModule);
 
+    const logger = app.get(Logger);
+
+    logger.log('Fetching networks...');
+
     const networksService = [app.get(IVAOService), app.get(VATSIMService)];
 
     await Promise.all(
       networksService.map((service) => service.fetchCurrentLive()),
     );
+
+    logger.log('Finished fetching networks.');
+
+    await app.close();
   });
