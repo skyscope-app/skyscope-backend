@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.1...v1.10.2) (2024-02-26)
+
+
+### Bug Fixes
+
+* **logger:** add logger ([48b8ba9](https://github.com/skyscope-app/skyscope-backend/commit/48b8ba9f7297fbacd2562f158f9efe8f973c6951))
+
 ## [1.10.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.0...v1.10.1) (2024-02-26)
 
 
