@@ -40,6 +40,10 @@ function setupSwagger(app: INestApplication) {
 }
 
 async function bootstrap() {
+  if (process.env.FUNCTIONS_CONTROL_API) {
+    return;
+  }
+
   await validateConfiguration(Configuration);
 
   const app = await NestFactory.create(
