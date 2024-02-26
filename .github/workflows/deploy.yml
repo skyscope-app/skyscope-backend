@@ -33,8 +33,34 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: semantic-release
 
-  build:
-    name: Build
+  functions:
+    name: Functions Build and Deploy
+    runs-on: ubuntu-latest
+    needs: release
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Dependencies Installation
+        run: |
+          npm i -g firebase-tools
+          npm ci
+
+      - name: Deploy Functions
+        run: |
+          echo $GOOGLE_CREDENTIALS > /tmp/key.json
+          firebase use skyscopeapp
+          firebase deploy --only functions:networksFetcher
+        
+  api:
+    name: Api Build and Deploy
     runs-on: ubuntu-latest
     needs: release
 
@@ -66,14 +92,3 @@ jobs:
           docker tag skyscopeapi:$LATEST_TAG us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:latest
           docker push us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi --all-tags
           gcloud run services update main-skyscope-api --image=us-east4-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG --region=us-east4 --project=skyscopeapp
-
-      - name: Dependencies Installation
-        run: |
-          npm i -g firebase-tools
-          npm ci
-
-      - name: Deploy Functions
-        run: |
-          echo $GOOGLE_CREDENTIALS > /tmp/key.json
-          firebase use skyscopeapp
-          firebase deploy --only functions:networksFetcher
