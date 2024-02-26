@@ -10,7 +10,7 @@ on:
 
 env:
   GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+  GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
 
 jobs:
   release:
@@ -74,5 +74,6 @@ jobs:
 
       - name: Deploy Functions
         run: |
+          echo $GOOGLE_CREDENTIALS > /tmp/key.json
           firebase use skyscopeapp
           firebase deploy --only functions:networksFetcher
