@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.2...v1.10.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* add way to filter api on firebase function ([c9b1fa2](https://github.com/skyscope-app/skyscope-backend/commit/c9b1fa2b3e63c381a58590a7bc4ce9c089fc12a1))
+
 ## [1.10.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.1...v1.10.2) (2024-02-26)
 
 
