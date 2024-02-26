@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.0...v1.10.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* write key to tmp file ([4d7851b](https://github.com/skyscope-app/skyscope-backend/commit/4d7851b7b48ad242af19ac3f3e41633919b8223c))
+
 # [1.10.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.9.0...v1.10.0) (2024-02-25)
 
 
