@@ -1,0 +1,24 @@
+{
+  "name": "skyscope-backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/skyscope-backend/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "skyscope-backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "skyscope-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "skyscope-backend:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
