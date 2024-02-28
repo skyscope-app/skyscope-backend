@@ -7,32 +7,32 @@ export class CreateFriendsTable1706503931880 implements MigrationInterface {
         name: 'friends',
         columns: [
           {
-            name: 'ownerId',
+            name: 'owner_id',
             type: 'bigint',
             isNullable: false,
           },
           {
-            name: 'friendId',
+            name: 'friend_id',
             type: 'bigint',
             isNullable: false,
           },
         ],
         indices: [
           {
-            columnNames: ['ownerId', 'friendId'],
+            columnNames: ['owner_id', 'friend_id'],
             isUnique: true,
             name: 'idx-unique-friends',
           },
         ],
         foreignKeys: [
           {
-            columnNames: ['ownerId'],
+            columnNames: ['owner_id'],
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
             name: 'fk_ownerId_friends',
           },
           {
-            columnNames: ['friendId'],
+            columnNames: ['friend_id'],
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
             name: 'fk_friendId_friends',
