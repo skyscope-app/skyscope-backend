@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.11.0...v1.11.1) (2024-02-28)
+
+
+### Bug Fixes
+
+* **logger:** add winston as logger ([0d67dfc](https://github.com/skyscope-app/skyscope-backend/commit/0d67dfc6caae0c9c61e91b17300bd94e4db525fd))
+
 # [1.11.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.3...v1.11.0) (2024-02-28)
 
 
