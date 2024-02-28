@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.3...v1.11.0) (2024-02-28)
+
+
+### Features
+
+* integrations adjustments ([536c3b3](https://github.com/skyscope-app/skyscope-backend/commit/536c3b3c1d3f2d8319e2609bee6dfbae3e567865))
+
 ## [1.10.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.10.2...v1.10.3) (2024-02-26)
 
 
