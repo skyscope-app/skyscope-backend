@@ -7,7 +7,7 @@ import { UsersController } from '@/users/controllers/users.controller';
 import { UsersService } from '@/users/services/users.service';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheModule } from "@/cache/cache.module";
+import { CacheModule } from '@/cache/cache.module';
 
 @Module({
   imports: [

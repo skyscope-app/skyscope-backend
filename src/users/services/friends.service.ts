@@ -1,5 +1,5 @@
 import { User } from '@/users/domain/user.entity';
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
@@ -30,7 +30,11 @@ export class FriendsService {
           [ownerId, user.id],
         )
         .catch((error) => {
-          this.logger.error({message: 'Error while adding friend', error: error.message}, error.stack, 'FriendsService');
+          this.logger.error(
+            { message: 'Error while adding friend', error: error.message },
+            error.stack,
+            'FriendsService',
+          );
         });
     }
   }
