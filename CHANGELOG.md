@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.11.1...v1.12.0) (2024-02-28)
+
+
+### Features
+
+* **discord:** add logger on discord ([#26](https://github.com/skyscope-app/skyscope-backend/issues/26)) ([e2ab995](https://github.com/skyscope-app/skyscope-backend/commit/e2ab995588b542def5c37c99cb632f8ddb65353e))
+
 ## [1.11.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.11.0...v1.11.1) (2024-02-28)
 
 
