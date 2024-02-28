@@ -26,6 +26,6 @@ export class FriendsController {
     @AuthenticatedUser() user: User,
     @Body(new BodyParserPipe(ProfileOptionsDto)) body: ProfileOptionsDto,
   ) {
-    return this.friendsService.add(user.uid, body);
+    return this.friendsService.add(user.id, body);
   }
 }

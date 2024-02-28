@@ -7,12 +7,14 @@ import { UsersController } from '@/users/controllers/users.controller';
 import { UsersService } from '@/users/services/users.service';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheModule } from "@/cache/cache.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, FriendsService]),
     LoggerModule,
     forwardRef(() => AuthModule),
+    CacheModule,
   ],
   providers: [UsersService, FriendsService],
   exports: [UsersService, FriendsService],

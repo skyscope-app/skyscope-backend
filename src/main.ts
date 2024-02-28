@@ -48,7 +48,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(
     AppModule,
-    EnvironmentConfiguration.ENVIRONMENT === 'main'
+    EnvironmentConfiguration.ENVIRONMENT === 'main' || true
       ? {
           logger: new InternalLogger(EnvironmentConfiguration, clsService),
         }
