@@ -13,6 +13,7 @@ import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
 import { NetworksModule } from './networks/networks.module';
 import { IntegrationsModule } from '@/integrations/integrations.module';
+import { LoggerModule } from '@/logger/logger.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { IntegrationsModule } from '@/integrations/integrations.module';
     UsersModule,
     AuthModule,
     IntegrationsModule,
+    LoggerModule,
   ],
   providers: [LoggingInterceptor],
 })

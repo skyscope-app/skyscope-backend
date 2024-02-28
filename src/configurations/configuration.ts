@@ -1,5 +1,5 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
-import { IsNotEmpty, IsString, validate } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, validate } from 'class-validator';
 import { config } from 'dotenv';
 import { name, version } from '../../package.json';
 
@@ -66,6 +66,14 @@ export class Configuration {
   @IsString()
   @IsNotEmpty()
   ENVIRONMENT: string;
+
+  @IsUrl()
+  @IsNotEmpty()
+  DISCORD_WEBHOOK_URL: string;
+
+  @IsString()
+  @IsNotEmpty()
+  SERVICE_NAME: string;
 }
 
 export const EnvironmentConfiguration = getConfiguration(Configuration);
