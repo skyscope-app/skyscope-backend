@@ -1,6 +1,6 @@
+import { Integration } from '@/integrations/domain/integration';
 import { BaseEntity } from '@/shared/entities/base.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
-import { Integration } from '@/integrations/domain/integration';
 
 export class UserOptions {
   ivaoId?: string;
@@ -12,28 +12,28 @@ export class UserOptions {
 
 @Entity('users')
 export class User extends BaseEntity {
-  @Column() ivaoId?: string;
+  @Column({ name: 'ivao_id' }) ivaoId?: string;
 
-  @Column() vatsimId?: string;
+  @Column({ name: 'vatsim_id' }) vatsimId?: string;
 
-  @Column() posconId?: string;
+  @Column({ name: 'poscon_id' }) posconId?: string;
 
   @Column() email: string;
 
-  @Column() authenticationId: string;
+  @Column({ name: 'authentication_id' }) authenticationId: string;
 
-  @Column() navigraphId?: string;
+  @Column({ name: 'navigraph_id' }) navigraphId?: string;
 
-  @Column() simbriefId?: string;
+  @Column({ name: 'simbrief_id' }) simbriefId?: string;
 
   @ManyToMany(() => User, (user) => user.friends)
   @JoinTable({
     name: 'friends',
     joinColumn: {
-      name: 'friendId',
+      name: 'friend_id',
     },
     inverseJoinColumn: {
-      name: 'ownerId',
+      name: 'owner_id',
     },
   })
   friends: User[];

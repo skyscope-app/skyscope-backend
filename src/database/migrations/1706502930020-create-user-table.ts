@@ -8,21 +8,21 @@ export class CreateUserTable1706502930020 implements MigrationInterface {
         name: 'users',
         columns: [
           {
-            name: 'ivaoId',
+            name: 'ivao_id',
             length: '10',
             type: 'varchar',
             isNullable: true,
             isUnique: true,
           },
           {
-            name: 'vatsimId',
+            name: 'vatsim_id',
             length: '10',
             type: 'varchar',
             isNullable: true,
             isUnique: true,
           },
           {
-            name: 'posconId',
+            name: 'poscon_id',
             type: 'varchar',
             length: '10',
             isNullable: true,
@@ -36,20 +36,20 @@ export class CreateUserTable1706502930020 implements MigrationInterface {
             isUnique: true,
           },
           {
-            name: 'authenticationId',
+            name: 'authentication_id',
             type: 'varchar',
             length: '128',
             isNullable: false,
             isUnique: true,
           },
           {
-            name: 'navigraphId',
+            name: 'navigraph_id',
             type: 'varchar',
             length: '128',
             isNullable: true,
           },
           {
-            name: 'simbriefId',
+            name: 'simbrief_id',
             type: 'varchar',
             length: '128',
             isNullable: true,

@@ -33,32 +33,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: semantic-release
 
-  functions:
-    name: Functions Build and Deploy
-    runs-on: ubuntu-latest
-    needs: release
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Dependencies Installation
-        run: |
-          npm i -g firebase-tools
-          npm ci
-
-      - name: Deploy Functions
-        run: |
-          echo $GOOGLE_CREDENTIALS > /tmp/key.json
-          firebase use skyscopeapp
-          firebase deploy --only functions:networksFetcher
-        
   api:
     name: Api Build and Deploy
     runs-on: ubuntu-latest

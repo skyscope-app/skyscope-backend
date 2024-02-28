@@ -1,5 +1,5 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 import { BaseMigrationTable } from '@/database/base.migration';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateIntegrationsTable1707915125434
   implements MigrationInterface
@@ -33,6 +33,18 @@ export class CreateIntegrationsTable1707915125434
             name: 'refresh_token',
             type: 'varchar',
             isNullable: false,
+          },
+          {
+            name: 'expires_at',
+            type: 'timestamptz',
+            isNullable: false,
+          },
+        ],
+        indices: [
+          {
+            name: 'idx-unique-provider-id',
+            columnNames: ['user_id', 'provider'],
+            isUnique: true,
           },
         ],
       }),

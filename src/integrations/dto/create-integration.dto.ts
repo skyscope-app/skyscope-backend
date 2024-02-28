@@ -1,10 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   Integration,
   IntegrationProviders,
 } from '@/integrations/domain/integration';
 import { User } from '@/users/domain/user.entity';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export class CreateIntegrationDTO {
   @ApiProperty({ enum: ['navigraph'] })
@@ -27,6 +33,12 @@ export class CreateIntegrationDTO {
   @IsString()
   refreshToken: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  expiresIn: number;
+
   toDomain(user: User) {
     return new Integration(
       this.provider,
@@ -34,6 +46,7 @@ export class CreateIntegrationDTO {
       user,
       this.accessToken,
       this.refreshToken,
+      this.expiresIn,
     );
   }
 }

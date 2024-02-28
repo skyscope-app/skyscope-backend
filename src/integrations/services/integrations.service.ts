@@ -1,6 +1,6 @@
+import { Integration } from '@/integrations/domain/integration';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Integration } from '@/integrations/domain/integration';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -10,7 +10,12 @@ export class IntegrationsService {
     private readonly integrationsRepository: Repository<Integration>,
   ) {}
 
-  save(integration: Integration) {
-    return this.integrationsRepository.save(integration);
+  async save(integration: Integration) {
+    await this.integrationsRepository.upsert(integration, ['user', 'provider']);
+
+    await this.integrationsRepository.update(
+      { user: integration.user, provider: integration.provider },
+      { deletedAt: null },
+    );
   }
 }
