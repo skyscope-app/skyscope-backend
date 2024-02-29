@@ -31,12 +31,12 @@ export class PostgresStore implements CacheStore {
 
     const expiresAt = moment.tz('UTC').add(options, 'milliseconds');
 
-    const insertQuery = `INSERT INTO cache (key, value, "expiresAt")
-                         VALUES ($1, $2, $3)`;
+    const query = `INSERT INTO cache (key, value, "expiresAt")
+                   VALUES ($1, $2, $3)
+                   ON CONFLICT (key)
+                   DO UPDATE SET value = $2, "expiresAt" = $3`;
 
-    const json = JSON.stringify(value);
-
-    await this.pool.query(insertQuery, [key, json, expiresAt.toISOString()]);
+    await this.pool.query(query, [key, value, expiresAt.toISOString()]);
   }
 
   async get<T>(key: string): Promise<T | undefined> {
