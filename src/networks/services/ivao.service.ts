@@ -34,12 +34,6 @@ export class IVAOService {
 
         const flights = this.parse(data.clients.pilots, airports);
 
-        await Promise.all(
-          flights.map((flight) => {
-            return this.cacheManager.set(flight.id, flight, 15 * 1000);
-          }),
-        );
-
         return flights;
       },
       15,
@@ -94,10 +88,8 @@ export class IVAOService {
         network: 'ivao',
         position: {
           altitude: pilot.lastTrack?.altitude ?? 0,
-          coordinates: [
-            pilot.lastTrack?.longitude ?? departure?.lng ?? 0,
-            pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
-          ],
+          lat: pilot.lastTrack?.longitude ?? departure?.lng ?? 0,
+          lng: pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
           groundSpeed: pilot.lastTrack?.groundSpeed ?? 0,
           heading: pilot.lastTrack?.heading ?? 0,
           onGround: pilot.lastTrack?.onGround ?? true,

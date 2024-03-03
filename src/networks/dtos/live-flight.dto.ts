@@ -11,8 +11,10 @@ export class Pilot {
 }
 
 export class Position {
-  @ApiProperty({ isArray: true, example: [-23, -45] })
-  coordinates: number[];
+  @ApiProperty()
+  lat: number;
+  @ApiProperty()
+  lng: number;
   @ApiProperty()
   altitude: number;
   @ApiProperty()
@@ -181,7 +183,7 @@ class LiveFlightGeoJsonFeaturePropertiesPosition {
   heading: number;
 
   constructor(position: Position) {
-    this.coordinates = position.coordinates;
+    this.coordinates = [position.lat, position.lng];
     this.altitude = position.altitude;
     this.heading = position.heading;
   }
@@ -220,7 +222,7 @@ class LiveFlightGeoJsonFeatureGeometry {
 
   constructor(position: Position) {
     this.type = 'Point';
-    this.coordinates = position.coordinates;
+    this.coordinates = [position.lat, position.lng];
   }
 }
 
