@@ -1,7 +1,5 @@
-import { name, version } from '@/../package.json';
 import { Configuration } from '@/configurations/configuration';
-import { Inject, LoggerService, LogLevel } from '@nestjs/common';
-import * as winston from 'winston';
+import { Inject, LogLevel, LoggerService } from '@nestjs/common';
 import { MessageBuilder, Webhook } from 'minimal-discord-webhook-node';
 import { ClsService } from 'nestjs-cls';
 
@@ -29,7 +27,6 @@ export class InternalLogger implements LoggerService {
 
   private context?: string;
 
-  private winston: winston.Logger;
   private webhook: Webhook;
   private gcpRegisterLog = `https://console.cloud.google.com/logs/query;query=resource.type%20%3D%20%22cloud_run_revision%22%0Aresource.labels.service_name%20%3D%20%22#SERVICE_NAME#%22%0Aresource.labels.location%20%3D%20%22us-central1%22%0AjsonPayload.requestId%3D%22#requestId#%22%0A%20severity%3E%3DDEFAULT;timeRange=PT5M;cursorTimestamp=#cursorTimestamp#?authuser=1&project=skyscopeapp`;
 
@@ -38,12 +35,6 @@ export class InternalLogger implements LoggerService {
     private readonly cls: ClsService,
   ) {
     this.webhook = new Webhook(this.configuration.DISCORD_WEBHOOK_URL);
-
-    this.winston = winston.createLogger({
-      format: winston.format.json(),
-      defaultMeta: { name, version },
-      transports: [new winston.transports.Console()],
-    });
   }
 
   setContext(context: string) {
@@ -60,14 +51,16 @@ export class InternalLogger implements LoggerService {
       requestId = this.cls.getId();
     } catch {}
 
-    this.winston.info({
-      message,
-      context: optionalParams[0] ?? this.context,
-      severity: Severity.INFO,
-      time: new Date(),
-      requestId,
-      version: this.configuration.APP_VERSION,
-    });
+    console.log(
+      JSON.stringify({
+        message,
+        context: optionalParams[0] ?? this.context,
+        severity: Severity.INFO,
+        time: new Date(),
+        requestId,
+        version: this.configuration.APP_VERSION,
+      }),
+    );
   }
 
   async error(message: any, ...optionalParams: any[]) {
@@ -112,17 +105,22 @@ export class InternalLogger implements LoggerService {
       )
       .setTimestamp();
 
-    await this.webhook.send(webhook);
+    this.webhook.send(webhook).catch(() => {});
 
-    this.winston.error({
-      message,
-      context,
-      severity: Severity.ERROR,
-      time: new Date(),
-      requestId,
-      stackTrace,
-      version: this.configuration.APP_VERSION,
-    });
+    console.error(
+      JSON.stringify({
+        message,
+        context:
+          optionalParams && optionalParams.length > 0
+            ? optionalParams.pop()
+            : this.context,
+        severity: Severity.ERROR,
+        time: new Date(),
+        requestId,
+        stackTrace,
+        version: this.configuration.APP_VERSION,
+      }),
+    );
   }
 
   warn(message: any, ...optionalParams: any[]) {
@@ -135,14 +133,16 @@ export class InternalLogger implements LoggerService {
       requestId = this.cls.getId();
     } catch {}
 
-    this.winston.warn({
-      message,
-      context: optionalParams[0] ?? this.context,
-      severity: Severity.WARNING,
-      time: new Date(),
-      requestId,
-      version: this.configuration.APP_VERSION,
-    });
+    console.warn(
+      JSON.stringify({
+        message,
+        context: optionalParams[0] ?? this.context,
+        severity: Severity.WARNING,
+        time: new Date(),
+        requestId,
+        version: this.configuration.APP_VERSION,
+      }),
+    );
   }
 
   debug?(message: any, ...optionalParams: any[]) {
@@ -155,14 +155,16 @@ export class InternalLogger implements LoggerService {
       requestId = this.cls.getId();
     } catch {}
 
-    this.winston.debug({
-      message,
-      context: optionalParams[0] ?? this.context,
-      severity: Severity.DEBUG,
-      time: new Date(),
-      requestId,
-      version: this.configuration.APP_VERSION,
-    });
+    console.debug(
+      JSON.stringify({
+        message,
+        context: optionalParams[0] ?? this.context,
+        severity: Severity.DEBUG,
+        time: new Date(),
+        requestId,
+        version: this.configuration.APP_VERSION,
+      }),
+    );
   }
 
   verbose?(message: any, ...optionalParams: any[]) {
@@ -175,14 +177,16 @@ export class InternalLogger implements LoggerService {
       requestId = this.cls.getId();
     } catch {}
 
-    this.winston.verbose({
-      message: message,
-      context: optionalParams[0] ?? this.context,
-      severity: Severity.INFO,
-      time: new Date(),
-      requestId,
-      version: this.configuration.APP_VERSION,
-    });
+    console.debug(
+      JSON.stringify({
+        message: message,
+        context: optionalParams[0] ?? this.context,
+        severity: Severity.INFO,
+        time: new Date(),
+        requestId,
+        version: this.configuration.APP_VERSION,
+      }),
+    );
   }
 
   setLogLevels?(levels: LogLevel[]) {
