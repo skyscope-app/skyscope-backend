@@ -91,13 +91,15 @@ export class VATSIMService {
         icao: flight_plan.departure,
         iata: departure?.iata ?? '',
         name: departure?.name ?? '',
-        coordinates: [departure?.lat ?? 0, departure?.lng ?? 0],
+        lat: departure?.lat ?? 0,
+        lng: departure?.lng ?? 0,
       },
       arrival: {
         icao: flight_plan.arrival,
         iata: arrival?.iata ?? '',
         name: arrival?.name ?? '',
-        coordinates: [arrival?.lat ?? 0, arrival?.lng ?? 0],
+        lat: arrival?.lat ?? 0,
+        lng: arrival?.lng ?? 0,
       },
       aircraft: new Aircraft({
         icao: flight_plan.aircraft_short,
@@ -123,7 +125,8 @@ export class VATSIMService {
               icao: flight_plan.alternate,
               iata: alternate?.iata ?? '',
               name: alternate?.name ?? '',
-              coordinates: [alternate?.lat ?? 0, alternate?.lng ?? 0],
+              lat: alternate?.lat ?? 0,
+              lng: alternate?.lng ?? 0,
             }
           : null,
       alternate2: null,

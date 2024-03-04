@@ -1,6 +1,6 @@
 import { Network } from '@/networks/domain/network';
 import { NetworkService } from '@/networks/domain/network-service';
-import { LiveFlight, LiveFlightGeoJson } from '@/networks/dtos/live-flight.dto';
+import { LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { IVAOService } from '@/networks/services/ivao.service';
 import { NetworksService } from '@/networks/services/networks.service';
@@ -12,6 +12,7 @@ import {
   NotFoundException,
   NotImplementedException,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
@@ -22,7 +23,6 @@ export class NetworksController {
 
   constructor(
     private readonly networksService: NetworksService,
-    //private readonly cacheService: CacheService,
     vatsimService: VATSIMService,
     ivaoService: IVAOService,
     posconService: PosconService,
@@ -47,9 +47,15 @@ export class NetworksController {
     return flight;
   }
 
+  @Get('/flights')
+  @ApiOkResponse({ type: () => [LiveFlight] })
+  private async liveFlightsSearch(@Query('term') term: string) {
+    return this.flightsSearchService.findByParams(term);
+  }
+
   @Get(':network/flights')
   @ApiParam({ name: 'network', enum: Network })
-  @ApiOkResponse({ type: LiveFlightGeoJson })
+  @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
     await this.networksService.fetchCurrentLive();
 
@@ -61,6 +67,6 @@ export class NetworksController {
 
     const flights = await service.fetchCurrentLive();
 
-    return new LiveFlightGeoJson(flights);
+    return flights;
   }
 }
