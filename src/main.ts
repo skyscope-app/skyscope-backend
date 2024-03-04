@@ -1,10 +1,12 @@
 import {
   Configuration,
   EnvironmentConfiguration,
+  getConfiguration,
   validateConfiguration,
 } from '@/configurations/configuration';
 import { MigrateUp } from '@/database/migrate';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
+import { InternalLogger } from '@/logger/logger.service';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -61,6 +63,12 @@ async function bootstrap() {
   app.setGlobalPrefix('/api/v1');
   app.useGlobalInterceptors(app.select(AppModule).get(LoggingInterceptor));
   app.useGlobalPipes(new ValidationPipe());
+
+  const configuration = getConfiguration(Configuration);
+
+  if (configuration.ENVIRONMENT === 'main') {
+    app.useLogger(new InternalLogger(configuration, clsService));
+  }
 
   await MigrateUp(
     EnvironmentConfiguration.POSTGRES_HOST,
