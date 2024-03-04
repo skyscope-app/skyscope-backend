@@ -1,3 +1,10 @@
+## [1.12.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.2...v1.12.3) (2024-03-04)
+
+
+### Bug Fixes
+
+* **logger:** run custom logger in prod ([5e1dec1](https://github.com/skyscope-app/skyscope-backend/commit/5e1dec1e95911f99a38c255a67021a60bc4eb0a6))
+
 ## [1.12.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.1...v1.12.2) (2024-03-04)
 
 
