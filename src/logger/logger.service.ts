@@ -101,7 +101,7 @@ export class InternalLogger implements LoggerService {
       .addField('StackTrace', `${stackTrace || 'No stack trace'}`, true)
       .setColor('#ED4337' as any)
       .setDescription(
-        `This is an error message at ${this.configuration.APP_NAME} service`,
+        `This is an error message at ${this.configuration.SERVICE_NAME} service`,
       )
       .addField(
         'log',

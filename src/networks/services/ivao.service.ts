@@ -3,6 +3,7 @@ import { AirportsService } from '@/airports/airports.service';
 import { CacheService } from '@/cache/cache.service';
 import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
 import { Aircraft, LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { parseSecondsToHours } from '@/shared/utils/time';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
@@ -34,37 +35,10 @@ export class IVAOService {
 
         const flights = this.parse(data.clients.pilots, airports);
 
-        await Promise.all(
-          flights.map((flight) => {
-            return this.cacheManager.set(flight.id, flight, 15 * 1000);
-          }),
-        );
-
         return flights;
       },
       15,
     );
-  }
-
-  private parseVatsimAircraftWakeTurbulence(aircraft: string) {
-    const regex = new RegExp(`\/(.+)\-`);
-    const wakeTurbulence = regex.exec(aircraft)?.pop();
-
-    return wakeTurbulence as string;
-  }
-
-  private parseVatsimAircraftEquipment(aircraft: string) {
-    const regex = new RegExp(`-(.+)\/`);
-    const equipment = regex.exec(aircraft)?.pop();
-
-    return equipment as string;
-  }
-
-  private parseVatsimAircraftTransponderEquipmentCode(aircraft: string) {
-    const regex = new RegExp(`\/.+.*?\/(.+)$`);
-    const transponderCode = regex.exec(aircraft)?.pop();
-
-    return transponderCode as string;
   }
 
   private parse(
@@ -94,10 +68,8 @@ export class IVAOService {
         network: 'ivao',
         position: {
           altitude: pilot.lastTrack?.altitude ?? 0,
-          coordinates: [
-            pilot.lastTrack?.longitude ?? departure?.lng ?? 0,
-            pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
-          ],
+          lat: pilot.lastTrack?.longitude ?? departure?.lng ?? 0,
+          lng: pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
           groundSpeed: pilot.lastTrack?.groundSpeed ?? 0,
           heading: pilot.lastTrack?.heading ?? 0,
           onGround: pilot.lastTrack?.onGround ?? true,
@@ -110,13 +82,15 @@ export class IVAOService {
             icao: departure?.icao ?? '',
             iata: departure?.iata ?? '',
             name: departure?.name ?? '',
-            coordinates: [departure?.lat ?? 0, departure?.lng ?? 0],
+            lat: departure?.lat ?? 0,
+            lng: departure?.lng ?? 0,
           },
           arrival: {
             icao: arrival?.icao ?? '',
             iata: arrival?.iata ?? '',
             name: arrival?.name ?? '',
-            coordinates: [arrival?.lat ?? 0, arrival?.lng ?? 0],
+            lat: arrival?.lat ?? 0,
+            lng: arrival?.lng ?? 0,
           },
           aircraft: new Aircraft({
             icao: pilot.flightPlan?.aircraft?.icaoCode ?? '',
@@ -131,21 +105,20 @@ export class IVAOService {
           route: pilot.flightPlan?.route ?? '',
           remarks: pilot.flightPlan?.remarks ?? '',
           cruiseTas: (pilot.flightPlan?.speed ?? '').slice(1) ?? '',
-          departureTime: String(
-            pilot.flightPlan?.departureTime ?? 0 / 60,
-          ).padStart(4, '0'),
-          enrouteTime: String(pilot.flightPlan?.eet ?? 0 / 60).padStart(4, '0'),
-          endurance: String(pilot.flightPlan?.endurance ?? 0 / 60).padStart(
-            4,
-            '0',
+          departureTime: parseSecondsToHours(
+            pilot.flightPlan?.departureTime ?? 0,
           ),
+
+          enrouteTime: parseSecondsToHours(pilot.flightPlan?.eet ?? 0),
+          endurance: parseSecondsToHours(pilot.flightPlan?.endurance ?? 0),
           alternate:
             pilot.flightPlan?.alternativeId !== null
               ? {
                   icao: alternate?.icao ?? '',
                   iata: alternate?.iata ?? '',
                   name: alternate?.name ?? '',
-                  coordinates: [alternate?.lat ?? 0, alternate?.lng ?? 0],
+                  lat: alternate?.lat ?? 0,
+                  lng: alternate?.lng ?? 0,
                 }
               : null,
           alternate2:
@@ -154,7 +127,8 @@ export class IVAOService {
                   icao: alternate2?.icao ?? '',
                   iata: alternate2?.iata ?? '',
                   name: alternate2?.name ?? '',
-                  coordinates: [alternate2?.lat ?? 0, alternate2?.lng ?? 0],
+                  lat: alternate2?.lat ?? 0,
+                  lng: alternate2?.lng ?? 0,
                 }
               : null,
         },

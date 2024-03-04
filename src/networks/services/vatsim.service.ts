@@ -33,6 +33,8 @@ export class VATSIMService {
   }
 
   public async fetchCurrentLive(): Promise<Array<LiveFlight>> {
+    // await this.cacheManager.set('vatsim_flights', { message: 'hello world' });
+
     return this.cacheService.handle(
       'vatsim_flights',
       async () => {
@@ -42,12 +44,6 @@ export class VATSIMService {
         ]);
 
         const flights = this.parse(data.pilots, airports);
-
-        await Promise.all(
-          flights.map((flight) => {
-            return this.cacheManager.set(flight.id, flight, 15 * 1000);
-          }),
-        );
 
         return flights;
       },
@@ -95,13 +91,15 @@ export class VATSIMService {
         icao: flight_plan.departure,
         iata: departure?.iata ?? '',
         name: departure?.name ?? '',
-        coordinates: [departure?.lat ?? 0, departure?.lng ?? 0],
+        lat: departure?.lat ?? 0,
+        lng: departure?.lng ?? 0,
       },
       arrival: {
         icao: flight_plan.arrival,
         iata: arrival?.iata ?? '',
         name: arrival?.name ?? '',
-        coordinates: [arrival?.lat ?? 0, arrival?.lng ?? 0],
+        lat: arrival?.lat ?? 0,
+        lng: arrival?.lng ?? 0,
       },
       aircraft: new Aircraft({
         icao: flight_plan.aircraft_short,
@@ -127,7 +125,8 @@ export class VATSIMService {
               icao: flight_plan.alternate,
               iata: alternate?.iata ?? '',
               name: alternate?.name ?? '',
-              coordinates: [alternate?.lat ?? 0, alternate?.lng ?? 0],
+              lat: alternate?.lat ?? 0,
+              lng: alternate?.lng ?? 0,
             }
           : null,
       alternate2: null,
@@ -160,7 +159,8 @@ export class VATSIMService {
         name: data.name,
       },
       position: {
-        coordinates: [data.longitude, data.latitude],
+        lat: data.latitude,
+        lng: data.longitude,
         altitude: data.altitude,
         heading: data.heading,
         transponder: data.transponder,

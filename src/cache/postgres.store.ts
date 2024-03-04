@@ -26,17 +26,22 @@ export class PostgresStore implements CacheStore {
     });
   }
 
-  async set<T>(key: string, value: T, options?: number): Promise<void> {
+  async set<T>(key: string, value: T, ttl?: number): Promise<void> {
     await this.deleteExpired();
 
-    const expiresAt = moment.tz('UTC').add(options, 'milliseconds');
+    const expiresAt = moment.tz('UTC').add(ttl, 'milliseconds');
 
-    const insertQuery = `INSERT INTO cache (key, value, "expiresAt")
-                         VALUES ($1, $2, $3)`;
+    const query = `INSERT INTO cache (key, value, "expiresAt")
+                   VALUES ($1, $2, $3)
+                   ON CONFLICT (key)
+                   DO UPDATE SET value = $2, "expiresAt" = $3`;
 
-    const json = JSON.stringify(value);
-
-    await this.pool.query(insertQuery, [key, json, expiresAt.toISOString()]);
+    await this.pool
+      .query(query, [key, JSON.stringify(value), expiresAt.toISOString()])
+      .catch((error) => {
+        console.log({ key, value, ttl });
+        throw error;
+      });
   }
 
   async get<T>(key: string): Promise<T | undefined> {

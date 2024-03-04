@@ -1,31 +1,32 @@
-import { CacheService } from '@/cache/cache.service';
 import { Network } from '@/networks/domain/network';
 import { NetworkService } from '@/networks/domain/network-service';
-import { LiveFlight, LiveFlightGeoJson } from '@/networks/dtos/live-flight.dto';
+import { LiveFlight } from '@/networks/dtos/live-flight.dto';
+import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { IVAOService } from '@/networks/services/ivao.service';
+import { NetworksService } from '@/networks/services/networks.service';
 import { PosconService } from '@/networks/services/poscon.service';
 import { VATSIMService } from '@/networks/services/vatsim.service';
-import { Authenticated, cacheControl } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
   NotFoundException,
   NotImplementedException,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('networks')
 @ApiTags('Networks')
-@Authenticated()
 export class NetworksController {
   private serviceMap: Record<Network, NetworkService>;
 
   constructor(
+    private readonly networksService: NetworksService,
     vatsimService: VATSIMService,
     ivaoService: IVAOService,
     posconService: PosconService,
-    private readonly cacheService: CacheService,
+    private readonly flightsSearchService: FlightsSearchService,
   ) {
     this.serviceMap = {
       [Network.VATSIM]: vatsimService,
@@ -34,50 +35,38 @@ export class NetworksController {
     };
   }
 
-  @Get(':network/flights/:flightId')
-  @ApiParam({ name: 'network', enum: Network })
+  @Get('/flights/:flightId')
   @ApiOkResponse({ type: () => LiveFlight })
-  @cacheControl.CacheControl({
-    directive: cacheControl.Directive.PUBLIC,
-    maxAge: 15,
-  })
-  private async liveFlight(
-    @Param('flightId') flightId: string,
-    @Param('network') network: Network,
-  ) {
-    const service = this.serviceMap[network];
+  private async liveFlight(@Param('flightId') flightId: string) {
+    const flight = await this.flightsSearchService.findByID(flightId);
 
-    if (!service) {
-      throw new NotImplementedException();
-    }
-
-    await service.fetchCurrentLive();
-
-    const data = await this.cacheService.get<LiveFlight>(flightId);
-
-    if (!data) {
+    if (!flight) {
       throw new NotFoundException();
     }
 
-    return data;
+    return flight;
+  }
+
+  @Get('/flights')
+  @ApiOkResponse({ type: () => [LiveFlight] })
+  private async liveFlightsSearch(@Query('term') term: string) {
+    return this.flightsSearchService.findByParams(term);
   }
 
   @Get(':network/flights')
   @ApiParam({ name: 'network', enum: Network })
-  @ApiOkResponse({ type: LiveFlightGeoJson })
-  @cacheControl.CacheControl({
-    directive: cacheControl.Directive.PUBLIC,
-    maxAge: 15,
-  })
+  @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
+    await this.networksService.fetchCurrentLive();
+
     const service = this.serviceMap[network];
 
     if (!service) {
       throw new NotImplementedException();
     }
 
-    const data = await service.fetchCurrentLive();
+    const flights = await service.fetchCurrentLive();
 
-    return new LiveFlightGeoJson(data);
+    return flights;
   }
 }
