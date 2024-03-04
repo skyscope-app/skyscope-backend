@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.1...v1.12.2) (2024-03-04)
+
+
+### Bug Fixes
+
+* **logger:** rollback logger ([1a71ab8](https://github.com/skyscope-app/skyscope-backend/commit/1a71ab8fe93b5e9ad95cd8c9728f9ef4b349adbd))
+
 ## [1.12.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.0...v1.12.1) (2024-03-04)
 
 
