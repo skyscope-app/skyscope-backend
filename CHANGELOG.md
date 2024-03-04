@@ -1,3 +1,13 @@
+## [1.12.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.0...v1.12.1) (2024-03-04)
+
+
+### Bug Fixes
+
+* **cache:** avoid colission of keys on cache ([#34](https://github.com/skyscope-app/skyscope-backend/issues/34)) ([f2c1d50](https://github.com/skyscope-app/skyscope-backend/commit/f2c1d50c58728566a384865f900e220dd61b6108))
+* improve flight load ([dbe614d](https://github.com/skyscope-app/skyscope-backend/commit/dbe614dc7ef1ea58ff10f321fa52f5344ea40549))
+* **logs:** add service name on discord notification ([01114f7](https://github.com/skyscope-app/skyscope-backend/commit/01114f73817b91bdfd5d0baaeb25b74d3e50b3bc))
+* **network:** add endpoints to search flights from network ([a6125ba](https://github.com/skyscope-app/skyscope-backend/commit/a6125ba1c62cf225c49912d8f010c7fe382f1d3f))
+
 # [1.12.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.11.1...v1.12.0) (2024-02-28)
 
 
