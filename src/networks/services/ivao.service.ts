@@ -68,8 +68,8 @@ export class IVAOService {
         network: 'ivao',
         position: {
           altitude: pilot.lastTrack?.altitude ?? 0,
-          lat: pilot.lastTrack?.longitude ?? departure?.lng ?? 0,
-          lng: pilot.lastTrack?.latitude ?? departure?.lat ?? 0,
+          lat: pilot.lastTrack?.latitude ?? departure?.lng ?? 0,
+          lng: pilot.lastTrack?.longitude ?? departure?.lat ?? 0,
           groundSpeed: pilot.lastTrack?.groundSpeed ?? 0,
           heading: pilot.lastTrack?.heading ?? 0,
           onGround: pilot.lastTrack?.onGround ?? true,
