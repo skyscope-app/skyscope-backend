@@ -1,3 +1,10 @@
+## [1.12.6](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.5...v1.12.6) (2024-03-06)
+
+
+### Bug Fixes
+
+* **cors:** correct domain ([2111a05](https://github.com/skyscope-app/skyscope-backend/commit/2111a0547db49ea4cd129a67f28e20922f9fe919))
+
 ## [1.12.5](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.4...v1.12.5) (2024-03-06)
 
 
