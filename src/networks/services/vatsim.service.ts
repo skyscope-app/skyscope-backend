@@ -1,6 +1,7 @@
 import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
 import { CacheService } from '@/cache/cache.service';
+import { HttpService } from '@/http/http.service';
 import {
   Aircraft,
   FlightPlan,
@@ -12,34 +13,26 @@ import {
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
 import { Optional } from '@/shared/utils/types';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
-import axios, { AxiosInstance } from 'axios';
-import { Cache } from 'cache-manager';
+import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { v5 } from 'uuid';
 
 @Injectable()
 export class VATSIMService {
-  public readonly axios: AxiosInstance;
   private url = 'https://data.vatsim.net/v3/vatsim-data.json';
 
   constructor(
     private readonly airportsService: AirportsService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
-  ) {
-    this.axios = axios.create({});
-  }
+  ) {}
 
   public async fetchCurrentLive(): Promise<Array<LiveFlight>> {
-    // await this.cacheManager.set('vatsim_flights', { message: 'hello world' });
-
     return this.cacheService.handle(
-      'vatsim_flights',
+      'vatsim_current_live',
       async () => {
         const [{ data }, airports] = await Promise.all([
-          this.axios.get<VatsimData>(this.url),
+          this.httpService.get<VatsimData>(this.url),
           this.airportsService.getAirportsMap(),
         ]);
 

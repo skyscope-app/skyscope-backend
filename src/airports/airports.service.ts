@@ -1,12 +1,12 @@
 import { Airport } from '@/airports/airports.entity';
-import { Injectable } from '@nestjs/common';
-import { readFile } from 'fs/promises';
-import * as path from 'path';
+import { OurAirportsDto } from '@/airports/dtos/our-airports.dto';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
 import { parseCSV } from '@/shared/utils/csvParser';
-import { OurAirportsDto } from '@/airports/dtos/our-airports.dto';
+import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
+import { readFile } from 'fs/promises';
+import * as path from 'path';
 
 @Injectable()
 export class AirportsService {
@@ -75,9 +75,9 @@ export class AirportsService {
 
   async getAirportsMap() {
     try {
-      return await this.getAirportsMapFromCSV();
-    } catch {
       return await this.getAirportsMapFromJSON();
+    } catch {
+      return await this.getAirportsMapFromCSV();
     }
   }
 }

@@ -1,35 +1,30 @@
 import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
 import { CacheService } from '@/cache/cache.service';
-import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
+import { HttpService } from '@/http/http.service';
+import { IVAOResponse, IvaoPilot } from '@/networks/dtos/ivao.dto';
 import { Aircraft, LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { parseSecondsToHours } from '@/shared/utils/time';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
-import axios, { AxiosInstance } from 'axios';
-import { Cache } from 'cache-manager';
+import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { v4, v5 } from 'uuid';
 
 @Injectable()
 export class IVAOService {
-  public readonly axios: AxiosInstance;
   private url = 'https://api.ivao.aero/v2/tracker/whazzup';
 
   constructor(
     private readonly airportsService: AirportsService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
-  ) {
-    this.axios = axios.create({});
-  }
+  ) {}
 
   public async fetchCurrentLive() {
     return this.cacheService.handle(
-      'ivao_flights',
+      'ivao_current_live',
       async () => {
         const [{ data }, airports] = await Promise.all([
-          this.axios.get<IVAOResponse>(this.url),
+          this.httpService.get<IVAOResponse>(this.url),
           this.airportsService.getAirportsMap(),
         ]);
 

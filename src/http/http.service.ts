@@ -115,11 +115,14 @@ export class HttpService {
     const processingTime = Date.now() - requestTime;
     const requestId = response.config.headers['requestId'];
 
+    const responseBody = this.redactData(response.data);
+
     const message = {
       headers: this.redactData(response.config.headers ?? {}),
       url: response.config.url,
       requestBody: this.redactData(response.request.data),
-      responseBody: this.redactData(response.data),
+      responseBody:
+        JSON.stringify(responseBody).length > 4096 ? 'TOO_LARGE' : responseBody,
       method: response.config.method?.toUpperCase(),
       type: 'axios.client.on.response',
       processingTime,
