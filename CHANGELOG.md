@@ -1,3 +1,10 @@
+## [1.12.7](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.6...v1.12.7) (2024-03-06)
+
+
+### Bug Fixes
+
+* **networks:** improve network fetch performance ([7254d13](https://github.com/skyscope-app/skyscope-backend/commit/7254d131851a709dd4d0da4e3558a1efeef14741))
+
 ## [1.12.6](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.5...v1.12.6) (2024-03-06)
 
 
