@@ -59,7 +59,13 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
 
-  app.enableCors();
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'https://skyscopeapp.com',
+      'https://www.skyscopeapp.com',
+    ],
+  });
   app.setGlobalPrefix('/api/v1');
   app.useGlobalInterceptors(app.select(AppModule).get(LoggingInterceptor));
   app.useGlobalPipes(new ValidationPipe());
