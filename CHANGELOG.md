@@ -1,3 +1,10 @@
+## [1.12.5](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.4...v1.12.5) (2024-03-06)
+
+
+### Bug Fixes
+
+* **ivao:** fix lat and lng ([4074576](https://github.com/skyscope-app/skyscope-backend/commit/407457691af39ba69b67d893593ebe32763a9488))
+
 ## [1.12.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.3...v1.12.4) (2024-03-06)
 
 
