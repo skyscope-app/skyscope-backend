@@ -1,6 +1,7 @@
 import { getAircraftType } from '@/networks/functions/getAircraftType';
+import { Nullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 export class Pilot {
   @ApiProperty()
@@ -125,5 +126,60 @@ export class LiveFlight {
   @ApiProperty()
   network: string;
   @ApiProperty({ nullable: true, type: () => FlightPlan })
-  flightPlan: FlightPlan | null;
+  flightPlan: Nullable<FlightPlan>;
+}
+
+export class LiveFlightTrack {
+  lat: number;
+  lng: number;
+  altitude: number;
+  groundSpeed: number;
+  heading: number;
+  ground: boolean;
+  timestamp: number;
+
+  constructor(data: Omit<LiveFlightTrack, 'encode'>) {
+    this.lat = data.lat;
+    this.lng = data.lng;
+    this.altitude = data.altitude;
+    this.groundSpeed = data.groundSpeed;
+    this.heading = data.heading;
+    this.ground = data.ground;
+    this.timestamp = data.timestamp;
+  }
+
+  encode() {
+    return Object.values(this).join(';');
+  }
+
+  static decode(data: string) {
+    const values = data.split(';');
+    return new LiveFlightTrack({
+      lat: Number(values[0]),
+      lng: Number(values[1]),
+      altitude: Number(values[2]),
+      groundSpeed: Number(values[3]),
+      heading: Number(values[4]),
+      ground: values[5] === 'true',
+      timestamp: Number(values[6]),
+    });
+  }
+}
+
+@Expose()
+export class LiveFlightWithTracks {
+  @ApiProperty()
+  id: string;
+  @ApiProperty({ type: () => Pilot })
+  pilot: Pilot;
+  @ApiProperty({ type: () => Position })
+  position: Position;
+  @ApiProperty()
+  callsign: string;
+  @ApiProperty()
+  network: string;
+  @ApiProperty({ nullable: true, type: () => FlightPlan })
+  flightPlan: Nullable<FlightPlan>;
+  @ApiProperty({ type: () => [LiveFlightTrack] })
+  tracks: LiveFlightTrack[];
 }

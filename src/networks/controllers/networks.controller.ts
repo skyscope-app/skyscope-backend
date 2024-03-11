@@ -1,6 +1,9 @@
 import { Network } from '@/networks/domain/network';
 import { NetworkService } from '@/networks/domain/network-service';
-import { LiveFlight } from '@/networks/dtos/live-flight.dto';
+import {
+  LiveFlight,
+  LiveFlightWithTracks,
+} from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { IVAOService } from '@/networks/services/ivao.service';
 import { NetworksService } from '@/networks/services/networks.service';
@@ -15,6 +18,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('networks')
 @ApiTags('Networks')
@@ -22,10 +26,10 @@ export class NetworksController {
   private serviceMap: Record<Network, NetworkService>;
 
   constructor(
-    private readonly networksService: NetworksService,
     vatsimService: VATSIMService,
     ivaoService: IVAOService,
     posconService: PosconService,
+    private readonly networksService: NetworksService,
     private readonly flightsSearchService: FlightsSearchService,
   ) {
     this.serviceMap = {
@@ -36,7 +40,7 @@ export class NetworksController {
   }
 
   @Get('/flights/:flightId')
-  @ApiOkResponse({ type: () => LiveFlight })
+  @ApiOkResponse({ type: () => LiveFlightWithTracks })
   private async liveFlight(@Param('flightId') flightId: string) {
     const flight = await this.flightsSearchService.findByID(flightId);
 
@@ -44,7 +48,12 @@ export class NetworksController {
       throw new NotFoundException();
     }
 
-    return flight;
+    const result = plainToInstance(LiveFlightWithTracks, flight);
+
+    result.tracks =
+      await this.flightsSearchService.fetchTracksForFlight(flightId);
+
+    return result;
   }
 
   @Get('/flights')
