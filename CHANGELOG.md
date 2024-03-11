@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.0...v1.13.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* **logs:** add error on log if discord webhook fails ([f90307a](https://github.com/skyscope-app/skyscope-backend/commit/f90307abc4bf3ff1623ace6c63d1a86467812963))
+
 # [1.13.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.7...v1.13.0) (2024-03-11)
 
 
