@@ -105,7 +105,19 @@ export class InternalLogger implements LoggerService {
       )
       .setTimestamp();
 
-    this.webhook.send(webhook).catch(() => {});
+    this.webhook.send(webhook).catch((error) => {
+      console.error(
+        JSON.stringify({
+          message: 'error in sending discord logs',
+          context: optionalParams[0] ?? this.context,
+          severity: Severity.ERROR,
+          time: new Date(),
+          requestId,
+          stackTrace: error ? error.stack : 'undefined',
+          version: this.configuration.APP_VERSION,
+        }),
+      );
+    });
 
     console.error(
       JSON.stringify({
