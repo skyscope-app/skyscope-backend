@@ -74,6 +74,28 @@ export class Configuration {
   @IsString()
   @IsNotEmpty()
   SERVICE_NAME: string;
+
+  @IsNotEmpty()
+  @IsString()
+  REDIS_HOST: string;
+
+  @IsNotEmpty()
+  @IsString()
+  REDIS_PORT: string;
+
+  @IsNotEmpty()
+  @IsString()
+  REDIS_DB: string;
+
+  @IsString()
+  REDIS_USER: string;
+
+  @IsString()
+  REDIS_PASSWORD: string;
+
+  get REDIS_URL() {
+    return `redis://${this.REDIS_USER}:${this.REDIS_PASSWORD}@${this.REDIS_HOST}:${this.REDIS_PORT}/${this.REDIS_DB}`;
+  }
 }
 
 export const EnvironmentConfiguration = getConfiguration(Configuration);

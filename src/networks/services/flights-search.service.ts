@@ -1,10 +1,16 @@
+import { LiveFlightTrack } from '@/networks/dtos/live-flight.dto';
 import { NetworksService } from '@/networks/services/networks.service';
 import { searchInObjectRecursive } from '@/shared/utils/object';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
+import Redis from 'ioredis';
 
 @Injectable()
 export class FlightsSearchService {
-  constructor(private readonly networksService: NetworksService) {}
+  constructor(
+    private readonly networksService: NetworksService,
+    @InjectRedis() private readonly redis: Redis,
+  ) {}
 
   async findByParams(term: string) {
     const flights = await this.networksService.fetchCurrentLive();
@@ -35,5 +41,10 @@ export class FlightsSearchService {
     const flightsMap = new Map(flights.map((flight) => [flight.id, flight]));
 
     return flightsMap.get(flightId);
+  }
+
+  async fetchTracksForFlight(flightId: string): Promise<LiveFlightTrack[]> {
+    const data = await this.redis.lrange(`flight:${flightId}:tracks`, 0, -1);
+    return data.map((d) => LiveFlightTrack.decode(d));
   }
 }
