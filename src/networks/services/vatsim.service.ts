@@ -11,7 +11,7 @@ import {
   VatsimDataFlightPlan,
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
-import { Optional } from '@/shared/utils/types';
+import { Nullable } from '@/shared/utils/nullable';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
@@ -73,9 +73,9 @@ export class VATSIMService {
   }
 
   private parseVatsimFlightPlan(
-    flight_plan: Optional<VatsimDataFlightPlan>,
+    flight_plan: Nullable<VatsimDataFlightPlan>,
     airports: Map<string, Airport>,
-  ): Optional<FlightPlan> {
+  ): Nullable<FlightPlan> {
     if (!flight_plan) {
       return null;
     }

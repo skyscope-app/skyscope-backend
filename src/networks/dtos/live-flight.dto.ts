@@ -1,4 +1,5 @@
 import { getAircraftType } from '@/networks/functions/getAircraftType';
+import { Nullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -125,5 +126,5 @@ export class LiveFlight {
   @ApiProperty()
   network: string;
   @ApiProperty({ nullable: true, type: () => FlightPlan })
-  flightPlan: FlightPlan | null;
+  flightPlan: Nullable<FlightPlan>;
 }

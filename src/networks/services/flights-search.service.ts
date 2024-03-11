@@ -1,61 +1,39 @@
-import { LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { NetworksService } from '@/networks/services/networks.service';
-import { getObjectRecursiveKeys } from '@/shared/utils/object';
+import { searchInObjectRecursive } from '@/shared/utils/object';
 import { Injectable } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
-import { Document } from 'flexsearch';
 
 @Injectable()
 export class FlightsSearchService {
   constructor(private readonly networksService: NetworksService) {}
 
-  private async loadFlightData() {
+  async findByParams(term: string) {
     const flights = await this.networksService.fetchCurrentLive();
 
-    const fields = new Set(
-      flights.flatMap((flight) => getObjectRecursiveKeys(flight)),
-    );
-
-    const doc = new Document({
-      document: {
-        id: 'id',
-        field: [...fields],
-        index: [...fields],
-        store: [...fields],
-      },
-    });
-
-    await Promise.all(flights.map((flight) => doc.addAsync(flight.id, flight)));
-
-    return doc;
-  }
-
-  async findByParams(term: string) {
-    const flights = await this.loadFlightData();
-
-    const data = await flights.searchAsync({
-      query: term,
-      enrich: true,
-    });
-
-    return data.flatMap((data) => {
-      return data.result.map((doc) => plainToInstance(LiveFlight, doc.doc));
+    return flights.filter((flight) => {
+      return searchInObjectRecursive(flight, term, [
+        'flightPlan.arrival.lat',
+        'flightPlan.arrival.lng',
+        'flightPlan.departure.lng',
+        'flightPlan.departure.lat',
+        'flightPlan.alternate.lng',
+        'flightPlan.alternate.lat',
+        'flightPlan.alternate2.lng',
+        'flightPlan.alternate2.lat',
+        'flightPlan.level',
+        'position.lat',
+        'position.lng',
+        'position.heading',
+        'position.altitude',
+        'position.groundSpeed',
+      ]);
     });
   }
 
   async findByID(flightId: string) {
-    const flights = await this.loadFlightData();
+    const flights = await this.networksService.fetchCurrentLive();
 
-    const data = await flights.searchAsync({
-      enrich: true,
-      query: flightId,
-    });
+    const flightsMap = new Map(flights.map((flight) => [flight.id, flight]));
 
-    if (data.length === 0) {
-      return;
-    }
-
-    const raw = data[0].result[0].doc;
-    return plainToInstance(LiveFlight, raw);
+    return flightsMap.get(flightId);
   }
 }
