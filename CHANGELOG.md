@@ -1,3 +1,16 @@
+# [1.13.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.7...v1.13.0) (2024-03-11)
+
+
+### Bug Fixes
+
+* **flights:** improve search ([5d18979](https://github.com/skyscope-app/skyscope-backend/commit/5d189790a0105cc4083064509d0d41ff312c2093))
+* **performance:** improve performance of endpoints ([33c92fe](https://github.com/skyscope-app/skyscope-backend/commit/33c92feffddb12da40c3a93c6663d6ef9dc78fda))
+
+
+### Features
+
+* **flights:** add endpoint to return tracks ([7a0e36a](https://github.com/skyscope-app/skyscope-backend/commit/7a0e36a1549a8c1f8feca325959f5ad84336c99e))
+
 ## [1.12.7](https://github.com/skyscope-app/skyscope-backend/compare/v1.12.6...v1.12.7) (2024-03-06)
 
 
