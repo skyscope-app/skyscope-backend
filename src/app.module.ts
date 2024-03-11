@@ -1,6 +1,5 @@
 import { AuthModule } from '@/auth/auth.module';
 import { CacheModule as InternalCacheModule } from '@/cache/cache.module';
-import { PostgresStore } from '@/cache/postgres.store';
 import { EnvironmentConfiguration } from '@/configurations/configuration';
 import { ConfigurationsModule } from '@/configurations/configuration.module';
 import { getDatabaseModule } from '@/database/typeorm.module';
@@ -24,14 +23,14 @@ import { NetworksModule } from './networks/networks.module';
     }),
     CacheModule.register({
       isGlobal: true,
-      store: new PostgresStore({
-        host: EnvironmentConfiguration.POSTGRES_HOST,
-        database: EnvironmentConfiguration.POSTGRES_DATABASE,
-        password: EnvironmentConfiguration.POSTGRES_PASSWORD,
-        port: Number(EnvironmentConfiguration.POSTGRES_PORT),
-        user: EnvironmentConfiguration.POSTGRES_USER,
-        poolSize: 10,
-      }),
+      // store: new PostgresStore({
+      //   host: EnvironmentConfiguration.POSTGRES_HOST,
+      //   database: EnvironmentConfiguration.POSTGRES_DATABASE,
+      //   password: EnvironmentConfiguration.POSTGRES_PASSWORD,
+      //   port: Number(EnvironmentConfiguration.POSTGRES_PORT),
+      //   user: EnvironmentConfiguration.POSTGRES_USER,
+      //   poolSize: 10,
+      // }),
     }),
     ClsModule.forRoot({
       global: true,

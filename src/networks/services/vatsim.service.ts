@@ -146,7 +146,13 @@ export class VATSIMService {
         crypto
           .createHash('md5')
           .update(
-            `${data.cid + data.callsign + data.flight_plan?.departure + data.flight_plan?.arrival}`,
+            `${
+              data.cid +
+              data.callsign +
+              data.flight_plan?.departure +
+              data.flight_plan?.arrival +
+              data.flight_plan?.deptime
+            }`,
           )
           .digest('hex'),
         '820aabf8-e662-4075-8e9f-8a94dc1f5148',

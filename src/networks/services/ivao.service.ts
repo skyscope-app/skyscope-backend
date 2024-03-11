@@ -9,7 +9,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
 import { Cache } from 'cache-manager';
 import * as crypto from 'crypto';
-import { v4, v5 } from 'uuid';
+import { v5 } from 'uuid';
 
 @Injectable()
 export class IVAOService {
@@ -55,7 +55,9 @@ export class IVAOService {
         id: v5(
           crypto
             .createHash('md5')
-            .update(`${pilot.flightPlan?.id ?? v4()}`)
+            .update(
+              `${pilot.userId}${pilot.callsign}${pilot.flightPlan?.departureId}${pilot.flightPlan?.arrivalId}${pilot.flightPlan?.actualDepartureTime}`,
+            )
             .digest('hex'),
           '820aabf8-e662-4075-8e9f-8a94dc1f5148',
         ),

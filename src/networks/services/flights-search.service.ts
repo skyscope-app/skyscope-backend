@@ -44,7 +44,7 @@ export class FlightsSearchService {
   }
 
   async fetchTracksForFlight(flightId: string): Promise<LiveFlightTrack[]> {
-    const data = await this.redis.lrange(`flight:${flightId}:tracks`, 0, -1);
+    const data = await this.redis.lrange(`tracks:${flightId}`, 0, -1);
     return data.map((d) => LiveFlightTrack.decode(d));
   }
 }
