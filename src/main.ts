@@ -25,7 +25,7 @@ function setupSwagger(app: INestApplication) {
     .setDescription('API documentation')
     .setVersion('1.0')
     .addServer(`http://localhost:${process.env.PORT ?? 8080}`, 'local')
-    .addServer('https://api.skyscopeapp.com', 'production')
+    .addServer('https://api.skyscope.app', 'production')
     .addBearerAuth({
       type: 'http',
       scheme: 'bearer',
