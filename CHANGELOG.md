@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.1...v1.13.2) (2024-03-15)
+
+
+### Bug Fixes
+
+* Rename app to correct domain ([5d7ddcb](https://github.com/skyscope-app/skyscope-backend/commit/5d7ddcb17db268d89fb0430a147ae3c4c51ae3f2))
+
 ## [1.13.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.0...v1.13.1) (2024-03-11)
 
 
