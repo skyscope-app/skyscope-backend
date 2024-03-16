@@ -96,7 +96,7 @@ export class IVAOService {
               ((pilot.flightPlan?.remarks ?? '').match(/REG\/(\w+)/) ||
                 [])[1] || '',
             transponderTypes: pilot.flightPlan?.aircraftTransponderTypes ?? '',
-            equipment: pilot.flightPlan?.aircraft?.icaoCode ?? '',
+            equipment: pilot.flightPlan?.aircraftEquipments ?? '',
           } as Aircraft),
           level: Number((pilot.flightPlan?.level ?? '').slice(1)) * 100,
           route: pilot.flightPlan?.route ?? '',
