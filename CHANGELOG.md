@@ -1,3 +1,10 @@
+## [1.13.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.2...v1.13.3) (2024-03-16)
+
+
+### Bug Fixes
+
+* **ivao:** fix ivao equipment info ([8ca13f5](https://github.com/skyscope-app/skyscope-backend/commit/8ca13f57c6873c72d0a0cc1020eabf32d205e53d))
+
 ## [1.13.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.1...v1.13.2) (2024-03-15)
 
 
