@@ -3,6 +3,19 @@
 
 ### Bug Fixes
 
+* generate new tag ([1828b8b](https://github.com/skyscope-app/skyscope-backend/commit/1828b8b03eef3851b4191c2d0a3e6f23e8498d7c))
+* list files of navigraph-data ([30d92c6](https://github.com/skyscope-app/skyscope-backend/commit/30d92c6663cfc64f469560d55b203644e9649f00))
+
+
+### Features
+
+* add controller to list files ([3d2a172](https://github.com/skyscope-app/skyscope-backend/commit/3d2a1728a9e853fb60b05f43f5696a65ba69a31f))
+
+# [1.14.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.3...v1.14.0) (2024-03-17)
+
+
+### Bug Fixes
+
 * list files of navigraph-data ([30d92c6](https://github.com/skyscope-app/skyscope-backend/commit/30d92c6663cfc64f469560d55b203644e9649f00))
 
 
