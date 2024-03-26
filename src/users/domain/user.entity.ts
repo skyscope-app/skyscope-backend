@@ -10,6 +10,12 @@ export class UserOptions {
   simbriefId?: string;
 }
 
+export enum AccountStatus {
+  Created = 'created',
+  Active = 'active',
+  Suspended = 'suspended',
+}
+
 @Entity('users')
 export class User extends BaseEntity {
   @Column({ name: 'ivao_id' }) ivaoId?: string;
@@ -41,6 +47,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Integration, (integration) => integration.user)
   integrations: Integration[];
 
+  @Column({ name: 'account_status' })
+  accountStatus: AccountStatus;
+
   photo: string;
   name: string;
 
@@ -49,14 +58,6 @@ export class User extends BaseEntity {
 
     this.email = email;
     this.authenticationId = authenticationId;
-    this.ivaoId = options?.ivaoId;
-    this.vatsimId = options?.vatsimId;
-    this.posconId = options?.posconId;
-    this.navigraphId = options?.navigraphId;
-    this.simbriefId = options?.simbriefId;
-  }
-
-  setOptions(options: UserOptions) {
     this.ivaoId = options?.ivaoId;
     this.vatsimId = options?.vatsimId;
     this.posconId = options?.posconId;
