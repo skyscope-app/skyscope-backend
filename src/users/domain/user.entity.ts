@@ -56,14 +56,6 @@ export class User extends BaseEntity {
     this.simbriefId = options?.simbriefId;
   }
 
-  setOptions(options: UserOptions) {
-    this.ivaoId = options?.ivaoId;
-    this.vatsimId = options?.vatsimId;
-    this.posconId = options?.posconId;
-    this.navigraphId = options?.navigraphId;
-    this.simbriefId = options?.simbriefId;
-  }
-
   setPhoto(photo: string) {
     this.photo = photo;
   }

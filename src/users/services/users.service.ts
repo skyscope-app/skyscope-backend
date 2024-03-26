@@ -1,15 +1,15 @@
 import { AuthService } from '@/auth/auth.service';
+import { CacheService } from '@/cache/cache.service';
 import { User, UserOptions } from '@/users/domain/user.entity';
-import { Injectable, Logger } from '@nestjs/common';
+import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CacheService } from '@/cache/cache.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly logger: Logger,
     private readonly authService: AuthService,
     private readonly cacheService: CacheService,
   ) {}
@@ -32,8 +32,8 @@ export class UsersService {
     }
   }
 
-  async updateProfile(user: User, options: UserOptions) {
-    user.setOptions(options);
+  async updateProfile(user: User, options: ProfileOptionsDto) {
+    await this.authService.updateProfile(user, options);
     await this.userRepository.save(user);
     await this.cacheService.invalidate(user.authenticationId);
   }
