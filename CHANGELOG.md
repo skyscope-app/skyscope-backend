@@ -1,3 +1,16 @@
+# [1.15.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.14.0...v1.15.0) (2024-03-26)
+
+
+### Bug Fixes
+
+* **account:** add account status to user ([1bbddcd](https://github.com/skyscope-app/skyscope-backend/commit/1bbddcde95884a61cb18e137cd79aa41382f0fb7))
+* add name for update profile ([a3544db](https://github.com/skyscope-app/skyscope-backend/commit/a3544dbc30cada652341795832bcac749dee23dc))
+
+
+### Features
+
+* add endpoint to upload user photo ([d710544](https://github.com/skyscope-app/skyscope-backend/commit/d710544b81005729aecda6b7109ba1eac5a89195))
+
 # [1.14.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.13.3...v1.14.0) (2024-03-17)
 
 
