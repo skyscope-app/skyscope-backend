@@ -21,6 +21,8 @@ export class Profile {
   navigraphId: Nullable<string>;
   @ApiProperty({ nullable: true })
   simbriefId: Nullable<string>;
+  @ApiProperty({ enum: ['active', 'suspended', 'created'] })
+  status: 'active' | 'suspended' | 'created';
 
   constructor(user: User) {
     this.id = user.uid;
@@ -32,5 +34,6 @@ export class Profile {
     this.posconId = assertNullable(user.posconId);
     this.navigraphId = assertNullable(user.navigraphId);
     this.simbriefId = assertNullable(user.simbriefId);
+    this.status = user.accountStatus;
   }
 }

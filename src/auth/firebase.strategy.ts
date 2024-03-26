@@ -1,8 +1,9 @@
 import { AuthService } from '@/auth/auth.service';
 import { CacheService } from '@/cache/cache.service';
 import { Configuration } from '@/configurations/configuration';
+import { AccountStatus } from '@/users/domain/user.entity';
 import { UsersService } from '@/users/services/users.service';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { auth } from 'firebase-admin';
@@ -75,10 +76,17 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
         return false;
       }
 
+      if (data.user.accountStatus !== AccountStatus.Active) {
+        throw new ForbiddenException();
+      }
+
       this.clsService.set('user', data.user);
       this.clsService.set('auth_user', data.authUser);
       return data;
     } catch (e: any) {
+      if (e.name === ForbiddenException.name) {
+        throw e;
+      }
       this.logger.warn({ message: 'error to authenticate', error: e });
     }
   }
