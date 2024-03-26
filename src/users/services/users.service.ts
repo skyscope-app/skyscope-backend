@@ -1,5 +1,6 @@
 import { AuthService } from '@/auth/auth.service';
 import { CacheService } from '@/cache/cache.service';
+import { FilesService } from '@/files/services/files.service';
 import { User, UserOptions } from '@/users/domain/user.entity';
 import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
 import { Injectable } from '@nestjs/common';
@@ -12,7 +13,22 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly authService: AuthService,
     private readonly cacheService: CacheService,
+    private readonly filesService: FilesService,
   ) {}
+
+  async updateProfilePhoto(user: User, file: Express.Multer.File) {
+    const extension = file.originalname.split('.').pop();
+
+    const { key } = await this.filesService.upload(
+      `users/profile/${user.uid}.${extension}`,
+      file,
+    );
+
+    const publicUrl = `https://static.skyscope.app/${key}`;
+
+    await this.authService.updateProfile(user, { avatar: publicUrl });
+    await this.cacheService.invalidate(user.authenticationId);
+  }
 
   async create(
     email: string,

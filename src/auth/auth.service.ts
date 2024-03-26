@@ -8,6 +8,7 @@ import { auth } from 'firebase-admin';
 
 interface UserOptions {
   name?: string;
+  avatar?: string;
 }
 
 @Injectable()
@@ -17,6 +18,7 @@ export class AuthService {
   async updateProfile(user: User, options: UserOptions) {
     await auth().updateUser(user.authenticationId, {
       displayName: options.name,
+      photoURL: options.avatar,
     });
   }
 

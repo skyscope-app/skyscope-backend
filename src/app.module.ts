@@ -3,6 +3,7 @@ import { CacheModule as InternalCacheModule } from '@/cache/cache.module';
 import { EnvironmentConfiguration } from '@/configurations/configuration';
 import { ConfigurationsModule } from '@/configurations/configuration.module';
 import { getDatabaseModule } from '@/database/typeorm.module';
+import { FilesModule } from '@/files/files.module';
 import { InfoModule } from '@/info/info.module';
 import { IntegrationsModule } from '@/integrations/integrations.module';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
@@ -61,6 +62,7 @@ import { NetworksModule } from './networks/networks.module';
     IntegrationsModule,
     LoggerModule,
     InfoModule,
+    FilesModule,
   ],
   providers: [LoggingInterceptor],
 })
