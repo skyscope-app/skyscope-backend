@@ -1,5 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import { Injectable } from '@nestjs/common';
+import { createReadStream } from 'fs';
+import { readFile } from 'fs/promises';
 
 interface UploadOptions {
   public?: boolean;
@@ -9,6 +11,14 @@ interface UploadOptions {
 @Injectable()
 export class FilesService {
   private client = new Storage();
+
+  getFromPrivateAsStream(key: string) {
+    return createReadStream(`./private_data/${key}`);
+  }
+
+  getFromPrivate(key: string) {
+    return readFile(`./private_data/${key}`);
+  }
 
   async upload(
     path: string,

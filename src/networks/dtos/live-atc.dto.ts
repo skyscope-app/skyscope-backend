@@ -27,6 +27,18 @@ export enum ATCFacility {
   UNKNOW = 'UNKNOW',
 }
 
+export class LiveATCPoint {
+  @ApiProperty()
+  latitude: number;
+  @ApiProperty()
+  longitude: number;
+
+  constructor(latitude: number, longitude: number) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
+}
+
 export class LiveATC {
   @ApiProperty()
   network: string;
@@ -48,6 +60,8 @@ export class LiveATC {
   longitude: number;
   @ApiProperty()
   facility: ATCFacility;
+  @ApiProperty()
+  geometry: LiveATCPoint[];
 
   constructor(
     network: string,
@@ -60,6 +74,7 @@ export class LiveATC {
     latitude: number,
     longitude: number,
     facility: ATCFacility,
+    points: [number, number][],
   ) {
     this.network = network;
     this.callsign = callsign;
@@ -71,5 +86,8 @@ export class LiveATC {
     this.latitude = latitude;
     this.longitude = longitude;
     this.facility = facility;
+    this.geometry = points.map(
+      ([latitude, longitude]) => new LiveATCPoint(longitude, latitude),
+    );
   }
 }

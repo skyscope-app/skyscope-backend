@@ -5,6 +5,8 @@ import { HttpService } from '@/http/http.service';
 import { NetworkATCUseCase } from '@/networks/domain/network-flight-use-case';
 import { ATCFacility, LiveATC, User } from '@/networks/dtos/live-atc.dto';
 import { VatsimData, VatsimDataController } from '@/networks/dtos/vatsim.dto';
+import { VatSpyData } from '@/networks/dtos/vatspy.dto';
+import { VatSpyService } from '@/networks/services/vatspy.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -15,9 +17,12 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
     private readonly airports: AirportsService,
+    private readonly vatspy: VatSpyService,
   ) {}
 
   public async fetchLiveATCs() {
+    const data = await this.vatspy.loadData();
+
     return this.cacheService.handle(
       'vatsim_current_live_atcs',
       async () => {
@@ -28,17 +33,51 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
 
         return vatsimResponse.data.controllers
           .filter((atc) => atc.facility > 0)
-          .map((atc) => this.parse(atc, airports));
+          .map((atc) => this.parse(atc, airports, data));
       },
       15,
     );
   }
 
-  private parse(atc: VatsimDataController, airports: Map<string, Airport>) {
+  private parse(
+    atc: VatsimDataController,
+    airports: Map<string, Airport>,
+    vatspyData: VatSpyData,
+  ) {
     const atcUser = new User(String(atc.cid), atc.rating as number, atc.name);
     const facility = this.getFacility(atc);
 
-    const { latitude, longitude } = this.getLatAndLon(atc, airports);
+    let points: [number, number][] = [];
+    let latitude = 0;
+    let longitude = 0;
+
+    if ([ATCFacility.CTR, ATCFacility.FSS].includes(facility)) {
+      const { firs, boundaries } = vatspyData;
+
+      const suffix = atc.callsign.replace(`_${facility}`, '');
+
+      const fir = firs.find(
+        (fir) =>
+          fir.callsign_prefix === suffix.split('_')[0] ||
+          fir.icao === suffix.split('_')[0],
+      );
+
+      if (fir) {
+        const boundary = boundaries[fir.icao];
+
+        if (boundary) {
+          points = boundary.points;
+          latitude = boundary.latitude;
+          longitude = boundary.longitude;
+        }
+      }
+    }
+
+    if (latitude === 0 && longitude === 0) {
+      const data = this.getLatAndLon(atc, airports);
+      latitude = data.latitude;
+      longitude = data.longitude;
+    }
 
     return new LiveATC(
       'vatsim',
@@ -51,6 +90,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       latitude,
       longitude,
       facility,
+      points,
     );
   }
 

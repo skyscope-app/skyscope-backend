@@ -43,6 +43,7 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
       Number(atc.lastTrack.latitude),
       Number(atc.lastTrack.longitude),
       facility,
+      [],
     );
   }
 
