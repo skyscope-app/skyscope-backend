@@ -1,6 +1,7 @@
 export interface IVAOResponse {
   clients: {
     pilots: IvaoPilot[];
+    atcs: any[];
   };
 }
 

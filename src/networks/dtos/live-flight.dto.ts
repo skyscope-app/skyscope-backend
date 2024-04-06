@@ -148,10 +148,6 @@ export class LiveFlightTrack {
     this.timestamp = data.timestamp;
   }
 
-  encode() {
-    return Object.values(this).join(';');
-  }
-
   static decode(data: string) {
     const values = data.split(';');
     return new LiveFlightTrack({
@@ -163,6 +159,10 @@ export class LiveFlightTrack {
       ground: values[5] === 'true',
       timestamp: Number(values[6]),
     });
+  }
+
+  encode() {
+    return Object.values(this).join(';');
   }
 }
 

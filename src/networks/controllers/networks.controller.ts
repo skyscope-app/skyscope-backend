@@ -1,14 +1,17 @@
 import { Network } from '@/networks/domain/network';
-import { NetworkService } from '@/networks/domain/network-service';
+import {
+  NetworkATCUseCase,
+  NetworkFlightUseCase,
+} from '@/networks/domain/network-flight-use-case';
 import {
   LiveFlight,
   LiveFlightWithTracks,
 } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
-import { IVAOService } from '@/networks/services/ivao.service';
+import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
 import { NetworksService } from '@/networks/services/networks.service';
-import { PosconService } from '@/networks/services/poscon.service';
-import { VATSIMService } from '@/networks/services/vatsim.service';
+import { PosconFlightsUsecase } from '@/networks/usecases/poscon-flights.usecase';
+import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
 import {
   Controller,
   Get,
@@ -19,23 +22,35 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
+import { LiveATC } from '@/networks/dtos/live-atc.dto';
+import { IvaoATCsUseCase } from '@/networks/usecases/ivao-atcs.usecase';
+import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
 
 @Controller('networks')
 @ApiTags('Networks')
 export class NetworksController {
-  private serviceMap: Record<Network, NetworkService>;
+  private readonly flightMap: Record<Network, NetworkFlightUseCase>;
+  private readonly atcMap: Record<Network, NetworkATCUseCase>;
 
   constructor(
-    vatsimService: VATSIMService,
-    ivaoService: IVAOService,
-    posconService: PosconService,
+    vatsimFlightsUseCase: VatsimFlightsUsecase,
+    ivaoFlightsUseCase: IvaoFlightsUseCase,
+    posconFlightsUseCase: PosconFlightsUsecase,
+    ivaoATCsUseCase: IvaoATCsUseCase,
+    vatsimATCsUseCase: VatsimATCsUseCase,
     private readonly networksService: NetworksService,
     private readonly flightsSearchService: FlightsSearchService,
   ) {
-    this.serviceMap = {
-      [Network.VATSIM]: vatsimService,
-      [Network.IVAO]: ivaoService,
-      [Network.POSCON]: posconService,
+    this.flightMap = {
+      [Network.VATSIM]: vatsimFlightsUseCase,
+      [Network.IVAO]: ivaoFlightsUseCase,
+      [Network.POSCON]: posconFlightsUseCase,
+    };
+
+    this.atcMap = {
+      [Network.IVAO]: ivaoATCsUseCase,
+      [Network.VATSIM]: vatsimATCsUseCase,
+      [Network.POSCON]: ivaoATCsUseCase,
     };
   }
 
@@ -66,15 +81,32 @@ export class NetworksController {
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
-    await this.networksService.fetchCurrentLive();
+    await this.networksService.fetchLiveFlights();
 
-    const service = this.serviceMap[network];
+    const service = this.flightMap[network];
 
     if (!service) {
       throw new NotImplementedException();
     }
 
-    const flights = await service.fetchCurrentLive();
+    const flights = await service.fetchLiveFlights();
+
+    return flights;
+  }
+
+  @Get(':network/atcs')
+  @ApiParam({ name: 'network', enum: Network })
+  @ApiOkResponse({ type: [LiveATC] })
+  private async liveATCs(@Param('network') network: Network) {
+    await this.networksService.fetchLiveFlights();
+
+    const service = this.atcMap[network];
+
+    if (!service) {
+      throw new NotImplementedException();
+    }
+
+    const flights = await service.fetchLiveATCs();
 
     return flights;
   }
