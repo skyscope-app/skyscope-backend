@@ -41,9 +41,7 @@ function setupSwagger(app: INestApplication) {
 }
 
 async function bootstrap() {
-  if (process.env.FUNCTIONS_CONTROL_API) {
-    return;
-  }
+  admin.initializeApp();
 
   await validateConfiguration(Configuration);
 
@@ -51,7 +49,6 @@ async function bootstrap() {
 
   clsService = app.select(AppModule).get(ClsService);
 
-  admin.initializeApp();
   app.getHttpAdapter().getInstance().disable('x-powered-by');
   app.use(helmet());
   app.use(express.urlencoded({ extended: false }));
