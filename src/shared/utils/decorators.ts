@@ -16,6 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { User } from '@/users/domain/user.entity';
+import { NoWaitListGuard } from '@/auth/no-wait-list.guard';
 
 export const DefaultStatusCodes = () => {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -37,7 +38,7 @@ export const DefaultStatusCodes = () => {
   };
 };
 
-export const Authenticated = (
+export const WaitListAuthenticated = (
   // eslint-disable-next-line @typescript-eslint/ban-types
   ...guards: (CanActivate | Function)[]
 ): MethodDecorator & ClassDecorator => {
@@ -55,6 +56,33 @@ export const Authenticated = (
       ApiBearerAuth(),
       UseGuards(...guards),
       UseGuards(AuthGuard('firebase'), ...guards),
+      ApiBearerAuth('JWT-auth'),
+    ];
+
+    decorators.forEach((decorator) =>
+      decorator(target, propertyKey as any, descriptor as any),
+    );
+  };
+};
+
+export const Authenticated = (
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  ...guards: (CanActivate | Function)[]
+): MethodDecorator & ClassDecorator => {
+  return (
+    target: any,
+    propertyKey?: string | symbol,
+    descriptor?: TypedPropertyDescriptor<any>,
+  ) => {
+    const decorators = [
+      DefaultStatusCodes(),
+      ApiUnauthorizedResponse({ description: 'The user is not authenticated' }),
+      ApiForbiddenResponse({
+        description: 'The user has no permission to use this resource',
+      }),
+      ApiBearerAuth(),
+      UseGuards(...guards),
+      UseGuards(AuthGuard('firebase'), NoWaitListGuard, ...guards),
       ApiBearerAuth('JWT-auth'),
     ];
 

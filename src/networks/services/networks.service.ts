@@ -1,23 +1,23 @@
-import { NetworkService } from '@/networks/domain/network-service';
+import { NetworkFlightUseCase } from '@/networks/domain/network-flight-use-case';
 import { LiveFlight } from '@/networks/dtos/live-flight.dto';
-import { IVAOService } from '@/networks/services/ivao.service';
-import { VATSIMService } from '@/networks/services/vatsim.service';
+import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
+import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 
 @Injectable()
-export class NetworksService implements NetworkService {
+export class NetworksService implements NetworkFlightUseCase {
   constructor(
-    private readonly vatsimService: VATSIMService,
-    private readonly ivaoService: IVAOService,
+    private readonly vatsimFlightsUseCase: VatsimFlightsUsecase,
+    private readonly ivaoFlightsUseCase: IvaoFlightsUseCase,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
-  async fetchCurrentLive(): Promise<LiveFlight[]> {
+  async fetchLiveFlights(): Promise<LiveFlight[]> {
     const [ivao, vatsim] = await Promise.all([
-      this.ivaoService.fetchCurrentLive(),
-      this.vatsimService.fetchCurrentLive(),
+      this.ivaoFlightsUseCase.fetchLiveFlights(),
+      this.vatsimFlightsUseCase.fetchLiveFlights(),
     ]);
 
     return [...ivao, ...vatsim];

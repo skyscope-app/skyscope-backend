@@ -1,7 +1,6 @@
 import { AuthService } from '@/auth/auth.service';
 import { CacheService } from '@/cache/cache.service';
 import { Configuration } from '@/configurations/configuration';
-import { AccountStatus } from '@/users/domain/user.entity';
 import { UsersService } from '@/users/services/users.service';
 import { ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -74,10 +73,6 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
 
       if (!data) {
         return false;
-      }
-
-      if (data.user.accountStatus !== AccountStatus.Active) {
-        throw new ForbiddenException();
       }
 
       this.clsService.set('user', data.user);

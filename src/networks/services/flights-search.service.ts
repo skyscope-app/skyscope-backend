@@ -13,7 +13,7 @@ export class FlightsSearchService {
   ) {}
 
   async findByParams(term: string) {
-    const flights = await this.networksService.fetchCurrentLive();
+    const flights = await this.networksService.fetchLiveFlights();
 
     return flights.filter((flight) => {
       return searchInObjectRecursive(flight, term, [
@@ -36,7 +36,7 @@ export class FlightsSearchService {
   }
 
   async findByID(flightId: string) {
-    const flights = await this.networksService.fetchCurrentLive();
+    const flights = await this.networksService.fetchLiveFlights();
 
     const flightsMap = new Map(flights.map((flight) => [flight.id, flight]));
 

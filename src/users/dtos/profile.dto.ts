@@ -1,4 +1,4 @@
-import { Nullable, assertNullable } from '@/shared/utils/nullable';
+import { assertNullable, Nullable } from '@/shared/utils/nullable';
 import { User } from '@/users/domain/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 

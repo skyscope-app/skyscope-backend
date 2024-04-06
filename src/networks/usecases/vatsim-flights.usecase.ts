@@ -18,7 +18,7 @@ import * as crypto from 'crypto';
 import { v5 } from 'uuid';
 
 @Injectable()
-export class VATSIMService {
+export class VatsimFlightsUsecase {
   private url = 'https://data.vatsim.net/v3/vatsim-data.json';
 
   constructor(
@@ -27,7 +27,7 @@ export class VATSIMService {
     private readonly cacheService: CacheService,
   ) {}
 
-  public async fetchCurrentLive(): Promise<Array<LiveFlight>> {
+  public async fetchLiveFlights(): Promise<Array<LiveFlight>> {
     return this.cacheService.handle(
       'vatsim_current_live',
       async () => {

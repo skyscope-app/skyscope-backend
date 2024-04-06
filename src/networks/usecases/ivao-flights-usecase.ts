@@ -2,7 +2,7 @@ import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
-import { IVAOResponse, IvaoPilot } from '@/networks/dtos/ivao.dto';
+import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
 import { Aircraft, LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { parseSecondsToHours } from '@/shared/utils/time';
 import { Injectable } from '@nestjs/common';
@@ -10,7 +10,7 @@ import * as crypto from 'crypto';
 import { v5 } from 'uuid';
 
 @Injectable()
-export class IVAOService {
+export class IvaoFlightsUseCase {
   private url = 'https://api.ivao.aero/v2/tracker/whazzup';
 
   constructor(
@@ -19,9 +19,9 @@ export class IVAOService {
     private readonly cacheService: CacheService,
   ) {}
 
-  public async fetchCurrentLive() {
+  public async fetchLiveFlights() {
     return this.cacheService.handle(
-      'ivao_current_live',
+      'ivao_current_live_flights',
       async () => {
         const [{ data }, airports] = await Promise.all([
           this.httpService.get<IVAOResponse>(this.url),
