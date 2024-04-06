@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.17.0...v1.17.1) (2024-04-06)
+
+
+### Bug Fixes
+
+* **config:** remove not necessary configuration ([8c405c6](https://github.com/skyscope-app/skyscope-backend/commit/8c405c69cadeb2993a69b28ec097e551ca63a743))
+
 # [1.17.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.16.0...v1.17.0) (2024-04-06)
 
 
