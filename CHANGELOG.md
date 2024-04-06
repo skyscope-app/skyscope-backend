@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.15.0...v1.16.0) (2024-04-06)
+
+
+### Features
+
+* **airac:** add endpoint to fetch current airac cycle for authenticated user ([414448e](https://github.com/skyscope-app/skyscope-backend/commit/414448e9832dd357abe8f641c6bbe955e0498095))
+
 # [1.15.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.14.0...v1.15.0) (2024-03-26)
 
 
