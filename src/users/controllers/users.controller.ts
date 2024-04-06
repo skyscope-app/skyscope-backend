@@ -1,5 +1,8 @@
 import { BodyParserPipe } from '@/shared/pipes/body-parser.pipe';
-import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
+import {
+  AuthenticatedUser,
+  WaitListAuthenticated,
+} from '@/shared/utils/decorators';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
 import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
@@ -28,7 +31,7 @@ import {
 
 @Controller('users')
 @ApiTags('Users')
-@Authenticated()
+@WaitListAuthenticated()
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
