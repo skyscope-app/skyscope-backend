@@ -1,3 +1,16 @@
+# [1.17.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.16.0...v1.17.0) (2024-04-06)
+
+
+### Bug Fixes
+
+* **profile:** allow users in wait list to use profile endpoints ([a53fb81](https://github.com/skyscope-app/skyscope-backend/commit/a53fb8127a7cae4e2069d16162353daae7466131))
+
+
+### Features
+
+* **atc:** add endpoint to fetch atc ([8cafd86](https://github.com/skyscope-app/skyscope-backend/commit/8cafd8684887cc21798dcbe4efac2292480fd21f))
+* **vatsim:** first implementation to get geometry from vatsim centers ([e1123be](https://github.com/skyscope-app/skyscope-backend/commit/e1123beb9263f103ee43f2687f0d3dfd54f1875e))
+
 # [1.16.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.15.0...v1.16.0) (2024-04-06)
 
 
