@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.17.1...v1.18.0) (2024-04-07)
+
+
+### Features
+
+* **vatsim:** improve vatsim responses to add geometry to atc and onGround property to flights ([2986729](https://github.com/skyscope-app/skyscope-backend/commit/298672923dd64032d1584282cb92cf0107a1c806))
+
 ## [1.17.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.17.0...v1.17.1) (2024-04-06)
 
 
