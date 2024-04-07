@@ -36,6 +36,7 @@ export class AirportsService {
             airport.name,
             Number(airport.latitude_deg),
             Number(airport.longitude_deg),
+            Number(airport.elevation_ft),
           );
         });
 
@@ -67,6 +68,7 @@ export class AirportsService {
             airport.name,
             airport.lat,
             airport.lon,
+            0,
           ),
         ];
       }),
@@ -75,9 +77,9 @@ export class AirportsService {
 
   async getAirportsMap() {
     try {
-      return await this.getAirportsMapFromJSON();
-    } catch {
       return await this.getAirportsMapFromCSV();
+    } catch {
+      return await this.getAirportsMapFromJSON();
     }
   }
 }

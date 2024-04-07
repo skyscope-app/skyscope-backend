@@ -8,10 +8,13 @@ import { VatsimData, VatsimDataController } from '@/networks/dtos/vatsim.dto';
 import { VatSpyData } from '@/networks/dtos/vatspy.dto';
 import { VatSpyService } from '@/networks/services/vatspy.service';
 import { Injectable } from '@nestjs/common';
+import { FeatureCollection } from 'geojson';
 
 @Injectable()
 export class VatsimATCsUseCase implements NetworkATCUseCase {
   private url = 'https://data.vatsim.net/v3/vatsim-data.json';
+  private traconBoundaries =
+    'https://map.vatsim.net/livedata/traconboundaries.json';
 
   constructor(
     private readonly httpService: HttpService,
@@ -26,58 +29,42 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     return this.cacheService.handle(
       'vatsim_current_live_atcs',
       async () => {
-        const [vatsimResponse, airports] = await Promise.all([
+        const [vatsimResponse, airports, traconBoundaries] = await Promise.all([
           this.httpService.get<VatsimData>(this.url),
           this.airports.getAirportsMap(),
+          this.httpService.get<FeatureCollection>(this.traconBoundaries),
         ]);
 
         return vatsimResponse.data.controllers
           .filter((atc) => atc.facility > 0)
-          .map((atc) => this.parse(atc, airports, data));
+          .map((atc) => this.parse(atc, airports, data, traconBoundaries.data));
       },
       15,
     );
+  }
+
+  private async loadTraconBoundaries() {
+    return this.httpService
+      .get<ATCFacility[]>(this.traconBoundaries)
+      .then((r) => r.data);
   }
 
   private parse(
     atc: VatsimDataController,
     airports: Map<string, Airport>,
     vatspyData: VatSpyData,
+    tmaBoundaries: FeatureCollection,
   ) {
     const atcUser = new User(String(atc.cid), atc.rating as number, atc.name);
     const facility = this.getFacility(atc);
 
-    let points: [number, number][] = [];
-    let latitude = 0;
-    let longitude = 0;
-
-    if ([ATCFacility.CTR, ATCFacility.FSS].includes(facility)) {
-      const { firs, boundaries } = vatspyData;
-
-      const suffix = atc.callsign.replace(`_${facility}`, '');
-
-      const fir = firs.find(
-        (fir) =>
-          fir.callsign_prefix === suffix.split('_')[0] ||
-          fir.icao === suffix.split('_')[0],
-      );
-
-      if (fir) {
-        const boundary = boundaries[fir.icao];
-
-        if (boundary) {
-          points = boundary.points;
-          latitude = boundary.latitude;
-          longitude = boundary.longitude;
-        }
-      }
-    }
-
-    if (latitude === 0 && longitude === 0) {
-      const data = this.getLatAndLon(atc, airports);
-      latitude = data.latitude;
-      longitude = data.longitude;
-    }
+    const { latitude, longitude, points } = this.getGeometry(
+      facility,
+      vatspyData,
+      atc,
+      airports,
+      tmaBoundaries,
+    );
 
     return new LiveATC(
       'vatsim',
@@ -92,6 +79,140 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       facility,
       points,
     );
+  }
+
+  private getGeometry(
+    facility: ATCFacility,
+    vatspyData: VatSpyData,
+    atc: VatsimDataController,
+    airports: Map<string, Airport>,
+    tmaBoundaries: FeatureCollection,
+  ) {
+    switch (facility) {
+      case ATCFacility.FSS:
+      case ATCFacility.CTR:
+        return this.extractGeometryFromCtr(facility, vatspyData, atc);
+      case ATCFacility.APP:
+      case ATCFacility.DEP:
+        return this.extractGeometryFromApp(
+          facility,
+          vatspyData,
+          atc,
+          airports,
+          tmaBoundaries,
+        );
+      case ATCFacility.DEL:
+      case ATCFacility.GND:
+      case ATCFacility.TWR:
+        return this.extractGeometryFromAirport(atc, airports);
+      default:
+        return {
+          latitude: 0,
+          longitude: 0,
+          points: [],
+        };
+    }
+  }
+  private extractGeometryFromAirport(
+    atc: VatsimDataController,
+    airports: Map<string, Airport>,
+  ) {
+    const suffix = atc.callsign.split('_')[0].padStart(4, 'K');
+
+    const airport = airports.get(suffix);
+
+    if (!airport) {
+      return {
+        latitude: 0,
+        longitude: 0,
+        points: [],
+      };
+    }
+
+    return {
+      latitude: Number(airport.lat),
+      longitude: Number(airport.lng),
+      points: [],
+    };
+  }
+
+  private extractGeometryFromApp(
+    facility: ATCFacility,
+    vatspyData: VatSpyData,
+    atc: VatsimDataController,
+    airports: Map<string, Airport>,
+    tmaBoundaries: FeatureCollection,
+  ) {
+    const features = new Map(
+      tmaBoundaries.features.map((feature) => [
+        (feature.properties?.id as string) ?? '',
+        feature,
+      ]),
+    );
+
+    const suffix = atc.callsign.split('_')[0];
+
+    let feature = features.get(suffix);
+
+    if (!feature) {
+      feature = tmaBoundaries.features.find((feature) =>
+        feature.properties?.prefix.includes(suffix),
+      );
+    }
+
+    if (!feature) {
+      return {
+        latitude: 0,
+        longitude: 0,
+        points: [],
+      };
+    }
+
+    return {
+      latitude: 0,
+      longitude: 0,
+      points: (feature.geometry as any).coordinates[0][0],
+    };
+  }
+
+  private extractGeometryFromCtr(
+    facility: ATCFacility,
+    vatspyData: VatSpyData,
+    atc: VatsimDataController,
+  ) {
+    const { firs, boundaries } = vatspyData;
+
+    const suffix = atc.callsign.replace(`_${facility}`, '');
+
+    const fir = firs.find(
+      (fir) =>
+        fir.callsign_prefix === suffix.split('_')[0] ||
+        fir.icao === suffix.split('_')[0],
+    );
+
+    if (!fir) {
+      return {
+        latitude: 0,
+        longitude: 0,
+        points: [],
+      };
+    }
+
+    const boundary = boundaries[fir.icao];
+
+    if (!boundary) {
+      return {
+        latitude: 0,
+        longitude: 0,
+        points: [],
+      };
+    }
+
+    return {
+      latitude: boundary.latitude,
+      longitude: boundary.longitude,
+      points: boundary.points,
+    };
   }
 
   getFacility(atc: VatsimDataController) {

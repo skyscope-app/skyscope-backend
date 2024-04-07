@@ -40,8 +40,8 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
       atc.createdAt,
       atc.atis.lines,
       String(atc.atcSession.frequency).padEnd(7, '0'),
-      Number(atc.lastTrack.latitude),
-      Number(atc.lastTrack.longitude),
+      Number(atc.lastTrack?.latitude ?? 0),
+      Number(atc.lastTrack?.longitude ?? 0),
       facility,
       [],
     );

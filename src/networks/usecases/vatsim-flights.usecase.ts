@@ -164,9 +164,47 @@ export class VatsimFlightsUsecase {
         heading: data.heading,
         transponder: data.transponder,
         groundSpeed: data.groundspeed,
-        onGround: false, // TODO: Implement this
+        onGround: this.detectGround(data, airports), // TODO: Implement this
       },
       flightPlan: this.parseVatsimFlightPlan(data.flight_plan, airports),
     }));
+  }
+
+  private detectGround(
+    pilot: VatsimDataPilot,
+    airports: Map<string, Airport>,
+  ): any {
+    if (pilot.callsign === 'GLO1496') {
+      console.log('aqui');
+    }
+
+    if (!pilot.flight_plan) {
+      return false;
+    }
+
+    const departure = airports.get(pilot.flight_plan.departure);
+    const arrival = airports.get(pilot.flight_plan.arrival);
+    const alternate = airports.get(pilot.flight_plan.alternate);
+
+    const shortAirport = [departure, arrival, alternate].find((airport) => {
+      if (!airport) {
+        return false;
+      }
+
+      const distance = Math.sqrt(
+        Math.pow(Math.abs(pilot.latitude - airport.lat), 2) +
+          Math.pow(Math.abs(pilot.longitude - airport.lng), 2),
+      );
+
+      return distance < 2;
+    });
+
+    if (!shortAirport) {
+      return false;
+    }
+
+    const height = pilot.altitude - shortAirport.elevation;
+
+    return height < 30;
   }
 }

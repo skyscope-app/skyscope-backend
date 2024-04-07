@@ -3,15 +3,19 @@ import {
   NetworkATCUseCase,
   NetworkFlightUseCase,
 } from '@/networks/domain/network-flight-use-case';
+import { LiveATC } from '@/networks/dtos/live-atc.dto';
 import {
   LiveFlight,
   LiveFlightWithTracks,
 } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
-import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
 import { NetworksService } from '@/networks/services/networks.service';
+import { IvaoATCsUseCase } from '@/networks/usecases/ivao-atcs.usecase';
+import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
 import { PosconFlightsUsecase } from '@/networks/usecases/poscon-flights.usecase';
+import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
 import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
+import { Authenticated } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
@@ -22,12 +26,10 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { LiveATC } from '@/networks/dtos/live-atc.dto';
-import { IvaoATCsUseCase } from '@/networks/usecases/ivao-atcs.usecase';
-import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
 
 @Controller('networks')
 @ApiTags('Networks')
+@Authenticated()
 export class NetworksController {
   private readonly flightMap: Record<Network, NetworkFlightUseCase>;
   private readonly atcMap: Record<Network, NetworkATCUseCase>;
@@ -98,12 +100,12 @@ export class NetworksController {
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveATC] })
   private async liveATCs(@Param('network') network: Network) {
-    await this.networksService.fetchLiveFlights();
+    await this.networksService.fetchLiveATCs();
 
     const service = this.atcMap[network];
 
     if (!service) {
-      throw new NotImplementedException();
+      throw new NotImplementedException(`${network} not implemented`);
     }
 
     const flights = await service.fetchLiveATCs();
