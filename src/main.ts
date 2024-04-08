@@ -62,6 +62,7 @@ async function bootstrap() {
       'https://skyscope.app',
       'https://www.skyscope.app',
     ],
+    credentials: true,
   });
   app.setGlobalPrefix('/api/v1');
   app.useGlobalInterceptors(app.select(AppModule).get(LoggingInterceptor));
