@@ -102,5 +102,5 @@ export class NavigraphAirport {
     foreignKeyConstraintName: 'airport_identifier',
     name: 'airport_identifier',
   })
-  gates: NavigraphAirportGate[];
+  gates?: NavigraphAirportGate[];
 }

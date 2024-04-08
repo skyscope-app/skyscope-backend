@@ -35,7 +35,7 @@ export class Airport {
       elevation: navigraphAirport.elevation,
       transitionAltitude: navigraphAirport.transitionAltitude,
       transitionLevel: navigraphAirport.transitionLevel,
-      gates: navigraphAirport.gates.map(AirportGate.fromNavigraph),
+      gates: navigraphAirport.gates?.map(AirportGate.fromNavigraph) ?? [],
     });
   }
 }
