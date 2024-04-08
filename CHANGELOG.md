@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.19.0...v1.19.1) (2024-04-08)
+
+
+### Bug Fixes
+
+* **airport:** avoid app crash when no gate is given ([a60f6bb](https://github.com/skyscope-app/skyscope-backend/commit/a60f6bb900ce3d0cd3d935ffcdd0a5231d39c11b))
+
 # [1.19.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.18.0...v1.19.0) (2024-04-08)
 
 
