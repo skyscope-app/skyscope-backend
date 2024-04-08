@@ -5,6 +5,9 @@ enum RouteSegmentType {
   SID = 'SID',
   STAR = 'STAR',
   AIRWAY = 'AIRWAY',
+  WAYPOINT = 'WAYPOINT',
+  VOR = 'VOR',
+  NDB = 'NDB',
 }
 
 class SegmentResponse {
@@ -40,6 +43,8 @@ class SegmentResponse {
       type: segment.type,
       name: segment.name,
     });
+
+    return response;
   }
 }
 
@@ -64,7 +69,7 @@ class RoutePointResponse {
     const identifier = obj.ident;
     const latitude = Number(obj.pos_lat);
     const longitude = Number(obj.pos_long);
-    const segment = new Segment(obj);
+    const segment = SegmentResponse.fromSimbrief(obj);
 
     return new RoutePointResponse({ identifier, latitude, longitude, segment });
   }

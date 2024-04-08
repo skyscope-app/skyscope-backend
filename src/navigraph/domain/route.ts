@@ -1,7 +1,12 @@
-enum RouteSegmentType {
+import { NavigraphAirport } from '@/navigraph/entities/navigraph_airport.entity';
+
+export enum RouteSegmentType {
   SID = 'SID',
   STAR = 'STAR',
   AIRWAY = 'AIRWAY',
+  WAYPOINT = 'WAYPOINT',
+  VOR = 'VOR',
+  NDB = 'NDB',
 }
 
 export class Segment {
@@ -39,6 +44,15 @@ export class Airport {
     this.name = airport.name;
     this.latitude = airport.latitude;
     this.longitude = airport.longitude;
+  }
+
+  static fromNavigraph(airport: NavigraphAirport) {
+    return new Airport({
+      icao: airport.icao,
+      name: airport.name,
+      latitude: airport.latitude,
+      longitude: airport.longitude,
+    });
   }
 }
 
