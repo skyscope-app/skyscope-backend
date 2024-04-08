@@ -1,3 +1,8 @@
+import { CacheService } from '@/cache/cache.service';
+import { AiracResponse } from '@/navdata/dtos/airac.dto';
+import { AiracService } from '@/navdata/services/airac.service';
+import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
+import { User } from '@/users/domain/user.entity';
 import {
   Controller,
   Get,
@@ -5,14 +10,9 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
-import { AiracResponse } from '@/navdata/dtos/airac.dto';
-import { AiracService } from '@/navdata/services/airac.service';
-import { User } from '@/users/domain/user.entity';
-import { CacheService } from '@/cache/cache.service';
 
-@Controller('navdata/airac')
-@ApiTags('Navdata', 'AIRAC')
+@Controller('airac')
+@ApiTags('Navigraph', 'AIRAC')
 @Authenticated()
 export class AiracController {
   constructor(
@@ -24,6 +24,7 @@ export class AiracController {
   @Get()
   @ApiOperation({
     description: 'Get current cycle available for authenticated user',
+    summary: 'Get current cycle available for authenticated user',
   })
   @ApiOkResponse({
     type: AiracResponse,

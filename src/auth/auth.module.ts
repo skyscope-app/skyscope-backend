@@ -4,6 +4,7 @@ import { CacheModule } from '@/cache/cache.module';
 import { ConfigurationsModule } from '@/configurations/configuration.module';
 import { HttpModule } from '@/http/http.module';
 import { LoggerModule } from '@/logger/logger.module';
+import { NavigraphModule } from '@/navigraph/navigraph.module';
 import { UsersModule } from '@/users/users.module';
 import { Module, forwardRef } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
@@ -16,6 +17,7 @@ import { PassportModule } from '@nestjs/passport';
     CacheModule,
     HttpModule,
     forwardRef(() => UsersModule),
+    NavigraphModule,
   ],
   providers: [FirebaseStrategy, AuthService],
   exports: [FirebaseStrategy, AuthService],

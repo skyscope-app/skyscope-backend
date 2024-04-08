@@ -1,4 +1,6 @@
+import { NoWaitListGuard } from '@/auth/no-wait-list.guard';
 import { clsService } from '@/main';
+import { User } from '@/users/domain/user.entity';
 import {
   CanActivate,
   createParamDecorator,
@@ -15,8 +17,6 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { User } from '@/users/domain/user.entity';
-import { NoWaitListGuard } from '@/auth/no-wait-list.guard';
 
 export const DefaultStatusCodes = () => {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -101,6 +101,11 @@ export const RequestData = (key: string) =>
 export const AuthenticatedUser = createParamDecorator(() => {
   const d = clsService.get('user');
   return plainToInstance(User, d);
+});
+
+export const AiracSubscription = createParamDecorator(() => {
+  const d = clsService.get('airac_subscription');
+  return d;
 });
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

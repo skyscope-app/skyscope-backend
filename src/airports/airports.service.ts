@@ -1,7 +1,7 @@
 import { Airport } from '@/airports/airports.entity';
 import { OurAirportsDto } from '@/airports/dtos/our-airports.dto';
 import { CacheService } from '@/cache/cache.service';
-import { HttpService } from '@/http/http.service';
+import { NavigraphAirportsService } from '@/navigraph/services/airports.service';
 import { parseCSV } from '@/shared/utils/csvParser';
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
@@ -16,9 +16,28 @@ export class AirportsService {
 
   constructor(
     private readonly cacheService: CacheService,
-    private readonly httpService: HttpService,
+    private readonly navigraphAirportService: NavigraphAirportsService,
   ) {
     this.axios = axios.create({});
+  }
+  '';
+  async getFromNavigraph(): Promise<Map<string, Airport>> {
+    const airports = await this.navigraphAirportService.findAllAsMap();
+
+    const domainAirports = Array.from(airports.values()).map(
+      (navigraphAirport) => {
+        return new Airport(
+          navigraphAirport.icao,
+          navigraphAirport.iata,
+          navigraphAirport.name,
+          navigraphAirport.latitude,
+          navigraphAirport.longitude,
+          navigraphAirport.elevation,
+        );
+      },
+    );
+
+    return new Map(domainAirports.map((airport) => [airport.icao, airport]));
   }
 
   async getAirportsMapFromCSV(): Promise<Map<string, Airport>> {
@@ -76,10 +95,8 @@ export class AirportsService {
   }
 
   async getAirportsMap() {
-    try {
-      return await this.getAirportsMapFromCSV();
-    } catch {
-      return await this.getAirportsMapFromJSON();
-    }
+    return await this.getFromNavigraph()
+      .catch(() => this.getAirportsMapFromCSV())
+      .catch(() => this.getAirportsMapFromJSON());
   }
 }
