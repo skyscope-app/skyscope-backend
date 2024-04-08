@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.19.1...v1.19.2) (2024-04-08)
+
+
+### Bug Fixes
+
+* **cors:** allow withCredentials on cors ([a14ee3d](https://github.com/skyscope-app/skyscope-backend/commit/a14ee3df7fed9f1b622a1b359ce976e8a5e6808a))
+
 ## [1.19.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.19.0...v1.19.1) (2024-04-08)
 
 
