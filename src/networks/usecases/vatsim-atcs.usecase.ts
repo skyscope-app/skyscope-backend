@@ -1,5 +1,5 @@
-import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
+import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
 import { NetworkATCUseCase } from '@/networks/domain/network-flight-use-case';
@@ -32,7 +32,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
         const [vatsimResponse, airports, traconBoundaries] = await Promise.all([
           this.httpService.get<VatsimData>(this.url),
           this.airports.getAirportsMap(),
-          this.httpService.get<FeatureCollection>(this.traconBoundaries),
+          this.fetchTraconsBoundaries(),
         ]);
 
         return vatsimResponse.data.controllers
@@ -40,6 +40,15 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
           .map((atc) => this.parse(atc, airports, data, traconBoundaries.data));
       },
       15,
+    );
+  }
+  async fetchTraconsBoundaries() {
+    return this.cacheService.handle(
+      'vatsim-tracon-boundaries',
+      async () => {
+        return this.httpService.get<FeatureCollection>(this.traconBoundaries);
+      },
+      60 * 60,
     );
   }
 
@@ -130,8 +139,8 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     }
 
     return {
-      latitude: Number(airport.lat),
-      longitude: Number(airport.lng),
+      latitude: Number(airport.latitude),
+      longitude: Number(airport.longitude),
       points: [],
     };
   }
@@ -256,8 +265,8 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     }
 
     return {
-      latitude: Number(airport.lat),
-      longitude: Number(airport.lng),
+      latitude: Number(airport.latitude),
+      longitude: Number(airport.longitude),
     };
   }
 }

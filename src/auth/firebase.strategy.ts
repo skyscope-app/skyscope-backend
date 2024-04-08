@@ -1,8 +1,15 @@
 import { AuthService } from '@/auth/auth.service';
 import { CacheService } from '@/cache/cache.service';
 import { Configuration } from '@/configurations/configuration';
+import { AiracService } from '@/navdata/services/airac.service';
 import { UsersService } from '@/users/services/users.service';
-import { ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { auth } from 'firebase-admin';
@@ -28,6 +35,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
     @Inject(Configuration) private readonly configuration: Configuration,
     private readonly userService: UsersService,
     private readonly authService: AuthService,
+    private readonly airacService: AiracService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -61,12 +69,16 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
           const user = await this.userService.findByAuthenticationID(uid);
 
           if (!user) {
+            const airacSubscription = await this.airacService.findOutdated();
+
             return await this.userService
               .create(authUser.email, uid)
-              .then((user) => ({ user, authUser }));
+              .then((user) => ({ user, authUser, airacSubscription }));
           }
 
-          return { user, authUser };
+          const airacSubscription = await this.airacService.findByUser(user);
+
+          return { user, authUser, airacSubscription };
         },
         15 * 60,
       );
@@ -75,8 +87,14 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
         return false;
       }
 
+      if (!data.airacSubscription) {
+        this.logger.error({ message: 'user has no airac subscription', uid });
+        throw new InternalServerErrorException();
+      }
+
       this.clsService.set('user', data.user);
       this.clsService.set('auth_user', data.authUser);
+      this.clsService.set('airac_subscription', data.airacSubscription);
       return data;
     } catch (e: any) {
       if (e.name === ForbiddenException.name) {

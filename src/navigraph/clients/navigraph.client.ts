@@ -1,18 +1,18 @@
-import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@/http/http.service';
-import { AiracStatus } from '@/navdata/entity/airac';
-import { NavigraphSubscriptionValidResponse } from '@/navdata/dtos/navigraph.dto';
-import * as moment from 'moment-timezone';
 import { Integration } from '@/integrations/domain/integration';
+import { NavigraphSubscriptionValidResponse } from '@/navdata/dtos/navigraph.dto';
+import { AiracStatus } from '@/navdata/entity/airac';
+import { Injectable, Logger } from '@nestjs/common';
+import * as moment from 'moment-timezone';
 
 @Injectable()
-export class NavigraphService {
+export class NavigraphApiClient {
   constructor(
     private readonly httpService: HttpService,
     private readonly logger: Logger,
   ) {}
 
-  async validate(integration: Integration): Promise<AiracStatus> {
+  async validateSubscription(integration: Integration): Promise<AiracStatus> {
     try {
       const { data } = await this.httpService.get<
         NavigraphSubscriptionValidResponse[]

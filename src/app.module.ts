@@ -9,10 +9,12 @@ import { IntegrationsModule } from '@/integrations/integrations.module';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { LoggerModule } from '@/logger/logger.module';
 import { NavdataModule } from '@/navdata/navdata.module';
+import { NavigraphModule } from '@/navigraph/navigraph.module';
 import { UsersModule } from '@/users/users.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
+import { RouterModule } from '@nestjs/core';
 import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
 import { NetworksModule } from './networks/networks.module';
@@ -63,6 +65,13 @@ import { NetworksModule } from './networks/networks.module';
     LoggerModule,
     InfoModule,
     FilesModule,
+    RouterModule.register([
+      {
+        path: '/navigraph',
+        module: NavigraphModule,
+      },
+    ]),
+    NavigraphModule,
   ],
   providers: [LoggingInterceptor],
 })
