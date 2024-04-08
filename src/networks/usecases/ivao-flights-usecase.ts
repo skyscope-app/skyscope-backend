@@ -1,5 +1,5 @@
-import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
+import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
 import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
@@ -65,8 +65,8 @@ export class IvaoFlightsUseCase {
         network: 'ivao',
         position: {
           altitude: pilot.lastTrack?.altitude ?? 0,
-          lat: pilot.lastTrack?.latitude ?? departure?.lng ?? 0,
-          lng: pilot.lastTrack?.longitude ?? departure?.lat ?? 0,
+          lat: pilot.lastTrack?.latitude ?? departure?.longitude ?? 0,
+          lng: pilot.lastTrack?.longitude ?? departure?.latitude ?? 0,
           groundSpeed: pilot.lastTrack?.groundSpeed ?? 0,
           heading: pilot.lastTrack?.heading ?? 0,
           onGround: pilot.lastTrack?.onGround ?? true,
@@ -79,15 +79,15 @@ export class IvaoFlightsUseCase {
             icao: departure?.icao ?? '',
             iata: departure?.iata ?? '',
             name: departure?.name ?? '',
-            lat: departure?.lat ?? 0,
-            lng: departure?.lng ?? 0,
+            lat: departure?.latitude ?? 0,
+            lng: departure?.longitude ?? 0,
           },
           arrival: {
             icao: arrival?.icao ?? '',
             iata: arrival?.iata ?? '',
             name: arrival?.name ?? '',
-            lat: arrival?.lat ?? 0,
-            lng: arrival?.lng ?? 0,
+            lat: arrival?.latitude ?? 0,
+            lng: arrival?.longitude ?? 0,
           },
           aircraft: new Aircraft({
             icao: pilot.flightPlan?.aircraft?.icaoCode ?? '',
@@ -114,8 +114,8 @@ export class IvaoFlightsUseCase {
                   icao: alternate?.icao ?? '',
                   iata: alternate?.iata ?? '',
                   name: alternate?.name ?? '',
-                  lat: alternate?.lat ?? 0,
-                  lng: alternate?.lng ?? 0,
+                  lat: alternate?.latitude ?? 0,
+                  lng: alternate?.longitude ?? 0,
                 }
               : null,
           alternate2:
@@ -124,8 +124,8 @@ export class IvaoFlightsUseCase {
                   icao: alternate2?.icao ?? '',
                   iata: alternate2?.iata ?? '',
                   name: alternate2?.name ?? '',
-                  lat: alternate2?.lat ?? 0,
-                  lng: alternate2?.lng ?? 0,
+                  lat: alternate2?.latitude ?? 0,
+                  lng: alternate2?.longitude ?? 0,
                 }
               : null,
         },

@@ -1,5 +1,6 @@
-import { NavigraphAirport } from '@/navigraph/entities/airport.entity';
+import { NavigraphAirport } from '@/navigraph/entities/navigraph_airport.entity';
 import { BaseService } from '@/navigraph/services/base.service';
+import { Nullable } from '@/shared/utils/nullable';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { ClsService } from 'nestjs-cls';
@@ -21,5 +22,12 @@ export class NavigraphAirportsService extends BaseService {
     const airports = await this.getRepository(NavigraphAirport).find();
 
     return new Map(airports.map((airport) => [airport.icao, airport]));
+  }
+
+  async findByICAO(icao: string): Promise<Nullable<NavigraphAirport>> {
+    return await this.getRepository(NavigraphAirport).findOne({
+      where: { icao },
+      relations: ['gates'],
+    });
   }
 }

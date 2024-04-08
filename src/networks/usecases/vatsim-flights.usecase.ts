@@ -1,5 +1,5 @@
-import { Airport } from '@/airports/airports.entity';
 import { AirportsService } from '@/airports/airports.service';
+import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
 import {
@@ -84,15 +84,15 @@ export class VatsimFlightsUsecase {
         icao: flight_plan.departure,
         iata: departure?.iata ?? '',
         name: departure?.name ?? '',
-        lat: departure?.lat ?? 0,
-        lng: departure?.lng ?? 0,
+        lat: departure?.latitude ?? 0,
+        lng: departure?.longitude ?? 0,
       },
       arrival: {
         icao: flight_plan.arrival,
         iata: arrival?.iata ?? '',
         name: arrival?.name ?? '',
-        lat: arrival?.lat ?? 0,
-        lng: arrival?.lng ?? 0,
+        lat: arrival?.latitude ?? 0,
+        lng: arrival?.longitude ?? 0,
       },
       aircraft: new Aircraft({
         icao: flight_plan.aircraft_short,
@@ -118,8 +118,8 @@ export class VatsimFlightsUsecase {
               icao: flight_plan.alternate,
               iata: alternate?.iata ?? '',
               name: alternate?.name ?? '',
-              lat: alternate?.lat ?? 0,
-              lng: alternate?.lng ?? 0,
+              lat: alternate?.latitude ?? 0,
+              lng: alternate?.longitude ?? 0,
             }
           : null,
       alternate2: null,
@@ -192,8 +192,8 @@ export class VatsimFlightsUsecase {
       }
 
       const distance = Math.sqrt(
-        Math.pow(Math.abs(pilot.latitude - airport.lat), 2) +
-          Math.pow(Math.abs(pilot.longitude - airport.lng), 2),
+        Math.pow(Math.abs(pilot.latitude - airport.latitude), 2) +
+          Math.pow(Math.abs(pilot.longitude - airport.longitude), 2),
       );
 
       return distance < 2;
