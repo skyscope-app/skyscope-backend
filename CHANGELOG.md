@@ -1,3 +1,16 @@
+# [1.19.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.18.0...v1.19.0) (2024-04-08)
+
+
+### Bug Fixes
+
+* remove airports.json ([5cfbf8d](https://github.com/skyscope-app/skyscope-backend/commit/5cfbf8d5ca70dd887a59fa64908bce7bf58434e7))
+
+
+### Features
+
+* **airports:** fetching airport data from navigraph ([1f6d838](https://github.com/skyscope-app/skyscope-backend/commit/1f6d8383cedd4d15c86fdb67e91b191d0e63b03b))
+* **navigraph:** add airport to fetch airports from navigraph ([bee4a2e](https://github.com/skyscope-app/skyscope-backend/commit/bee4a2e302003b4d08386f36d55531b358062e83))
+
 # [1.18.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.17.1...v1.18.0) (2024-04-07)
 
 
