@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.19.2...v1.20.0) (2024-04-08)
+
+
+### Features
+
+* **navigraph:** first implementation of route parsing using navigraph data ([b5c86f8](https://github.com/skyscope-app/skyscope-backend/commit/b5c86f8fbb70e99fad4900f4272d09327fc1c084))
+
 ## [1.19.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.19.1...v1.19.2) (2024-04-08)
 
 
