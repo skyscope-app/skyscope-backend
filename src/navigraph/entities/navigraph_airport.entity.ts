@@ -1,4 +1,5 @@
 import { NavigraphAirportGate } from '@/navigraph/entities/navigraph_airport_gate.entity';
+import { NavigraphAirportRunway } from '@/navigraph/entities/navigraph_airport_runway.entity';
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'tbl_airports' })
@@ -103,4 +104,11 @@ export class NavigraphAirport {
     name: 'airport_identifier',
   })
   gates?: NavigraphAirportGate[];
+
+  @OneToMany(() => NavigraphAirportRunway, (runway) => runway.airport)
+  @JoinColumn({
+    foreignKeyConstraintName: 'airport_identifier',
+    name: 'airport_identifier',
+  })
+  runways?: NavigraphAirportRunway[];
 }

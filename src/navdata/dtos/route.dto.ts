@@ -1,3 +1,4 @@
+import { Airport, Route, RoutePoint, Segment } from '@/navigraph/domain/route';
 import { ApiProperty } from '@nestjs/swagger';
 
 enum RouteSegmentType {
@@ -6,73 +7,145 @@ enum RouteSegmentType {
   AIRWAY = 'AIRWAY',
 }
 
-class Segment {
+class SegmentResponse {
   @ApiProperty({ enum: RouteSegmentType })
   type: RouteSegmentType;
   @ApiProperty()
   name: string;
 
-  constructor(obj: any) {
+  constructor(segmentResponse: SegmentResponse) {
+    this.type = segmentResponse.type;
+    this.name = segmentResponse.name;
+  }
+
+  static fromSimbrief(obj: any) {
+    let type = RouteSegmentType.AIRWAY;
+
     if (obj.stage === 'CLB' && obj.is_sid_star === '1') {
-      this.type = RouteSegmentType.SID;
+      type = RouteSegmentType.SID;
     } else if (obj.stage === 'DSC' && obj.is_sid_star === '1') {
-      this.type = RouteSegmentType.STAR;
-    } else {
-      this.type = RouteSegmentType.AIRWAY;
+      type = RouteSegmentType.STAR;
     }
 
-    this.name = obj.via_airway;
+    const name = obj.via_airway;
+
+    return new SegmentResponse({
+      type,
+      name,
+    });
+  }
+
+  static fromNavigraph(segment: Segment) {
+    const response = new SegmentResponse({
+      type: segment.type,
+      name: segment.name,
+    });
   }
 }
 
-class RoutePoint {
+class RoutePointResponse {
   @ApiProperty()
-  lat: number;
+  latitude: number;
   @ApiProperty()
-  lng: number;
+  longitude: number;
   @ApiProperty()
-  ident: string;
+  identifier: string;
   @ApiProperty({ type: Segment })
   segment: Segment;
 
-  constructor(obj: any) {
-    this.ident = obj.ident;
-    this.lat = Number(obj.pos_lat);
-    this.lng = Number(obj.pos_long);
-    this.segment = new Segment(obj);
+  constructor(routePointResponse: RoutePointResponse) {
+    this.latitude = routePointResponse.latitude;
+    this.longitude = routePointResponse.longitude;
+    this.identifier = routePointResponse.identifier;
+    this.segment = routePointResponse.segment;
+  }
+
+  static fromSimbrief(obj: any) {
+    const identifier = obj.ident;
+    const latitude = Number(obj.pos_lat);
+    const longitude = Number(obj.pos_long);
+    const segment = new Segment(obj);
+
+    return new RoutePointResponse({ identifier, latitude, longitude, segment });
+  }
+
+  static fromNavigraph(routePoint: RoutePoint) {
+    const identifier = routePoint.identifier;
+    const latitude = routePoint.latitude;
+    const longitude = routePoint.longitude;
+    const segment = new Segment(routePoint.segment);
+
+    return new RoutePointResponse({
+      identifier,
+      latitude,
+      longitude,
+      segment,
+    });
   }
 }
 
-class Airport {
+class AirportResponse {
   @ApiProperty()
   icao: string;
   @ApiProperty()
   name: string;
   @ApiProperty()
-  lat: number;
+  latitude: number;
   @ApiProperty()
-  lng: number;
+  longitude: number;
 
-  constructor(obj: any) {
-    this.lat = Number(obj.pos_lat);
-    this.lng = Number(obj.pos_long);
-    this.icao = obj.icao_code;
-    this.name = obj.name;
+  constructor(airportResponse: AirportResponse) {
+    this.icao = airportResponse.icao;
+    this.name = airportResponse.name;
+    this.latitude = airportResponse.latitude;
+    this.longitude = airportResponse.longitude;
+  }
+
+  static fromSimbrief(obj: any) {
+    const latitude = Number(obj.pos_lat);
+    const longitude = Number(obj.pos_long);
+    const icao = obj.icao_code;
+    const name = obj.name;
+
+    return new AirportResponse({ latitude, longitude, icao, name });
+  }
+
+  static fromNavigraph(airport: Airport) {
+    const icao = airport.icao;
+    const name = airport.name;
+    const latitude = airport.latitude;
+    const longitude = airport.longitude;
+
+    return new AirportResponse({ icao, name, latitude, longitude });
   }
 }
 
-export class Route {
+export class RouteResponse {
   @ApiProperty({ type: Airport })
-  departure: Airport;
+  departure: AirportResponse;
   @ApiProperty({ type: [RoutePoint] })
-  points: RoutePoint[];
+  points: RoutePointResponse[];
   @ApiProperty({ type: Airport })
-  arrival: Airport;
+  arrival: AirportResponse;
 
-  constructor(obj: any) {
-    this.departure = new Airport(obj.origin);
-    this.points = obj.navlog.fix
-      .map((d) => new RoutePoint(d))
+  constructor(route: RouteResponse) {
+    this.departure = route.departure;
+    this.points = route.points;
+    this.arrival = route.arrival;
+  }
+
+  static fromNavigraph(route: Route) {
+    const departure = AirportResponse.fromNavigraph(route.departure);
+    const points = route.points.map((p) => RoutePointResponse.fromNavigraph(p));
+    const arrival = AirportResponse.fromNavigraph(route.arrival);
+
+    return new Route({ departure, points, arrival });
+  }
+
+  static fromSimbrief(obj: any) {
+    const departure = AirportResponse.fromSimbrief(obj.origin);
+    const points = obj.navlog.fix
+      .map((d) => RoutePointResponse.fromSimbrief(d))
       .filter(
         (p) =>
           ![
@@ -82,6 +155,9 @@ export class Route {
             'TOD',
           ].includes(p.ident),
       );
-    this.arrival = new Airport(obj.destination);
+
+    const arrival = AirportResponse.fromSimbrief(obj.destination);
+
+    return new Route({ departure, points, arrival });
   }
 }

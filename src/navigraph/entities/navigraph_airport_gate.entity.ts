@@ -15,7 +15,7 @@ export class NavigraphAirportGate {
     length: 4,
     nullable: true,
   })
-  airport_icao: string;
+  airportICAO: string;
 
   @Column({ name: 'icao_code', type: 'text', length: 2, nullable: true })
   countryCode: string;
