@@ -174,10 +174,6 @@ export class VatsimFlightsUsecase {
     pilot: VatsimDataPilot,
     airports: Map<string, Airport>,
   ): any {
-    if (pilot.callsign === 'GLO1496') {
-      console.log('aqui');
-    }
-
     if (!pilot.flight_plan) {
       return false;
     }

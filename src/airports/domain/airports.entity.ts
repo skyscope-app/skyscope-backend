@@ -1,4 +1,5 @@
 import { AirportGate } from '@/airports/domain/airport_gate';
+import { AirportRunway } from '@/airports/domain/airport_runway';
 import { NavigraphAirport } from '@/navigraph/entities/navigraph_airport.entity';
 import { Nullable } from '@/shared/utils/nullable';
 
@@ -12,6 +13,7 @@ export class Airport {
   public readonly transitionAltitude: number;
   public readonly transitionLevel: Nullable<number>;
   public readonly gates: AirportGate[];
+  public readonly runways: AirportRunway[];
 
   constructor(airport: Airport) {
     this.icao = airport.icao;
@@ -23,6 +25,7 @@ export class Airport {
     this.gates = airport.gates;
     this.transitionAltitude = airport.transitionAltitude;
     this.transitionLevel = airport.transitionLevel;
+    this.runways = airport.runways;
   }
 
   static fromNavigraph(navigraphAirport: NavigraphAirport) {
@@ -36,6 +39,7 @@ export class Airport {
       transitionAltitude: navigraphAirport.transitionAltitude,
       transitionLevel: navigraphAirport.transitionLevel,
       gates: navigraphAirport.gates?.map(AirportGate.fromNavigraph) ?? [],
+      runways: navigraphAirport.runways?.map(AirportRunway.fromNavigraph) ?? [],
     });
   }
 }

@@ -1,8 +1,13 @@
-import { Route } from '@/navdata/dtos/route.dto';
+import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { SimbriefService } from '@/navdata/services/simbrief.service';
 import { Authenticated, AuthenticatedUser } from '@/shared/utils/decorators';
 import { User } from '@/users/domain/user.entity';
-import { Controller, Get, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('simbrief')
@@ -19,6 +24,12 @@ export class SimbriefController {
 
     const data = await this.simbriefService.current(user.simbriefId);
 
-    return new Route(data);
+    if (!data) {
+      throw new NotFoundException(
+        `No flight plan on file for the specified user`,
+      );
+    }
+
+    return RouteResponse.fromSimbrief(data);
   }
 }

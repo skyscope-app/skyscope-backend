@@ -19,15 +19,15 @@ export class NavigraphAirportsService extends BaseService {
   }
 
   async findAllAsMap(): Promise<Map<string, NavigraphAirport>> {
-    const airports = await this.getRepository(NavigraphAirport).find();
+    const airports = await this.repository(NavigraphAirport).find();
 
     return new Map(airports.map((airport) => [airport.icao, airport]));
   }
 
   async findByICAO(icao: string): Promise<Nullable<NavigraphAirport>> {
-    return await this.getRepository(NavigraphAirport).findOne({
+    return await this.repository(NavigraphAirport).findOne({
       where: { icao },
-      relations: ['gates'],
+      relations: ['gates', 'runways'],
     });
   }
 }
