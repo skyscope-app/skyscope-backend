@@ -156,7 +156,7 @@ export class NavigraphParseRouteUseCase extends BaseService {
                           waypoint_identifier as segmentName
                    from tbl_stars stars
                    where stars.procedure_identifier = $1
-                     and (stars.transition_identifier = $2 OR stars.route_type = 6)
+                     and (stars.transition_identifier = $2 OR stars.route_type = 6 OR stars.route_type = 5) 
                    order by stars.route_type, stars.seqno  `;
 
     const result: any[] = await this.datasource().query(query, [
@@ -185,9 +185,9 @@ export class NavigraphParseRouteUseCase extends BaseService {
   }
 
   private async getPointsFromAirway(
-    a: detail,
-    b: detail,
-    c: detail,
+    from: detail,
+    airway: detail,
+    to: detail,
   ): Promise<RoutePoint[]> {
     const query = `select waypoint_identifier as identifier,
                           route_identifier    as segmentName,
@@ -195,33 +195,40 @@ export class NavigraphParseRouteUseCase extends BaseService {
                           waypoint_longitude  as longitude
                    from tbl_enroute_airways tea
                    where tea.route_identifier = $1
-                     and tea.seqno between (select seqno
+                     and tea.seqno between (select MIN(seqno)
                                             from tbl_enroute_airways tea
                                             where tea.route_identifier = $1
-                                              AND tea.waypoint_identifier = $2)
-                       and (select seqno
+                                              AND tea.waypoint_identifier IN ($2, $3))
+                       and (select MAX(seqno)
                             from tbl_enroute_airways tea
                             where tea.route_identifier = $1
-                              AND tea.waypoint_identifier = $3)`;
+                              AND tea.waypoint_identifier IN ($2, $3))
+                              order by case when tea.direction_restriction = 'B' then -tea.seqno  else tea.seqno  end
+                              `;
 
     const result = await this.datasource().query(query, [
-      b.identifier,
-      a.identifier,
-      c.identifier,
+      airway.identifier,
+      from.identifier,
+      to.identifier,
     ]);
 
-    return result.map((d) => {
-      const { identifier, segmentName, latitude, longitude } = d;
-      return new RoutePoint({
-        identifier,
-        segment: new Segment({
-          type: RouteSegmentType.AIRWAY,
-          name: segmentName,
-        }),
-        longitude,
-        latitude,
-      });
-    });
+    const order = result[0].identifier === from.identifier ? 1 : -1;
+
+    return result
+      .sort(() => order)
+      .map((d) => {
+        const { identifier, segmentName, latitude, longitude } = d;
+        return new RoutePoint({
+          identifier,
+          segment: new Segment({
+            type: RouteSegmentType.AIRWAY,
+            name: segmentName,
+          }),
+          longitude,
+          latitude,
+        });
+      })
+      .slice(1);
   }
 
   private async getPointsFromDct(
