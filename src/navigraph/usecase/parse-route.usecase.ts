@@ -86,7 +86,29 @@ export class NavigraphParseRouteUseCase extends BaseService {
       RoutePointType.DCT,
     ];
 
-    if (!b || !valid.includes(b.type)) {
+    if (!b) {
+      return [];
+    }
+
+    if (!valid.includes(b.type)) {
+      const validDct = [
+        RoutePointType.ENROUTE_WAYPOINT,
+        RoutePointType.TERMINAL_WAYPOINT,
+        RoutePointType.VOR,
+        RoutePointType.ENROUTE_NDB,
+        RoutePointType.TERMINAL_NDB,
+        RoutePointType.COORDINATES,
+      ];
+
+      const validFirstSegment =
+        validDct.includes(b.type) && validDct.includes(a.type);
+
+      if (validFirstSegment) {
+        const ab = validFirstSegment ? await this.getPointsFromDct(a, b) : [];
+
+        return ab.slice(1);
+      }
+
       return [];
     }
 
