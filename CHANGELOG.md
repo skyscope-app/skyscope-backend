@@ -1,3 +1,11 @@
+## [1.20.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.20.0...v1.20.1) (2024-04-10)
+
+
+### Bug Fixes
+
+* **airway:** avoid duplication on navigraph route parsing ([5a500a7](https://github.com/skyscope-app/skyscope-backend/commit/5a500a7b9694ef3901ac5f030b3bf588ffd0dcfa))
+* **navigraph:** improvement of route ([05c3ee2](https://github.com/skyscope-app/skyscope-backend/commit/05c3ee22dea398d1ac13a3788e72c400a6b5135c))
+
 # [1.20.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.19.2...v1.20.0) (2024-04-08)
 
 
