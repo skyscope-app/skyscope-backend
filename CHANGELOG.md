@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.20.1...v1.21.0) (2024-04-15)
+
+
+### Features
+
+* **route:** add route to network find flight by id ([5d6f477](https://github.com/skyscope-app/skyscope-backend/commit/5d6f477bddc00a544629c7c95fdd0b5d3d553ed4))
+
 ## [1.20.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.20.0...v1.20.1) (2024-04-10)
 
 
