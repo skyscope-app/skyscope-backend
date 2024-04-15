@@ -54,6 +54,6 @@ export const getNavigraphModule = (file: string, name: string) => {
     NavigraphAirportsService,
     NavigraphParseRouteUseCase,
   ],
-  exports: [AiracService, NavigraphAirportsService],
+  exports: [AiracService, NavigraphAirportsService, NavigraphParseRouteUseCase],
 })
 export class NavigraphModule {}

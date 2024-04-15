@@ -1,3 +1,4 @@
+import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { getAircraftType } from '@/networks/functions/getAircraftType';
 import { Nullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
@@ -182,4 +183,6 @@ export class LiveFlightWithTracks {
   flightPlan: Nullable<FlightPlan>;
   @ApiProperty({ type: () => [LiveFlightTrack] })
   tracks: LiveFlightTrack[];
+  @ApiProperty({ type: () => RouteResponse, nullable: true })
+  route: Nullable<RouteResponse>;
 }

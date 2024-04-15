@@ -42,7 +42,7 @@ export class NavigraphParseRouteUseCase extends BaseService {
   }
 
   async run(route: string): Promise<Route> {
-    const segments = route.split(' ');
+    const segments = route.split(' ').map((segment) => segment.split('/')[0]);
 
     const detailed = await Promise.all(segments.map((s) => this.detailOne(s)));
 
