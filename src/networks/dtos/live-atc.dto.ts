@@ -20,11 +20,12 @@ export enum ATCFacility {
   DEL = 'DEL',
   GND = 'GND',
   TWR = 'TWR',
+  AFIS = 'AFIS',
   APP = 'APP',
   DEP = 'DEP',
   CTR = 'CTR',
   FSS = 'FSS',
-  UNKNOW = 'UNKNOW',
+  UNKNOWN = 'UNKNOWN',
 }
 
 export class LiveATCPoint {

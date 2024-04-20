@@ -4,6 +4,27 @@ import { Airport } from '@/airports/domain/airports.entity';
 import { Nullable, assertNullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
 
+export class AirportSummaryResponse {
+  @ApiProperty()
+  icao: string;
+  @ApiProperty({ nullable: true })
+  iata: Nullable<string>;
+  @ApiProperty()
+  name: string;
+  @ApiProperty()
+  lat: number;
+  @ApiProperty()
+  lng: number;
+
+  constructor(airport: Airport) {
+    this.iata = assertNullable(airport.iata);
+    this.name = airport.name;
+    this.icao = airport.icao;
+    this.lat = airport.latitude;
+    this.lng = airport.longitude;
+  }
+}
+
 export class AirportRunwayResponse {
   @ApiProperty()
   identifier: string;
@@ -59,7 +80,7 @@ export class AirportResponse {
   @ApiProperty()
   icao: string;
   @ApiProperty()
-  iata: string;
+  iata: Nullable<string>;
   @ApiProperty()
   name: string;
   @ApiProperty()

@@ -64,7 +64,7 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
       case 'DEP':
         return ATCFacility.DEP;
       default:
-        return ATCFacility.UNKNOW;
+        return ATCFacility.UNKNOWN;
     }
   }
 }

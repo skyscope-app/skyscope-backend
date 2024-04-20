@@ -52,6 +52,28 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     );
   }
 
+  getFacility(atc: VatsimDataController) {
+    switch (atc.facility) {
+      case 1:
+        return ATCFacility.FSS;
+      case 2:
+        return ATCFacility.DEL;
+      case 3:
+        return ATCFacility.GND;
+      case 4:
+        if (atc.callsign.endsWith('R_TWR')) {
+          return ATCFacility.AFIS;
+        }
+        return ATCFacility.TWR;
+      case 5:
+        return ATCFacility.APP;
+      case 6:
+        return ATCFacility.CTR;
+      default:
+        return ATCFacility.UNKNOWN;
+    }
+  }
+
   private async loadTraconBoundaries() {
     return this.httpService
       .get<ATCFacility[]>(this.traconBoundaries)
@@ -222,25 +244,6 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       longitude: boundary.longitude,
       points: boundary.points,
     };
-  }
-
-  getFacility(atc: VatsimDataController) {
-    switch (atc.facility) {
-      case 1:
-        return ATCFacility.FSS;
-      case 2:
-        return ATCFacility.DEL;
-      case 3:
-        return ATCFacility.GND;
-      case 4:
-        return ATCFacility.TWR;
-      case 5:
-        return ATCFacility.APP;
-      case 6:
-        return ATCFacility.CTR;
-      default:
-        return ATCFacility.UNKNOW;
-    }
   }
 
   private getLatAndLon(

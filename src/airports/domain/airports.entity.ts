@@ -5,7 +5,7 @@ import { Nullable } from '@/shared/utils/nullable';
 
 export class Airport {
   public readonly icao: string;
-  public readonly iata: string;
+  public readonly iata: Nullable<string>;
   public readonly name: string;
   public readonly latitude: number;
   public readonly longitude: number;

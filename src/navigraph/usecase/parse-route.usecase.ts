@@ -319,7 +319,7 @@ export class NavigraphParseRouteUseCase extends BaseService {
                               WHEN endbs.ndb_identifier = $1 THEN 'ENROUTE_NDB'
                               WHEN tndbs.ndb_identifier = $1 THEN 'TERMINAL_NDB'
                               WHEN $1 = 'DCT' THEN 'DCT'
-                              ELSE 'UNKNOW'
+                              ELSE 'UNKNOWN'
                               END AS type,
                           $1      as identifier
                    FROM tbl_enroute_airways tea
