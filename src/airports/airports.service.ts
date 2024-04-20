@@ -8,6 +8,13 @@ export class AirportsService {
     private readonly navigraphAirportService: NavigraphAirportsService,
   ) {}
 
+  async list() {
+    const airports = await this.navigraphAirportService.findAllAsMap();
+    return Array.from(airports.values()).map((navigraphAirport) =>
+      Airport.fromNavigraph(navigraphAirport),
+    );
+  }
+
   async findByICAO(icao: string) {
     const airport = await this.navigraphAirportService.findByICAO(icao);
     return airport ? Airport.fromNavigraph(airport) : null;

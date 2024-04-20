@@ -3,6 +3,7 @@ import {
   AuthenticatedUser,
   WaitListAuthenticated,
 } from '@/shared/utils/decorators';
+import { ValidProfileImageMimeTypes } from '@/users/constants';
 import { User } from '@/users/domain/user.entity';
 import { Profile } from '@/users/dtos/profile.dto';
 import { ProfileOptionsDto } from '@/users/dtos/user-update.dto';
@@ -56,7 +57,7 @@ export class UsersController {
     @AuthenticatedUser() user: User,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+    if (!ValidProfileImageMimeTypes.includes(file.mimetype)) {
       throw new BadRequestException(
         `Invalid file type. Only JPEG and PNG are allowed`,
       );

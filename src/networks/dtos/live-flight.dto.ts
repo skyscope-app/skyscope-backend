@@ -1,3 +1,4 @@
+import { Airline } from '@/airlines/domain/airline';
 import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { getAircraftType } from '@/networks/functions/getAircraftType';
 import { Nullable } from '@/shared/utils/nullable';
@@ -115,6 +116,27 @@ export class FlightPlan {
   alternate2: Airport | null;
 }
 
+export class AirlineResponse {
+  @ApiProperty()
+  public readonly id: string;
+  @ApiProperty()
+  public readonly name: string;
+  @ApiProperty()
+  public readonly icao: string;
+  @ApiProperty()
+  public readonly image: string;
+  @ApiProperty()
+  public readonly callsign: string;
+
+  constructor(airline: Airline) {
+    this.id = airline.id;
+    this.name = airline.name;
+    this.icao = airline.icao;
+    this.image = airline.image;
+    this.callsign = airline.callsign;
+  }
+}
+
 export class LiveFlight {
   @ApiProperty()
   id: string;
@@ -128,6 +150,8 @@ export class LiveFlight {
   network: string;
   @ApiProperty({ nullable: true, type: () => FlightPlan })
   flightPlan: Nullable<FlightPlan>;
+  @ApiProperty({ nullable: true, type: () => AirlineResponse })
+  airline: Nullable<AirlineResponse>;
 }
 
 export class LiveFlightTrack {

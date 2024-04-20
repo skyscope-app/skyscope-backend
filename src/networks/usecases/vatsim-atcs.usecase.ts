@@ -71,7 +71,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       case 6:
         return ATCFacility.CTR;
       default:
-        return ATCFacility.UNKNOW;
+        return ATCFacility.UNKNOWN;
     }
   }
 

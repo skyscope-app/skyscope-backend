@@ -1,9 +1,12 @@
+import { Airline } from '@/airlines/domain/airline';
+import { AirlinesService } from '@/airlines/services/airlines.service';
 import { AirportsService } from '@/airports/airports.service';
 import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
 import {
   Aircraft,
+  AirlineResponse,
   FlightPlan,
   LiveFlight,
 } from '@/networks/dtos/live-flight.dto';
@@ -25,18 +28,24 @@ export class VatsimFlightsUsecase {
     private readonly airportsService: AirportsService,
     private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
+    private readonly airlinesService: AirlinesService,
   ) {}
 
   public async fetchLiveFlights(): Promise<Array<LiveFlight>> {
     return this.cacheService.handle(
       'vatsim_current_live',
       async () => {
-        const [{ data }, airports] = await Promise.all([
+        const [{ data }, airports, airlines] = await Promise.all([
           this.httpService.get<VatsimData>(this.url),
           this.airportsService.getAirportsMap(),
+          this.airlinesService.list(),
         ]);
 
-        const flights = this.parse(data.pilots, airports);
+        const airlinesByIcao = new Map(
+          airlines.map((airline) => [airline.icao, airline]),
+        );
+
+        const flights = this.parse(data.pilots, airports, airlinesByIcao);
 
         return flights;
       },
@@ -129,45 +138,51 @@ export class VatsimFlightsUsecase {
   private parse(
     pilots: VatsimDataPilot[],
     airports: Map<string, Airport>,
+    airlinesByIcao: Map<string, Airline>,
   ): LiveFlight[] {
     if (!pilots) {
       return [];
     }
 
-    return pilots.map((data) => ({
-      id: v5(
-        crypto
-          .createHash('md5')
-          .update(
-            `${
-              data.cid +
-              data.callsign +
-              data.flight_plan?.departure +
-              data.flight_plan?.arrival +
-              data.flight_plan?.deptime
-            }`,
-          )
-          .digest('hex'),
-        '820aabf8-e662-4075-8e9f-8a94dc1f5148',
-      ),
-      network: 'vatsim',
-      callsign: data.callsign,
-      pilot: {
-        id: data.cid,
-        rating: '',
-        name: data.name,
-      },
-      position: {
-        lat: data.latitude,
-        lng: data.longitude,
-        altitude: data.altitude,
-        heading: data.heading,
-        transponder: data.transponder,
-        groundSpeed: data.groundspeed,
-        onGround: this.detectGround(data, airports), // TODO: Implement this
-      },
-      flightPlan: this.parseVatsimFlightPlan(data.flight_plan, airports),
-    }));
+    return pilots.map((data) => {
+      const airline = airlinesByIcao.get(data.callsign.slice(0, 3));
+
+      return {
+        id: v5(
+          crypto
+            .createHash('md5')
+            .update(
+              `${
+                data.cid +
+                data.callsign +
+                data.flight_plan?.departure +
+                data.flight_plan?.arrival +
+                data.flight_plan?.deptime
+              }`,
+            )
+            .digest('hex'),
+          '820aabf8-e662-4075-8e9f-8a94dc1f5148',
+        ),
+        network: 'vatsim',
+        callsign: data.callsign,
+        pilot: {
+          id: data.cid,
+          rating: '',
+          name: data.name,
+        },
+        position: {
+          lat: data.latitude,
+          lng: data.longitude,
+          altitude: data.altitude,
+          heading: data.heading,
+          transponder: data.transponder,
+          groundSpeed: data.groundspeed,
+          onGround: this.detectGround(data, airports), // TODO: Implement this
+        },
+        flightPlan: this.parseVatsimFlightPlan(data.flight_plan, airports),
+        airline: airline ? new AirlineResponse(airline) : null,
+      };
+    });
   }
 
   private detectGround(

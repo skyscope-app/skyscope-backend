@@ -1,3 +1,4 @@
+import { AirlinesModule } from '@/airlines/airlines.module';
 import { AirportsModule } from '@/airports/airports.module';
 import { CacheModule } from '@/cache/cache.module';
 import { ConfigurationsModule } from '@/configurations/configuration.module';
@@ -23,6 +24,7 @@ import { Module } from '@nestjs/common';
     CacheModule,
     FilesModule,
     NavigraphModule,
+    AirlinesModule,
     ConfigurationsModule,
   ],
   controllers: [NetworksController],
