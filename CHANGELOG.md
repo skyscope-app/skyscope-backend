@@ -1,3 +1,31 @@
+# [1.23.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.22.1...v1.23.0) (2024-04-20)
+
+
+### Features
+
+* **ivao:** add geometry to ivao atcs ([15c7f32](https://github.com/skyscope-app/skyscope-backend/commit/15c7f3255a4777eb9a58fd7d5a261c4d240a9aa4))
+
+## [1.22.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.22.0...v1.22.1) (2024-04-20)
+
+
+### Bug Fixes
+
+* **ivao:** avoid error when empty atis on ivao ([b282849](https://github.com/skyscope-app/skyscope-backend/commit/b282849cf677a624fa9d954f2bdad97218a069e5))
+
+# [1.22.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.21.0...v1.22.0) (2024-04-20)
+
+
+### Features
+
+* add afis and rmp ([8ab7c7f](https://github.com/skyscope-app/skyscope-backend/commit/8ab7c7f1ddb8dcb7a43e7dbb646045ea8699cd91))
+
+# [1.21.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.20.1...v1.21.0) (2024-04-15)
+
+
+### Features
+
+* **route:** add route to network find flight by id ([5d6f477](https://github.com/skyscope-app/skyscope-backend/commit/5d6f477bddc00a544629c7c95fdd0b5d3d553ed4))
+
 ## [1.20.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.20.0...v1.20.1) (2024-04-10)
 
 

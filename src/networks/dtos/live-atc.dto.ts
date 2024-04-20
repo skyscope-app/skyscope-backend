@@ -18,6 +18,7 @@ export class User {
 
 export enum ATCFacility {
   DEL = 'DEL',
+  RMP = 'RMP',
   GND = 'GND',
   TWR = 'TWR',
   AFIS = 'AFIS',
