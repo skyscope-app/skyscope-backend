@@ -42,6 +42,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       15,
     );
   }
+
   async fetchTraconsBoundaries() {
     return this.cacheService.handle(
       'vatsim-tracon-boundaries',
@@ -50,6 +51,28 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       },
       60 * 60,
     );
+  }
+
+  getFacility(atc: VatsimDataController) {
+    switch (atc.facility) {
+      case 1:
+        return ATCFacility.FSS;
+      case 2:
+        return ATCFacility.DEL;
+      case 3:
+        return ATCFacility.GND;
+      case 4:
+        if (atc.callsign.endsWith('R_TWR')) {
+          return ATCFacility.AFIS;
+        }
+        return ATCFacility.TWR;
+      case 5:
+        return ATCFacility.APP;
+      case 6:
+        return ATCFacility.CTR;
+      default:
+        return ATCFacility.UNKNOW;
+    }
   }
 
   private async loadTraconBoundaries() {
@@ -100,16 +123,10 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     switch (facility) {
       case ATCFacility.FSS:
       case ATCFacility.CTR:
-        return this.extractGeometryFromCtr(facility, vatspyData, atc);
+        return this.extractGeometryFromCenter(facility, vatspyData, atc);
       case ATCFacility.APP:
       case ATCFacility.DEP:
-        return this.extractGeometryFromApp(
-          facility,
-          vatspyData,
-          atc,
-          airports,
-          tmaBoundaries,
-        );
+        return this.extractGeometryFromApp(atc, tmaBoundaries);
       case ATCFacility.DEL:
       case ATCFacility.GND:
       case ATCFacility.TWR:
@@ -122,6 +139,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
         };
     }
   }
+
   private extractGeometryFromAirport(
     atc: VatsimDataController,
     airports: Map<string, Airport>,
@@ -146,10 +164,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
   }
 
   private extractGeometryFromApp(
-    facility: ATCFacility,
-    vatspyData: VatSpyData,
     atc: VatsimDataController,
-    airports: Map<string, Airport>,
     tmaBoundaries: FeatureCollection,
   ) {
     const features = new Map(
@@ -184,7 +199,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     };
   }
 
-  private extractGeometryFromCtr(
+  private extractGeometryFromCenter(
     facility: ATCFacility,
     vatspyData: VatSpyData,
     atc: VatsimDataController,
@@ -221,52 +236,6 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
       latitude: boundary.latitude,
       longitude: boundary.longitude,
       points: boundary.points,
-    };
-  }
-
-  getFacility(atc: VatsimDataController) {
-    switch (atc.facility) {
-      case 1:
-        return ATCFacility.FSS;
-      case 2:
-        return ATCFacility.DEL;
-      case 3:
-        return ATCFacility.GND;
-      case 4:
-        return ATCFacility.TWR;
-      case 5:
-        return ATCFacility.APP;
-      case 6:
-        return ATCFacility.CTR;
-      default:
-        return ATCFacility.UNKNOW;
-    }
-  }
-
-  private getLatAndLon(
-    atc: VatsimDataController,
-    airports: Map<string, Airport>,
-  ) {
-    if (atc.facility < 1 && atc.facility > 4) {
-      return {
-        latitude: 0,
-        longitude: 0,
-      };
-    }
-
-    const icao = atc.callsign.slice(0, 4);
-    const airport = airports.get(icao);
-
-    if (!airport) {
-      return {
-        latitude: 0,
-        longitude: 0,
-      };
-    }
-
-    return {
-      latitude: Number(airport.latitude),
-      longitude: Number(airport.longitude),
     };
   }
 }
