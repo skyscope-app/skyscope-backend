@@ -39,5 +39,6 @@ import { Module } from '@nestjs/common';
     VatSpyService,
     OAuth2Service,
   ],
+  exports: [NetworksService],
 })
 export class NetworksModule {}

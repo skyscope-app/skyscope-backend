@@ -1,6 +1,8 @@
 import { AirportGate } from '@/airports/domain/airport_gate';
 import { AirportRunway } from '@/airports/domain/airport_runway';
 import { Airport } from '@/airports/domain/airports.entity';
+import { Network, NetworkAirportFlights } from '@/networks/domain/network';
+import { LiveFlight } from '@/networks/dtos/live-flight.dto';
 import { Nullable, assertNullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -114,6 +116,48 @@ export class AirportResponse {
   }
 }
 
+export class AirportFlight {
+  @ApiProperty()
+  id: string;
+  @ApiProperty()
+  callsign: string;
+  @ApiProperty({ nullable: true })
+  departure: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  arrival: Nullable<string>;
+
+  constructor(flight: LiveFlight) {
+    this.id = flight.id;
+    this.callsign = flight.callsign;
+    this.arrival = assertNullable(flight.flightPlan?.arrival.icao);
+    this.departure = assertNullable(flight.flightPlan?.departure.icao);
+  }
+}
+
+export class AirportFlights {
+  @ApiProperty()
+  departure: AirportFlight[];
+  @ApiProperty()
+  arrival: AirportFlight[];
+
+  constructor(departure: LiveFlight[], arrival: LiveFlight[]) {
+    this.departure = departure.map((dep) => new AirportFlight(dep));
+    this.arrival = arrival.map((arr) => new AirportFlight(arr));
+  }
+}
+
+export class NetworksAirportFlights {
+  @ApiProperty({ type: AirportFlights })
+  ivao: AirportFlights;
+  @ApiProperty({ type: AirportFlights })
+  vatsim: AirportFlights;
+
+  constructor(ivao: NetworkAirportFlights, vatsim: NetworkAirportFlights) {
+    this.ivao = new AirportFlights(ivao.departure, ivao.arrival);
+    this.vatsim = new AirportFlights(vatsim.departure, vatsim.arrival);
+  }
+}
+
 export class AirportDetailedResponse {
   @ApiProperty()
   icao: string;
@@ -139,11 +183,14 @@ export class AirportDetailedResponse {
   metar: Nullable<string>;
   @ApiProperty()
   taf: Nullable<string>;
+  @ApiProperty({ type: NetworksAirportFlights })
+  stats: NetworksAirportFlights;
 
   constructor(
     airport: Airport,
     metar: Nullable<string>,
     taf: Nullable<string>,
+    stats: Map<Network, NetworkAirportFlights>,
   ) {
     this.icao = airport.icao;
     this.iata = airport.iata;
@@ -159,5 +206,9 @@ export class AirportDetailedResponse {
     );
     this.metar = assertNullable(metar);
     this.taf = assertNullable(taf);
+    this.stats = new NetworksAirportFlights(
+      stats.get(Network.IVAO)!,
+      stats.get(Network.VATSIM)!,
+    );
   }
 }
