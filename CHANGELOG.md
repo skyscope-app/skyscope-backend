@@ -1,3 +1,11 @@
+# [1.25.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.24.2...v1.25.0) (2024-04-20)
+
+
+### Features
+
+* add metar and taf for airport ([19779a5](https://github.com/skyscope-app/skyscope-backend/commit/19779a59c10a09439a6e15db41b78be85d7ab59a))
+* **atc:** add list of arrival and departing traffics to airport ([4d2e924](https://github.com/skyscope-app/skyscope-backend/commit/4d2e924db825277416a1ea4b5c865d8317f38d40))
+
 ## [1.24.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.24.1...v1.24.2) (2024-04-20)
 
 
