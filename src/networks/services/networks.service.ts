@@ -1,3 +1,4 @@
+import { Network, NetworkAirportFlights } from '@/networks/domain/network';
 import {
   NetworkATCUseCase,
   NetworkFlightUseCase,
@@ -40,5 +41,29 @@ export class NetworksService
     ]);
 
     return [...ivao, ...vatsim];
+  }
+
+  async fetchAirportFlights(
+    icao: string,
+  ): Promise<Map<Network, NetworkAirportFlights>> {
+    const flights = await this.fetchLiveFlights();
+
+    return new Map<Network, NetworkAirportFlights>(
+      [Network.IVAO, Network.VATSIM].map((network) => [
+        network,
+        {
+          arrival: flights.filter(
+            (flight) =>
+              (flight.flightPlan?.arrival.icao ?? '') === icao &&
+              flight.network === network,
+          ),
+          departure: flights.filter(
+            (flight) =>
+              (flight.flightPlan?.departure.icao ?? '') === icao &&
+              flight.network === network,
+          ),
+        },
+      ]),
+    );
   }
 }
