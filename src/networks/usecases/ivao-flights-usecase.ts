@@ -1,9 +1,15 @@
+import { Airline } from '@/airlines/domain/airline';
+import { AirlinesService } from '@/airlines/services/airlines.service';
 import { AirportsService } from '@/airports/airports.service';
 import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
 import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
-import { Aircraft, LiveFlight } from '@/networks/dtos/live-flight.dto';
+import {
+  Aircraft,
+  AirlineResponse,
+  LiveFlight,
+} from '@/networks/dtos/live-flight.dto';
 import { parseSecondsToHours } from '@/shared/utils/time';
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
@@ -17,18 +23,28 @@ export class IvaoFlightsUseCase {
     private readonly airportsService: AirportsService,
     private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
+    private readonly airlinesService: AirlinesService,
   ) {}
 
   public async fetchLiveFlights() {
     return this.cacheService.handle(
       'ivao_current_live_flights',
       async () => {
-        const [{ data }, airports] = await Promise.all([
+        const [{ data }, airports, airlines] = await Promise.all([
           this.httpService.get<IVAOResponse>(this.url),
           this.airportsService.getAirportsMap(),
+          this.airlinesService.list(),
         ]);
 
-        const flights = this.parse(data.clients.pilots, airports);
+        const airlinesByIcao = new Map(
+          airlines.map((airline) => [airline.icao, airline]),
+        );
+
+        const flights = this.parse(
+          data.clients.pilots,
+          airports,
+          airlinesByIcao,
+        );
 
         return flights;
       },
@@ -39,12 +55,14 @@ export class IvaoFlightsUseCase {
   private parse(
     pilots: IvaoPilot[],
     airports: Map<string, Airport>,
+    airlinesByIcao: Map<string, Airline>,
   ): LiveFlight[] {
     return pilots.map((pilot): LiveFlight => {
       const departure = airports.get(pilot.flightPlan?.departureId ?? '');
       const arrival = airports.get(pilot.flightPlan?.arrivalId ?? '');
       const alternate = airports.get(pilot.flightPlan?.alternativeId ?? '');
       const alternate2 = airports.get(pilot.flightPlan?.alternative2Id ?? '');
+      const airline = airlinesByIcao.get(pilot.callsign.slice(0, 3));
 
       return {
         id: v5(
@@ -129,6 +147,7 @@ export class IvaoFlightsUseCase {
                 }
               : null,
         },
+        airline: airline ? new AirlineResponse(airline) : null,
       };
     });
   }
