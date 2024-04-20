@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.24.0...v1.24.1) (2024-04-20)
+
+
+### Bug Fixes
+
+* **ivao:** handle not defined atis on ivao atcs ([b40e930](https://github.com/skyscope-app/skyscope-backend/commit/b40e9309cf7bd8d656b8495772d9492c5308b457))
+
 # [1.24.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.23.0...v1.24.0) (2024-04-20)
 
 
