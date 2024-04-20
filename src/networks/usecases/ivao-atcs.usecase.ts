@@ -28,25 +28,6 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
     );
   }
 
-  private parse(atc: any) {
-    const atcUser = new User(String(atc.userId), atc.rating as number, null);
-    const facility = this.getFacility(atc);
-
-    return new LiveATC(
-      'ivao',
-      atc.callsign,
-      String(atc.rating),
-      atcUser,
-      atc.createdAt,
-      atc.atis.lines,
-      String(atc.atcSession.frequency).padEnd(7, '0'),
-      Number(atc.lastTrack?.latitude ?? 0),
-      Number(atc.lastTrack?.longitude ?? 0),
-      facility,
-      [],
-    );
-  }
-
   getFacility(atc: any) {
     switch (atc.atcSession.position) {
       case 'FSS':
@@ -66,5 +47,24 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
       default:
         return ATCFacility.UNKNOW;
     }
+  }
+
+  private parse(atc: any) {
+    const atcUser = new User(String(atc.userId), atc.rating as number, null);
+    const facility = this.getFacility(atc);
+
+    return new LiveATC(
+      'ivao',
+      atc.callsign,
+      String(atc.rating),
+      atcUser,
+      atc.createdAt,
+      atc.atis?.lines ?? [],
+      String(atc.atcSession.frequency).padEnd(7, '0'),
+      Number(atc.lastTrack?.latitude ?? 0),
+      Number(atc.lastTrack?.longitude ?? 0),
+      facility,
+      [],
+    );
   }
 }
