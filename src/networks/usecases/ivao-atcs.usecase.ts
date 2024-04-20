@@ -112,9 +112,9 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
 
     const facility = this.getFacility(atc);
 
-    const frequency = String(whazzupAtc.atcSession.frequency).includes('.')
-      ? String(whazzupAtc.atcSession.frequency)
-      : String(whazzupAtc.atcSession.frequency) + '.0';
+    const frequency = String(whazzupAtc?.atcSession.frequency).includes('.')
+      ? String(whazzupAtc?.atcSession.frequency)
+      : String(whazzupAtc?.atcSession.frequency) + '.0';
 
     return new LiveATC(
       'ivao',
@@ -124,8 +124,8 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
       atc.createdAt,
       whazzupAtc.atis?.lines ?? [],
       String(frequency).padEnd(7, '0'),
-      Number(whazzupAtc.lastTrack?.latitude ?? 0),
-      Number(whazzupAtc.lastTrack?.longitude ?? 0),
+      Number(whazzupAtc?.lastTrack?.latitude ?? 0),
+      Number(whazzupAtc?.lastTrack?.longitude ?? 0),
       facility,
       (atc?.atcPosition?.regionMap ?? []).map((point) => [
         point.lat,
