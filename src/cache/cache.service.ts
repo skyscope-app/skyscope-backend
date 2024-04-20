@@ -10,6 +10,10 @@ export class CacheService {
     return this.cacheManager.del(key);
   }
 
+  async set<T>(key: string, data: T, ttl?: number) {
+    await this.cacheManager.set(key, data, ttl);
+  }
+
   async handle<T>(key: string, cb: () => Promise<T>, ttl: number): Promise<T> {
     const cachedData = await this.cacheManager.get<T>(key);
 

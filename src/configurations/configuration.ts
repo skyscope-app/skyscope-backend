@@ -93,6 +93,14 @@ export class Configuration {
   @IsString()
   REDIS_PASSWORD: string;
 
+  @IsString()
+  @IsNotEmpty()
+  IVAO_CLIENT_ID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  IVAO_CLIENT_SECRET: string;
+
   get REDIS_URL() {
     return `redis://${this.REDIS_USER}:${this.REDIS_PASSWORD}@${this.REDIS_HOST}:${this.REDIS_PORT}/${this.REDIS_DB}`;
   }
