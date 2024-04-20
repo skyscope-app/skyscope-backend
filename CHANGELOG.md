@@ -1,3 +1,17 @@
+# [1.24.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.23.0...v1.24.0) (2024-04-20)
+
+
+### Bug Fixes
+
+* **ivao:** atcs ivao error 500 ([b12da6a](https://github.com/skyscope-app/skyscope-backend/commit/b12da6a3227c69b09c6d00e24850869498e7bc2f))
+* **user:** add more mimetypes as valid profile image ([ed06d91](https://github.com/skyscope-app/skyscope-backend/commit/ed06d91cd6eecb15f8c684e309d5507fa6958697))
+
+
+### Features
+
+* **airline:** implement airline return ([2aa2783](https://github.com/skyscope-app/skyscope-backend/commit/2aa27830cb80dcff64ef890e12809bb4d42e1312))
+* **airports:** add endpoint to list basic airport information ([ca0d2bc](https://github.com/skyscope-app/skyscope-backend/commit/ca0d2bc2361839852d1265ebb73a7e3ce3daca11))
+
 # [1.23.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.22.1...v1.23.0) (2024-04-20)
 
 
