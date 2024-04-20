@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.22.0...v1.22.1) (2024-04-20)
+
+
+### Bug Fixes
+
+* **ivao:** avoid error when empty atis on ivao ([b282849](https://github.com/skyscope-app/skyscope-backend/commit/b282849cf677a624fa9d954f2bdad97218a069e5))
+
 # [1.22.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.21.0...v1.22.0) (2024-04-20)
 
 
