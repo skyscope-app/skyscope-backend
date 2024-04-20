@@ -1,4 +1,3 @@
-import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { NavigraphParseRouteUseCase } from '@/navigraph/usecase/parse-route.usecase';
 import { Network } from '@/networks/domain/network';
 import {
@@ -73,21 +72,21 @@ export class NetworksController {
     result.tracks =
       await this.flightsSearchService.fetchTracksForFlight(flightId);
 
-    if (flight.flightPlan) {
-      try {
-        const routeText =
-          flight.flightPlan.departure.icao +
-          ' ' +
-          flight.flightPlan.route +
-          ' ' +
-          flight.flightPlan.arrival.icao;
+    // if (flight.flightPlan) {
+    //   try {
+    //     const routeText =
+    //       flight.flightPlan.departure.icao +
+    //       ' ' +
+    //       flight.flightPlan.route +
+    //       ' ' +
+    //       flight.flightPlan.arrival.icao;
 
-        const route = await this.navigraphParseRouteUseCase.run(routeText);
-        result.route = RouteResponse.fromNavigraph(route);
-      } catch {
-        result.route = null;
-      }
-    }
+    //     const route = await this.navigraphParseRouteUseCase.run(routeText);
+    //     result.route = RouteResponse.fromNavigraph(route);
+    //   } catch {
+    //     result.route = null;
+    //   }
+    // }
 
     return result;
   }

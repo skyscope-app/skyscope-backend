@@ -128,12 +128,14 @@ export class AirlineResponse {
   @ApiProperty()
   public readonly callsign: string;
 
-  constructor(airline: Airline) {
-    this.id = airline.id;
-    this.name = airline.name;
-    this.icao = airline.icao;
-    this.image = airline.image;
-    this.callsign = airline.callsign;
+  constructor(airline?: Airline) {
+    if (airline) {
+      this.id = airline.id;
+      this.name = airline.name;
+      this.icao = airline.icao;
+      this.image = airline.image;
+      this.callsign = airline.callsign;
+    }
   }
 }
 
