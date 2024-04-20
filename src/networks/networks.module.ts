@@ -1,5 +1,6 @@
 import { AirportsModule } from '@/airports/airports.module';
 import { CacheModule } from '@/cache/cache.module';
+import { ConfigurationsModule } from '@/configurations/configuration.module';
 import { FilesModule } from '@/files/files.module';
 import { HttpModule } from '@/http/http.module';
 import { NavigraphModule } from '@/navigraph/navigraph.module';
@@ -12,6 +13,7 @@ import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
 import { PosconFlightsUsecase } from '@/networks/usecases/poscon-flights.usecase';
 import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
 import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
+import { OAuth2Service } from '@/shared/services/oauth2.service';
 import { Module } from '@nestjs/common';
 
 @Module({
@@ -21,6 +23,7 @@ import { Module } from '@nestjs/common';
     CacheModule,
     FilesModule,
     NavigraphModule,
+    ConfigurationsModule,
   ],
   controllers: [NetworksController],
   providers: [
@@ -32,6 +35,7 @@ import { Module } from '@nestjs/common';
     VatsimATCsUseCase,
     FlightsSearchService,
     VatSpyService,
+    OAuth2Service,
   ],
 })
 export class NetworksModule {}

@@ -22,9 +22,9 @@ export class AuthService {
     });
   }
 
-  async findByUid(email: string) {
+  async findByUid(uid: string) {
     try {
-      const firebaseAuthUser = await auth().getUser(email);
+      const firebaseAuthUser = await auth().getUser(uid);
       return firebaseAuthUser;
     } catch (e: any) {
       switch (true) {
