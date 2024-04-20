@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.22.1...v1.23.0) (2024-04-20)
+
+
+### Features
+
+* **ivao:** add geometry to ivao atcs ([15c7f32](https://github.com/skyscope-app/skyscope-backend/commit/15c7f3255a4777eb9a58fd7d5a261c4d240a9aa4))
+
 ## [1.22.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.22.0...v1.22.1) (2024-04-20)
 
 
