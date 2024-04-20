@@ -113,3 +113,51 @@ export class AirportResponse {
     );
   }
 }
+
+export class AirportDetailedResponse {
+  @ApiProperty()
+  icao: string;
+  @ApiProperty()
+  iata: Nullable<string>;
+  @ApiProperty()
+  name: string;
+  @ApiProperty()
+  lat: number;
+  @ApiProperty()
+  lng: number;
+  @ApiProperty()
+  elevation: number;
+  @ApiProperty()
+  transitionAltitude: number;
+  @ApiProperty({ required: false })
+  transitionLevel: Nullable<number>;
+  @ApiProperty({ type: AirportGateResponse })
+  gates: AirportGateResponse[];
+  @ApiProperty({ type: AirportRunwayResponse })
+  runways: AirportRunwayResponse[];
+  @ApiProperty()
+  metar: Nullable<string>;
+  @ApiProperty()
+  taf: Nullable<string>;
+
+  constructor(
+    airport: Airport,
+    metar: Nullable<string>,
+    taf: Nullable<string>,
+  ) {
+    this.icao = airport.icao;
+    this.iata = airport.iata;
+    this.name = airport.name;
+    this.lat = airport.latitude;
+    this.lng = airport.longitude;
+    this.elevation = airport.elevation;
+    this.gates = airport.gates.map((gate) => new AirportGateResponse(gate));
+    this.transitionAltitude = airport.transitionAltitude;
+    this.transitionLevel = assertNullable(airport.transitionLevel);
+    this.runways = airport.runways.map(
+      (runway) => new AirportRunwayResponse(runway),
+    );
+    this.metar = assertNullable(metar);
+    this.taf = assertNullable(taf);
+  }
+}
