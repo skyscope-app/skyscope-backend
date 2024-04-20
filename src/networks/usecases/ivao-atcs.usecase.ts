@@ -122,7 +122,7 @@ export class IvaoATCsUseCase implements NetworkATCUseCase {
       String(atc.user.rating.atcRatingId),
       atcUser,
       atc.createdAt,
-      whazzupAtc.atis?.lines ?? [],
+      whazzupAtc?.atis?.lines ?? [],
       String(frequency).padEnd(7, '0'),
       Number(whazzupAtc?.lastTrack?.latitude ?? 0),
       Number(whazzupAtc?.lastTrack?.longitude ?? 0),
