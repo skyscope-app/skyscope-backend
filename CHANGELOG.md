@@ -1,3 +1,10 @@
+## [1.24.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.24.1...v1.24.2) (2024-04-20)
+
+
+### Bug Fixes
+
+* **ivao:** empty response error ([322b43f](https://github.com/skyscope-app/skyscope-backend/commit/322b43ff9efd8b5934b01176368ea11759d0a53c))
+
 ## [1.24.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.24.0...v1.24.1) (2024-04-20)
 
 
