@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.21.0...v1.22.0) (2024-04-20)
+
+
+### Features
+
+* add afis and rmp ([8ab7c7f](https://github.com/skyscope-app/skyscope-backend/commit/8ab7c7f1ddb8dcb7a43e7dbb646045ea8699cd91))
+
 # [1.21.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.20.1...v1.21.0) (2024-04-15)
 
 
