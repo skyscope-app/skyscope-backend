@@ -3,7 +3,7 @@ import { Integration } from '@/integrations/domain/integration';
 import { NavigraphSubscriptionValidResponse } from '@/navdata/dtos/navigraph.dto';
 import { AiracStatus } from '@/navdata/entity/airac';
 import { Injectable, Logger } from '@nestjs/common';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 @Injectable()
 export class NavigraphApiClient {

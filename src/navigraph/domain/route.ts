@@ -7,6 +7,7 @@ export enum RouteSegmentType {
   WAYPOINT = 'WAYPOINT',
   VOR = 'VOR',
   NDB = 'NDB',
+  COORDINATES = 'COORDINATES',
 }
 
 export class Segment {

@@ -5,6 +5,6 @@ import { readdir } from 'fs/promises';
 export class FilesController {
   @Get()
   getFiles() {
-    return readdir('./private_data', { recursive: true });
+    return readdir('/tmp/skyscope', { recursive: true });
   }
 }
