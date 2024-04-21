@@ -1,4 +1,4 @@
-import * as helicopters from '@/networks/data/helicopters.json';
+import helicopters from '@/networks/data/helicopters.json';
 import { Aircraft, AircraftType } from '@/networks/dtos/live-flight.dto';
 
 export const getAircraftType = (aircraft: Aircraft) => {
