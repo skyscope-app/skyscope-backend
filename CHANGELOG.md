@@ -1,3 +1,10 @@
+# [1.26.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.25.0...v1.26.0) (2024-04-21)
+
+
+### Features
+
+* **navigraph:** improve performance of navigraph and cloud storage usage ([#62](https://github.com/skyscope-app/skyscope-backend/issues/62)) ([e85bf8e](https://github.com/skyscope-app/skyscope-backend/commit/e85bf8e49060baf441626c196243823e02faade1))
+
 # [1.25.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.24.2...v1.25.0) (2024-04-20)
 
 
