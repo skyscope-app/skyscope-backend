@@ -13,7 +13,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import admin from 'firebase-admin';
-import { copyFile } from 'fs/promises';
+import { copyFile, mkdir } from 'fs/promises';
 import helmet from 'helmet';
 import { ClsService } from 'nestjs-cls';
 import { AppModule } from './app.module';
@@ -51,6 +51,8 @@ async function copyFiles() {
     { from: './private_data/current.s3db', to: '/tmp/skyscope/current.s3db' },
     { from: './private_data/outdated.s3db', to: '/tmp/skyscope/outdated.s3db' },
   ];
+
+  await mkdir('/tmp/skyscope', { recursive: true }).catch();
 
   await Promise.all(data.map((d) => copyFile(d.from, d.to)));
 }
