@@ -1,3 +1,10 @@
+## [1.26.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.1...v1.26.2) (2024-04-21)
+
+
+### Bug Fixes
+
+* create tmp directory on app boot] ([9765e71](https://github.com/skyscope-app/skyscope-backend/commit/9765e7102aff8399e3e9ae0cec6d2ee332079ea7))
+
 ## [1.26.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.0...v1.26.1) (2024-04-21)
 
 
