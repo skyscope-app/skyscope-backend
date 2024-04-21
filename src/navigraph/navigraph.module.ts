@@ -16,6 +16,7 @@ import { NavigraphAirportsService } from '@/navigraph/services/airports.service'
 import { NavigraphParseRouteUseCase } from '@/navigraph/usecase/parse-route.usecase';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import sqlite3 from 'sqlite3';
 
 const entities = [
   NavigraphAirport,
@@ -29,6 +30,9 @@ export const getNavigraphModule = (file: string, name: string) => {
     type: 'sqlite',
     database: file,
     name: name,
+    driver: {
+      verbose: () => sqlite3.verbose().cached,
+    },
     entities,
     synchronize: false,
     logging: EnvironmentConfiguration.ENVIRONMENT === 'local',
