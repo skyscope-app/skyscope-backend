@@ -1,4 +1,3 @@
-import { IntegrationProviders } from '@/integrations/domain/integration';
 import { IntegrationsService } from '@/integrations/services/integrations.service';
 import { AiracStatus } from '@/navdata/entity/airac';
 import { AiracRepository } from '@/navdata/repository/airac.repository';
@@ -15,19 +14,21 @@ export class AiracService {
   ) {}
 
   async findByUser(user: User) {
-    const integration = await this.integrationsService.findByUserAndIntegrator(
-      user,
-      IntegrationProviders.Navigraph,
-    );
+    // const integration = await this.integrationsService.findByUserAndIntegrator(
+    //   user,
+    //   IntegrationProviders.Navigraph,
+    // );
 
-    if (!integration) {
-      return this.airacRepository.find(AiracStatus.OUTDATED);
-    }
+    // if (!integration) {
+    //   return this.airacRepository.find(AiracStatus.OUTDATED);
+    // }
 
-    const desiredStatus =
-      await this.navigraphService.validateSubscription(integration);
+    // const desiredStatus =
+    //   await this.navigraphService.validateSubscription(integration);
 
-    return this.airacRepository.find(desiredStatus);
+    // return this.airacRepository.find(desiredStatus);
+
+    return this.airacRepository.find(AiracStatus.CURRENT);
   }
 
   async findOutdated() {

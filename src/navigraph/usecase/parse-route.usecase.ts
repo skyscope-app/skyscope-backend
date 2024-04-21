@@ -42,6 +42,7 @@ export class NavigraphParseRouteUseCase extends BaseService {
   }
 
   async run(route: string): Promise<Route> {
+    console.time('start');
     const segments = route.split(' ').map((segment) => segment.split('/')[0]);
 
     const detailed = await Promise.all(segments.map((s) => this.detailOne(s)));
@@ -66,6 +67,8 @@ export class NavigraphParseRouteUseCase extends BaseService {
     const points = await Promise.all(
       trios.map(([a, b, c]) => this.getSegments(a, b, c)),
     ).then((result) => result.flatMap((r) => r));
+
+    console.timeEnd('start');
 
     return new Route({
       points,
@@ -270,6 +273,8 @@ export class NavigraphParseRouteUseCase extends BaseService {
             return await this.getTerminalNDB(identifier).then((r) => [r]);
           case RoutePointType.VOR:
             return await this.getVOR(identifier).then((r) => [r]);
+          case RoutePointType.COORDINATES:
+            return await this.getCoordinates(identifier).then((r) => [r]);
           default:
             return [];
         }
@@ -277,6 +282,19 @@ export class NavigraphParseRouteUseCase extends BaseService {
     );
 
     return points.flatMap((r) => r);
+  }
+  private async getCoordinates(identifier: string): Promise<RoutePoint> {
+    //throw new Error('Method not implemented.');
+
+    return new RoutePoint({
+      identifier,
+      latitude: 0,
+      longitude: 0,
+      segment: new Segment({
+        name: identifier,
+        type: RouteSegmentType.COORDINATES,
+      }),
+    });
   }
 
   private async getAirports(detailed: detail[]) {
@@ -299,7 +317,16 @@ export class NavigraphParseRouteUseCase extends BaseService {
       };
     }
 
+    //21N165E
     if (/(\d{2}[NS])(\d{3}[EW])/.test(identifier)) {
+      return {
+        type: RoutePointType.COORDINATES,
+        identifier,
+      };
+    }
+
+    //2101S16500E
+    if (/(\d{4}[NS])(\d{5}[EW])/.test(identifier)) {
       return {
         type: RoutePointType.COORDINATES,
         identifier,

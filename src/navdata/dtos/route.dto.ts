@@ -8,6 +8,7 @@ enum RouteSegmentType {
   WAYPOINT = 'WAYPOINT',
   VOR = 'VOR',
   NDB = 'NDB',
+  COORDINATES = 'COORDINATES',
 }
 
 class SegmentResponse {
