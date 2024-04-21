@@ -1,4 +1,3 @@
-import { NoWaitListGuard } from '@/auth/no-wait-list.guard';
 import { clsService } from '@/main';
 import { User } from '@/users/domain/user.entity';
 import {
@@ -82,7 +81,7 @@ export const Authenticated = (
       }),
       ApiBearerAuth(),
       UseGuards(...guards),
-      UseGuards(AuthGuard('firebase'), NoWaitListGuard, ...guards),
+      UseGuards(AuthGuard('firebase'), ...guards),
       ApiBearerAuth('JWT-auth'),
     ];
 
