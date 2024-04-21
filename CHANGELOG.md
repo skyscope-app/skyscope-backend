@@ -1,3 +1,10 @@
+## [1.26.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.2...v1.26.3) (2024-04-21)
+
+
+### Bug Fixes
+
+* helicopters json import ([4dc2343](https://github.com/skyscope-app/skyscope-backend/commit/4dc234327bfb7ec5a0d877e708ed09ee5ab86fe5))
+
 ## [1.26.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.1...v1.26.2) (2024-04-21)
 
 
