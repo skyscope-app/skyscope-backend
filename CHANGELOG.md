@@ -1,3 +1,10 @@
+## [1.26.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.0...v1.26.1) (2024-04-21)
+
+
+### Bug Fixes
+
+* disable waiting list validation ([4595c46](https://github.com/skyscope-app/skyscope-backend/commit/4595c46936efa30fb132a30e1545286d9d36b864))
+
 # [1.26.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.25.0...v1.26.0) (2024-04-21)
 
 
