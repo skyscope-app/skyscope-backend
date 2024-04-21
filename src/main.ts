@@ -13,6 +13,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import * as admin from 'firebase-admin';
+import { copyFile } from 'fs/promises';
 import helmet from 'helmet';
 import { ClsService } from 'nestjs-cls';
 import { AppModule } from './app.module';
@@ -40,10 +41,28 @@ function setupSwagger(app: INestApplication) {
   SwaggerModule.setup('docs', app, document);
 }
 
+async function copyFiles() {
+  const data = [
+    {
+      from: './private_data/ICAO_Airlines.txt',
+      to: '/tmp/skyscope/ICAO_Airlines.txt',
+    },
+    { from: './private_data/vatspy.json', to: '/tmp/skyscope/vatspy.json' },
+    { from: './private_data/current.s3db', to: '/tmp/skyscope/current.s3db' },
+    { from: './private_data/outdated.s3db', to: '/tmp/skyscope/outdated.s3db' },
+  ];
+
+  await Promise.all(data.map((d) => copyFile(d.from, d.to)));
+}
+
 async function bootstrap() {
   admin.initializeApp();
 
   await validateConfiguration(Configuration);
+
+  if (EnvironmentConfiguration.ENVIRONMENT !== 'local') {
+    await copyFiles();
+  }
 
   const app = await NestFactory.create(AppModule);
 

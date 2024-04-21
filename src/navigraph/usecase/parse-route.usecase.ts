@@ -284,12 +284,31 @@ export class NavigraphParseRouteUseCase extends BaseService {
     return points.flatMap((r) => r);
   }
   private async getCoordinates(identifier: string): Promise<RoutePoint> {
-    //throw new Error('Method not implemented.');
+    let latitude = 0;
+    let longitude = 0;
+
+    //21N165E
+    if (/(\d{2}[NS])(\d{3}[EW])/.test(identifier)) {
+      latitude = Number(identifier.slice(0, 2));
+      longitude = Number(identifier.slice(2, 5));
+
+      if (identifier.slice(2, 3) === 'S') latitude = -latitude;
+      if (identifier.slice(5, 6) === 'W') longitude = -longitude;
+    }
+
+    //2101S16500E
+    else if (/(\d{4}[NS])(\d{5}[EW])/.test(identifier)) {
+      latitude = Number(identifier.slice(0, 4)) / 100;
+      longitude = Number(identifier.slice(5, 10)) / 100;
+
+      if (identifier.slice(4, 5) === 'S') latitude = -latitude;
+      if (identifier.slice(9, 10) === 'W') longitude = -longitude;
+    }
 
     return new RoutePoint({
       identifier,
-      latitude: 0,
-      longitude: 0,
+      latitude,
+      longitude,
       segment: new Segment({
         name: identifier,
         type: RouteSegmentType.COORDINATES,

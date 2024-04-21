@@ -1,13 +1,15 @@
 import { Airline } from '@/airlines/domain/airline';
+import { FilesService } from '@/files/services/files.service';
 import { Injectable } from '@nestjs/common';
-import { readFile } from 'fs/promises';
 
 @Injectable()
 export class AirlinesService {
-  async list(): Promise<Airline[]> {
-    const data = await readFile(`./private_data/ICAO_Airlines.txt`, 'utf8');
+  constructor(private readonly fileService: FilesService) {}
 
-    const lines = data
+  async list(): Promise<Airline[]> {
+    const data = await this.fileService.getFromPrivate('ICAO_Airlines.txt');
+
+    const lines = String(data)
       .split('\r\n')
       .filter((l) => !l.includes(';'))
       .map((l) => {

@@ -13,11 +13,11 @@ export class FilesService {
   private client = new Storage();
 
   getFromPrivateAsStream(key: string) {
-    return createReadStream(`./private_data/${key}`);
+    return createReadStream(`/tmp/skyscope/${key}`);
   }
 
   getFromPrivate(key: string) {
-    return readFile(`./private_data/${key}`);
+    return readFile(`/tmp/skyscope/${key}`);
   }
 
   async upload(
