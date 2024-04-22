@@ -31,7 +31,7 @@ export const getNavigraphModule = (file: string, name: string) => {
     database: file,
     name: name,
     driver: {
-      verbose: () => sqlite3.verbose().cached,
+      verbose: () => sqlite3.verbose(),
     },
     entities,
     synchronize: false,
