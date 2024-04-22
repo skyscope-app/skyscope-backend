@@ -20,5 +20,6 @@ export class Airline {
     this.name = data.name;
     this.icao = data.icao;
     this.image = `https://static.skyscope.app/tails/${data.icao}.png`;
+    this.callsign = data.callsign
   }
 }
