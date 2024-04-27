@@ -1,3 +1,10 @@
+# [1.27.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.3...v1.27.0) (2024-04-27)
+
+
+### Features
+
+* **settings:** implement settings crud ([9ffc925](https://github.com/skyscope-app/skyscope-backend/commit/9ffc925144f55a61abd3abd2602252d9f56cc4c0))
+
 ## [1.26.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.2...v1.26.3) (2024-04-21)
 
 
