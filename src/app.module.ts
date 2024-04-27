@@ -18,6 +18,7 @@ import { RouterModule } from '@nestjs/core';
 import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
 import { NetworksModule } from './networks/networks.module';
+import { SettingsModule } from '@/settings/settings.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { NetworksModule } from './networks/networks.module';
       },
     ]),
     NavigraphModule,
+    SettingsModule,
   ],
   providers: [LoggingInterceptor],
 })

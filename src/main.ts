@@ -62,9 +62,7 @@ async function bootstrap() {
 
   await validateConfiguration(Configuration);
 
-  if (EnvironmentConfiguration.ENVIRONMENT !== 'local') {
-    await copyFiles();
-  }
+  await copyFiles();
 
   const app = await NestFactory.create(AppModule);
 
