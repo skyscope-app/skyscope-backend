@@ -1,3 +1,10 @@
+# [1.28.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.27.0...v1.28.0) (2024-05-01)
+
+
+### Features
+
+* **integration:** add endpoint to receive integrations and save data to user profile ([45f6838](https://github.com/skyscope-app/skyscope-backend/commit/45f6838c6a581355ee60ea3c897b6fbbd165d998))
+
 # [1.27.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.26.3...v1.27.0) (2024-04-27)
 
 
