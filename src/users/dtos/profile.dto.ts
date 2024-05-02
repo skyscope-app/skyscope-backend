@@ -16,8 +16,6 @@ export class Profile {
   @ApiProperty({ nullable: true })
   vatsimId: Nullable<string>;
   @ApiProperty({ nullable: true })
-  posconId: Nullable<string>;
-  @ApiProperty({ nullable: true })
   navigraphId: Nullable<string>;
   @ApiProperty({ nullable: true })
   simbriefId: Nullable<string>;
@@ -29,10 +27,15 @@ export class Profile {
     this.name = user.name ?? '';
     this.email = user.email;
     this.avatarUrl = assertNullable(user.photo);
-    this.ivaoId = assertNullable(user.ivaoId);
-    this.vatsimId = assertNullable(user.vatsimId);
-    this.posconId = assertNullable(user.posconId);
-    this.navigraphId = assertNullable(user.navigraphId);
+    this.ivaoId = assertNullable(
+      user.integrations?.find((i) => i.provider === 'ivao')?.providerId,
+    );
+    this.vatsimId = assertNullable(
+      user.integrations?.find((i) => i.provider === 'vatsim')?.providerId,
+    );
+    this.navigraphId = assertNullable(
+      user.integrations?.find((i) => i.provider === 'navigraph')?.providerId,
+    );
     this.simbriefId = assertNullable(user.simbriefId);
     this.status = user.accountStatus;
   }

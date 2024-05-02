@@ -18,17 +18,9 @@ export enum AccountStatus {
 
 @Entity('users')
 export class User extends BaseEntity {
-  @Column({ name: 'ivao_id' }) ivaoId?: string;
-
-  @Column({ name: 'vatsim_id' }) vatsimId?: string;
-
-  @Column({ name: 'poscon_id' }) posconId?: string;
-
   @Column() email: string;
 
   @Column({ name: 'authentication_id' }) authenticationId: string;
-
-  @Column({ name: 'navigraph_id' }) navigraphId?: string;
 
   @Column({ name: 'simbrief_id' }) simbriefId?: string;
 
@@ -45,7 +37,7 @@ export class User extends BaseEntity {
   friends: User[];
 
   @OneToMany(() => Integration, (integration) => integration.user)
-  integrations: Integration[];
+  integrations?: Integration[];
 
   @Column({ name: 'account_status' })
   accountStatus: AccountStatus;
@@ -58,10 +50,6 @@ export class User extends BaseEntity {
 
     this.email = email;
     this.authenticationId = authenticationId;
-    this.ivaoId = options?.ivaoId;
-    this.vatsimId = options?.vatsimId;
-    this.posconId = options?.posconId;
-    this.navigraphId = options?.navigraphId;
     this.simbriefId = options?.simbriefId;
   }
 

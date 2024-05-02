@@ -42,7 +42,10 @@ export class UsersService {
   }
 
   async findByAuthenticationID(authenticationId: string) {
-    const user = await this.userRepository.findOneBy({ authenticationId });
+    const user = await this.userRepository.findOne({
+      where: { authenticationId },
+      relations: ['integrations'],
+    });
     if (user) {
       return this.enrichUser(user);
     }

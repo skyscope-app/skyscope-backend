@@ -1,36 +1,44 @@
+import { CacheService } from '@/cache/cache.service';
 import {
   Integration,
   IntegrationProviders,
 } from '@/integrations/domain/integration';
 import { User } from '@/users/domain/user.entity';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
 
 @Injectable()
 export class IntegrationsService {
   constructor(
     @InjectRepository(Integration)
     private readonly integrationsRepository: Repository<Integration>,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly cacheService: CacheService,
+    @InjectEntityManager() private readonly entityManager: EntityManager,
   ) {}
 
   async save(integration: Integration) {
-    integration.providerId = this.getProviderId(integration.accessToken);
+    await this.entityManager.transaction(async (transactionalEntityManager) => {
+      integration.providerId = this.getProviderId(integration.accessToken);
 
-    await this.integrationsRepository.upsert(integration, ['user', 'provider']);
+      await transactionalEntityManager.upsert(Integration, integration, [
+        'user',
+        'provider',
+      ]);
 
-    await this.integrationsRepository.update(
-      { user: integration.user, provider: integration.provider },
-      { deletedAt: null },
-    );
-
-    await this.userRepository.update(integration.user.id, {
-      vatsimId: integration.user.vatsimId,
-      ivaoId: integration.user.ivaoId,
-      navigraphId: integration.user.navigraphId,
+      await transactionalEntityManager.update(
+        Integration,
+        {
+          user: integration.user,
+          provider: integration.provider,
+        },
+        { deletedAt: null },
+      );
     });
+
+    await this.cacheService.invalidate(integration.user.authenticationId);
   }
+
   getProviderId(token: string): string {
     const parsedToken = token
       .split('.')
