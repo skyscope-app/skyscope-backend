@@ -1,3 +1,10 @@
+# [1.29.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.28.0...v1.29.0) (2024-05-02)
+
+
+### Features
+
+* **integration:** invalidate cache on integration creation ([bfc5b87](https://github.com/skyscope-app/skyscope-backend/commit/bfc5b875e08ea6d49eb9ff278e6280137745aff6))
+
 # [1.28.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.27.0...v1.28.0) (2024-05-01)
 
 
