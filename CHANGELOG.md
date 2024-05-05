@@ -1,3 +1,10 @@
+## [1.29.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.0...v1.29.1) (2024-05-05)
+
+
+### Bug Fixes
+
+* **performance:** improve auth performance ([806611f](https://github.com/skyscope-app/skyscope-backend/commit/806611fe4ba00c67896f505b201548f763391a11))
+
 # [1.29.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.28.0...v1.29.0) (2024-05-02)
 
 
