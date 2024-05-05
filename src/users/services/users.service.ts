@@ -35,19 +35,29 @@ export class UsersService {
     authenticationId: string,
     options?: UserOptions,
   ): Promise<User> {
-    const user = await this.userRepository.save(
-      new User(email, authenticationId, options),
-    );
-    return await this.enrichUser(user);
+    const [user, authUser] = await Promise.all([
+      this.userRepository.save(new User(email, authenticationId, options)),
+      this.authService.findByUid(authenticationId),
+    ]);
+
+    user.setName(authUser?.displayName ?? '');
+    user.setPhoto(authUser?.photoURL ?? '');
+    return user;
   }
 
   async findByAuthenticationID(authenticationId: string) {
-    const user = await this.userRepository.findOne({
-      where: { authenticationId },
-      relations: ['integrations'],
-    });
+    const [user, authUser] = await Promise.all([
+      this.userRepository.findOne({
+        where: { authenticationId },
+        relations: ['integrations'],
+      }),
+      this.authService.findByUid(authenticationId),
+    ]);
+
     if (user) {
-      return this.enrichUser(user);
+      user.setName(authUser?.displayName ?? '');
+      user.setPhoto(authUser?.photoURL ?? '');
+      return user;
     }
   }
 
@@ -55,12 +65,5 @@ export class UsersService {
     await this.authService.updateProfile(user, options);
     await this.userRepository.save(user);
     await this.cacheService.invalidate(user.authenticationId);
-  }
-
-  async enrichUser(user: User) {
-    const authUser = await this.authService.findByUid(user.authenticationId);
-    user.setPhoto(authUser?.photoURL ?? '');
-    user.setName(authUser?.displayName ?? '');
-    return user;
   }
 }

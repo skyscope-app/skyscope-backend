@@ -55,7 +55,10 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
         uid,
         async () => {
           const uid = await this.validateUser(token);
-          const authUser = await this.authService.findByUid(uid);
+          const [authUser, user] = await Promise.all([
+            this.authService.findByUid(uid),
+            this.userService.findByAuthenticationID(uid),
+          ]);
 
           if (!authUser) {
             return null;
@@ -65,8 +68,6 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
             this.logger.error({ message: 'user has no email', uid });
             return null;
           }
-
-          const user = await this.userService.findByAuthenticationID(uid);
 
           if (!user) {
             const airacSubscription = await this.airacService.findOutdated();

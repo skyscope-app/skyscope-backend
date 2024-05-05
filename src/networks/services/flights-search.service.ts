@@ -37,9 +37,7 @@ export class FlightsSearchService {
 
   async findByID(flightId: string) {
     const flights = await this.networksService.fetchLiveFlights();
-
     const flightsMap = new Map(flights.map((flight) => [flight.id, flight]));
-
     return flightsMap.get(flightId);
   }
 
