@@ -4,7 +4,7 @@ import { AirportsService } from '@/airports/airports.service';
 import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
-import { IVAOResponse, IvaoPilot } from '@/networks/dtos/ivao.dto';
+import { IvaoPilot } from '@/networks/dtos/ivao.dto';
 import {
   Aircraft,
   AirlineResponse,
@@ -12,7 +12,7 @@ import {
 } from '@/networks/dtos/live-flight.dto';
 import { parseSecondsToHours } from '@/shared/utils/time';
 import { InjectRedis } from '@nestjs-modules/ioredis';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import Redis from 'ioredis';
 import { v5 } from 'uuid';
@@ -28,35 +28,25 @@ export class IvaoFlightsUseCase {
   ) {}
 
   public async fetchLiveFlights() {
-    return this.cacheService.handle(
-      'ivao_current_live_flights',
-      async () => {
-        const [data, airports, airlines] = await Promise.all([
-          this.redis.get('ivao').then((r) => {
-            if (r) {
-              return JSON.parse(r) as IVAOResponse;
-            }
+    const [data, airports, airlines] = await Promise.all([
+      this.redis.get('ivao').then((r) => {
+        if (r) {
+          return JSON.parse(r).client.pilots as IvaoPilot[];
+        }
 
-            throw new NotFoundException();
-          }),
-          this.airportsService.getAirportsMap(),
-          this.airlinesService.list(),
-        ]);
+        return [];
+      }),
+      this.airportsService.getAirportsMap(),
+      this.airlinesService.list(),
+    ]);
 
-        const airlinesByIcao = new Map(
-          airlines.map((airline) => [airline.icao, airline]),
-        );
-
-        const flights = this.parse(
-          data.clients.pilots,
-          airports,
-          airlinesByIcao,
-        );
-
-        return flights;
-      },
-      15,
+    const airlinesByIcao = new Map(
+      airlines.map((airline) => [airline.icao, airline]),
     );
+
+    const flights = this.parse(data, airports, airlinesByIcao);
+
+    return flights;
   }
 
   private parse(

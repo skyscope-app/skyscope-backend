@@ -101,8 +101,6 @@ export class NetworksController {
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
-    await this.networksService.fetchLiveFlights();
-
     const service = this.flightMap[network];
 
     if (!service) {

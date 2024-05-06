@@ -17,7 +17,7 @@ export class CacheService {
   async handle<T>(key: string, cb: () => Promise<T>, ttl: number): Promise<T> {
     const cachedData = await this.cacheManager.get<T>(key);
 
-    if (cachedData !== undefined) {
+    if (cachedData !== undefined && cachedData !== null) {
       return cachedData;
     }
 
@@ -30,5 +30,10 @@ export class CacheService {
 
   async get<T>(key: string) {
     return this.cacheManager.get<T>(key);
+  }
+
+  async updateTtl(key: string, ttl: number) {
+    const data = await this.get(key);
+    await this.set(key, data, ttl);
   }
 }

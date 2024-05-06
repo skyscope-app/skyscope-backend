@@ -11,13 +11,12 @@ import {
   LiveFlight,
 } from '@/networks/dtos/live-flight.dto';
 import {
-  VatsimData,
   VatsimDataFlightPlan,
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
 import { Nullable } from '@/shared/utils/nullable';
 import { InjectRedis } from '@nestjs-modules/ioredis';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import Redis from 'ioredis';
 import { v5 } from 'uuid';
@@ -33,31 +32,25 @@ export class VatsimFlightsUsecase {
   ) {}
 
   public async fetchLiveFlights(): Promise<Array<LiveFlight>> {
-    return this.cacheService.handle(
-      'vatsim_current_live',
-      async () => {
-        const [data, airports, airlines] = await Promise.all([
-          this.redis.get('ivao').then((r) => {
-            if (r) {
-              return JSON.parse(r) as VatsimData;
-            }
+    const [data, airports, airlines] = await Promise.all([
+      this.redis.get('ivao').then((r) => {
+        if (r) {
+          return JSON.parse(r).client.pilots as VatsimDataPilot[];
+        }
 
-            throw new NotFoundException();
-          }),
-          this.airportsService.getAirportsMap(),
-          this.airlinesService.list(),
-        ]);
+        return [];
+      }),
+      this.airportsService.getAirportsMap(),
+      this.airlinesService.list(),
+    ]);
 
-        const airlinesByIcao = new Map(
-          airlines.map((airline) => [airline.icao, airline]),
-        );
-
-        const flights = this.parse(data.pilots, airports, airlinesByIcao);
-
-        return flights;
-      },
-      15,
+    const airlinesByIcao = new Map(
+      airlines.map((airline) => [airline.icao, airline]),
     );
+
+    const flights = this.parse(data, airports, airlinesByIcao);
+
+    return flights;
   }
 
   private parseVatsimAircraftWakeTurbulence(aircraft: string) {

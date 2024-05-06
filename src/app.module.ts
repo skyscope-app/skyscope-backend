@@ -16,6 +16,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
+import redisStore from 'cache-manager-redis-store';
 import { ClsModule } from 'nestjs-cls';
 import { v4 } from 'uuid';
 import { NetworksModule } from './networks/networks.module';
@@ -27,15 +28,9 @@ import { NetworksModule } from './networks/networks.module';
       url: EnvironmentConfiguration.REDIS_URL,
     }),
     CacheModule.register({
+      store: redisStore,
+      url: EnvironmentConfiguration.REDIS_URL,
       isGlobal: true,
-      // store: new PostgresStore({
-      //   host: EnvironmentConfiguration.POSTGRES_HOST,
-      //   database: EnvironmentConfiguration.POSTGRES_DATABASE,
-      //   password: EnvironmentConfiguration.POSTGRES_PASSWORD,
-      //   port: Number(EnvironmentConfiguration.POSTGRES_PORT),
-      //   user: EnvironmentConfiguration.POSTGRES_USER,
-      //   poolSize: 10,
-      // }),
     }),
     ClsModule.forRoot({
       global: true,
