@@ -31,7 +31,7 @@ export class IvaoFlightsUseCase {
     const [data, airports, airlines] = await Promise.all([
       this.redis.get('ivao').then((r) => {
         if (r) {
-          return JSON.parse(r).client.pilots as IvaoPilot[];
+          return JSON.parse(r).clients.pilots as IvaoPilot[];
         }
 
         return [];
