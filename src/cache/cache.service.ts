@@ -11,7 +11,7 @@ export class CacheService {
   }
 
   async set<T>(key: string, data: T, ttl?: number) {
-    await this.cacheManager.set(key, data, ttl);
+    await this.cacheManager.set(key, data, { ttl } as any);
   }
 
   async handle<T>(key: string, cb: () => Promise<T>, ttl: number): Promise<T> {
@@ -23,7 +23,7 @@ export class CacheService {
 
     const nonCachedData = await cb();
 
-    await this.cacheManager.set(key, nonCachedData, ttl * 1000);
+    await this.cacheManager.set(key, nonCachedData, { ttl } as any);
 
     return nonCachedData;
   }
