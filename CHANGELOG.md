@@ -1,3 +1,10 @@
+## [1.29.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.2...v1.29.3) (2024-05-06)
+
+
+### Bug Fixes
+
+* **networks:** improve networks performance ([c738a36](https://github.com/skyscope-app/skyscope-backend/commit/c738a36eda4b3fed19ae224ac3f0db90cefc24a0))
+
 ## [1.29.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.1...v1.29.2) (2024-05-06)
 
 
