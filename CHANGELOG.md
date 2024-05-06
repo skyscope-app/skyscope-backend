@@ -1,3 +1,10 @@
+## [1.29.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.3...v1.29.4) (2024-05-06)
+
+
+### Bug Fixes
+
+* **networks:** avoid crashing when fetching networks flights ([1ac1ff8](https://github.com/skyscope-app/skyscope-backend/commit/1ac1ff8458e56a2e7c7fd9b651db6ae7ed6f3160))
+
 ## [1.29.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.2...v1.29.3) (2024-05-06)
 
 
