@@ -1,3 +1,10 @@
+## [1.29.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.1...v1.29.2) (2024-05-06)
+
+
+### Bug Fixes
+
+* **data:** get data from cache redis for networks traffic ([34669b0](https://github.com/skyscope-app/skyscope-backend/commit/34669b0aba23e85848b90de5f913d1f1b681121f))
+
 ## [1.29.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.0...v1.29.1) (2024-05-05)
 
 
