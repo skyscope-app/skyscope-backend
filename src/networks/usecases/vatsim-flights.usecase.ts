@@ -33,9 +33,9 @@ export class VatsimFlightsUsecase {
 
   public async fetchLiveFlights(): Promise<Array<LiveFlight>> {
     const [data, airports, airlines] = await Promise.all([
-      this.redis.get('ivao').then((r) => {
+      this.redis.get('vatsim').then((r) => {
         if (r) {
-          return JSON.parse(r).clients.pilots as VatsimDataPilot[];
+          return JSON.parse(r).pilots as VatsimDataPilot[];
         }
 
         return [];
