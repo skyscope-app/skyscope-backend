@@ -16,27 +16,34 @@ import {
   VatsimDataPilot,
 } from '@/networks/dtos/vatsim.dto';
 import { Nullable } from '@/shared/utils/nullable';
-import { Injectable } from '@nestjs/common';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'crypto';
+import Redis from 'ioredis';
 import { v5 } from 'uuid';
 
 @Injectable()
 export class VatsimFlightsUsecase {
-  private url = 'https://data.vatsim.net/v3/vatsim-data.json';
-
   constructor(
     private readonly airportsService: AirportsService,
     private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
     private readonly airlinesService: AirlinesService,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   public async fetchLiveFlights(): Promise<Array<LiveFlight>> {
     return this.cacheService.handle(
       'vatsim_current_live',
       async () => {
-        const [{ data }, airports, airlines] = await Promise.all([
-          this.httpService.get<VatsimData>(this.url),
+        const [data, airports, airlines] = await Promise.all([
+          this.redis.get('ivao').then((r) => {
+            if (r) {
+              return JSON.parse(r) as VatsimData;
+            }
+
+            throw new NotFoundException();
+          }),
           this.airportsService.getAirportsMap(),
           this.airlinesService.list(),
         ]);

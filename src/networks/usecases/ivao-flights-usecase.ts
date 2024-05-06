@@ -4,34 +4,41 @@ import { AirportsService } from '@/airports/airports.service';
 import { Airport } from '@/airports/domain/airports.entity';
 import { CacheService } from '@/cache/cache.service';
 import { HttpService } from '@/http/http.service';
-import { IvaoPilot, IVAOResponse } from '@/networks/dtos/ivao.dto';
+import { IVAOResponse, IvaoPilot } from '@/networks/dtos/ivao.dto';
 import {
   Aircraft,
   AirlineResponse,
   LiveFlight,
 } from '@/networks/dtos/live-flight.dto';
 import { parseSecondsToHours } from '@/shared/utils/time';
-import { Injectable } from '@nestjs/common';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'crypto';
+import Redis from 'ioredis';
 import { v5 } from 'uuid';
 
 @Injectable()
 export class IvaoFlightsUseCase {
-  private url = 'https://api.ivao.aero/v2/tracker/whazzup';
-
   constructor(
     private readonly airportsService: AirportsService,
     private readonly httpService: HttpService,
     private readonly cacheService: CacheService,
     private readonly airlinesService: AirlinesService,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   public async fetchLiveFlights() {
     return this.cacheService.handle(
       'ivao_current_live_flights',
       async () => {
-        const [{ data }, airports, airlines] = await Promise.all([
-          this.httpService.get<IVAOResponse>(this.url),
+        const [data, airports, airlines] = await Promise.all([
+          this.redis.get('ivao').then((r) => {
+            if (r) {
+              return JSON.parse(r) as IVAOResponse;
+            }
+
+            throw new NotFoundException();
+          }),
           this.airportsService.getAirportsMap(),
           this.airlinesService.list(),
         ]);
