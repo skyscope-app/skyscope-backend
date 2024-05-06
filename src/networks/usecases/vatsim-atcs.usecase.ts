@@ -37,7 +37,7 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
 
         return vatsimResponse.data.controllers
           .filter((atc) => atc.facility > 0)
-          .map((atc) => this.parse(atc, airports, data, traconBoundaries.data));
+          .map((atc) => this.parse(atc, airports, data, traconBoundaries));
       },
       15,
     );
@@ -47,7 +47,9 @@ export class VatsimATCsUseCase implements NetworkATCUseCase {
     return this.cacheService.handle(
       'vatsim-tracon-boundaries',
       async () => {
-        return this.httpService.get<FeatureCollection>(this.traconBoundaries);
+        return this.httpService
+          .get<FeatureCollection>(this.traconBoundaries)
+          .then((r) => r.data);
       },
       60 * 60,
     );
