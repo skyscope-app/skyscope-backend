@@ -1,3 +1,10 @@
+## [1.29.7](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.6...v1.29.7) (2024-05-06)
+
+
+### Bug Fixes
+
+* **atcs:** fix atcs getting on vatsim ([c2fee34](https://github.com/skyscope-app/skyscope-backend/commit/c2fee349d6d7961d6b275eec4831ba2459533a6c))
+
 ## [1.29.6](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.5...v1.29.6) (2024-05-06)
 
 
