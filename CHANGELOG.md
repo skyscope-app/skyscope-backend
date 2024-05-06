@@ -1,3 +1,10 @@
+## [1.29.9](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.8...v1.29.9) (2024-05-06)
+
+
+### Bug Fixes
+
+* **auth:** return auth for network controller ([ad88723](https://github.com/skyscope-app/skyscope-backend/commit/ad88723d1b9dfc5faca40a57451d3c00c6a24a1b))
+
 ## [1.29.8](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.7...v1.29.8) (2024-05-06)
 
 
