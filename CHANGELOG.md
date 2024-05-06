@@ -1,3 +1,10 @@
+## [1.29.5](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.4...v1.29.5) (2024-05-06)
+
+
+### Bug Fixes
+
+* **cache:** correctly set cache times ([d178228](https://github.com/skyscope-app/skyscope-backend/commit/d178228d95e3f07d2f9f42be2cf6de4845f7101b))
+
 ## [1.29.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.3...v1.29.4) (2024-05-06)
 
 
