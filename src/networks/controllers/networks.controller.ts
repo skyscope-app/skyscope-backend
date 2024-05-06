@@ -16,7 +16,7 @@ import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
 import { PosconFlightsUsecase } from '@/networks/usecases/poscon-flights.usecase';
 import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
 import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
-import { Authenticated } from '@/shared/utils/decorators';
+import { Authenticated, DefaultStatusCodes } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
@@ -30,7 +30,6 @@ import { plainToInstance } from 'class-transformer';
 
 @Controller('networks')
 @ApiTags('Networks')
-@Authenticated()
 export class NetworksController {
   private readonly flightMap: Record<Network, NetworkFlightUseCase>;
   private readonly atcMap: Record<Network, NetworkATCUseCase>;
@@ -60,6 +59,7 @@ export class NetworksController {
 
   @Get('/flights/:flightId')
   @ApiOkResponse({ type: () => LiveFlightWithTracks })
+  @Authenticated()
   private async liveFlight(@Param('flightId') flightId: string) {
     const flight = await this.flightsSearchService.findByID(flightId);
 
@@ -93,6 +93,7 @@ export class NetworksController {
 
   @Get('/flights')
   @ApiOkResponse({ type: () => [LiveFlight] })
+  @Authenticated()
   private async liveFlightsSearch(@Query('term') term: string) {
     return this.flightsSearchService.findByParams(term);
   }
@@ -100,6 +101,7 @@ export class NetworksController {
   @Get(':network/flights')
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveFlight] })
+  @DefaultStatusCodes()
   private async liveFlights(@Param('network') network: Network) {
     const service = this.flightMap[network];
 
@@ -115,6 +117,7 @@ export class NetworksController {
   @Get(':network/atcs')
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveATC] })
+  @DefaultStatusCodes()
   private async liveATCs(@Param('network') network: Network) {
     await this.networksService.fetchLiveATCs();
 
