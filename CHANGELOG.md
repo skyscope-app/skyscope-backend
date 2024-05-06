@@ -1,3 +1,10 @@
+## [1.29.6](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.5...v1.29.6) (2024-05-06)
+
+
+### Bug Fixes
+
+* **vatsim:** fix way to get vatsim traffic ([d7f830f](https://github.com/skyscope-app/skyscope-backend/commit/d7f830fd2f3eea324860235d714d1bffd33def15))
+
 ## [1.29.5](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.4...v1.29.5) (2024-05-06)
 
 
