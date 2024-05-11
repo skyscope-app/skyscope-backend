@@ -36,7 +36,10 @@ export class IntegrationsService {
       );
     });
 
-    await this.cacheService.invalidate(integration.user.authenticationId);
+    await Promise.all([
+      this.cacheService.invalidate(integration.user.authenticationId),
+      this.cacheService.invalidate(`navdata/airac/${integration.user.id}`),
+    ]);
   }
 
   getProviderId(token: string): string {
