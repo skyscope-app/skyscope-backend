@@ -50,11 +50,11 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
   async validate(request: any, token: string) {
     try {
       const uid = this.getTokenUid(token);
+      await this.validateUser(token);
 
       const data = await this.cacheService.handle(
         uid,
         async () => {
-          const uid = await this.validateUser(token);
           const [authUser, user] = await Promise.all([
             this.authService.findByUid(uid),
             this.userService.findByAuthenticationID(uid),
