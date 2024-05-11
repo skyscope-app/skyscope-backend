@@ -1,3 +1,10 @@
+## [1.29.10](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.9...v1.29.10) (2024-05-11)
+
+
+### Bug Fixes
+
+* **auth:** avoid auth with expired tokens ([25fc0a6](https://github.com/skyscope-app/skyscope-backend/commit/25fc0a665abf90309a2c32c6fa19dc2ff37beb48))
+
 ## [1.29.9](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.8...v1.29.9) (2024-05-06)
 
 
