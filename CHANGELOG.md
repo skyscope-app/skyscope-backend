@@ -1,3 +1,10 @@
+## [1.29.11](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.10...v1.29.11) (2024-05-11)
+
+
+### Bug Fixes
+
+* **navigraph:** invalidate navigraph airac data on integration added ([fdb7e95](https://github.com/skyscope-app/skyscope-backend/commit/fdb7e95947464b3c564640e39a5012d805b1d14c))
+
 ## [1.29.10](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.9...v1.29.10) (2024-05-11)
 
 
