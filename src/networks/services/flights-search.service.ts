@@ -19,6 +19,7 @@ export class FlightsSearchService {
   ) {}
 
   async findByParams(term: string): Promise<LiveFlight[]> {
+    return [];
     const flights = await this.networksService.fetchLiveFlights();
 
     return flights.filter((flight) => {
