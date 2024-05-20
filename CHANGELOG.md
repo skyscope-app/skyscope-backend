@@ -1,3 +1,10 @@
+## [1.29.12](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.11...v1.29.12) (2024-05-20)
+
+
+### Bug Fixes
+
+* use network data from redis ([7d559ec](https://github.com/skyscope-app/skyscope-backend/commit/7d559ecdd328038d4fbff1c56dd3ba865f2aaa82))
+
 ## [1.29.11](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.10...v1.29.11) (2024-05-11)
 
 
