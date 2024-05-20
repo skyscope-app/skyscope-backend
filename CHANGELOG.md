@@ -1,3 +1,11 @@
+## [1.29.13](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.12...v1.29.13) (2024-05-20)
+
+
+### Bug Fixes
+
+* fix flight search parameter by id ([b2d0c12](https://github.com/skyscope-app/skyscope-backend/commit/b2d0c12a296663f4ef8094b147322ec781b53d89))
+* fix vatsim flights ([62e2abd](https://github.com/skyscope-app/skyscope-backend/commit/62e2abd5956ac0de68ec3d7b661fd760a6ee0a20))
+
 ## [1.29.12](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.11...v1.29.12) (2024-05-20)
 
 
