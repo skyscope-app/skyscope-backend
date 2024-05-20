@@ -42,7 +42,7 @@ export class FlightsSearchService {
 
   async findByID(flightId: string): Promise<Nullable<LiveFlightWithTracks>> {
     const [data, tracks] = await Promise.all([
-      this.redis.get(`flights:${flightId}`),
+      this.redis.get(`flight:${flightId}`),
       this.fetchTracksForFlight(flightId),
     ]);
 
