@@ -26,7 +26,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { plainToInstance } from 'class-transformer';
 
 @Controller('networks')
 @ApiTags('Networks')
@@ -67,28 +66,7 @@ export class NetworksController {
       throw new NotFoundException();
     }
 
-    const result = plainToInstance(LiveFlightWithTracks, flight);
-
-    result.tracks =
-      await this.flightsSearchService.fetchTracksForFlight(flightId);
-
-    // if (flight.flightPlan) {
-    //   try {
-    //     const routeText =
-    //       flight.flightPlan.departure.icao +
-    //       ' ' +
-    //       flight.flightPlan.route +
-    //       ' ' +
-    //       flight.flightPlan.arrival.icao;
-
-    //     const route = await this.navigraphParseRouteUseCase.run(routeText);
-    //     result.route = RouteResponse.fromNavigraph(route);
-    //   } catch {
-    //     result.route = null;
-    //   }
-    // }
-
-    return result;
+    return flight;
   }
 
   @Get('/flights')
