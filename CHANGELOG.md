@@ -5,6 +5,16 @@
 
 * fix flight search parameter by id ([b2d0c12](https://github.com/skyscope-app/skyscope-backend/commit/b2d0c12a296663f4ef8094b147322ec781b53d89))
 * fix vatsim flights ([62e2abd](https://github.com/skyscope-app/skyscope-backend/commit/62e2abd5956ac0de68ec3d7b661fd760a6ee0a20))
+* generate new tag ([6ea5349](https://github.com/skyscope-app/skyscope-backend/commit/6ea53490641773056371a5a6fc91f658feb6b7a6))
+* generate new tag ([d762921](https://github.com/skyscope-app/skyscope-backend/commit/d762921ccfb957c8f46125dc662603744a918be8))
+
+## [1.29.13](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.12...v1.29.13) (2024-05-20)
+
+
+### Bug Fixes
+
+* fix flight search parameter by id ([b2d0c12](https://github.com/skyscope-app/skyscope-backend/commit/b2d0c12a296663f4ef8094b147322ec781b53d89))
+* fix vatsim flights ([62e2abd](https://github.com/skyscope-app/skyscope-backend/commit/62e2abd5956ac0de68ec3d7b661fd760a6ee0a20))
 * generate new tag ([d762921](https://github.com/skyscope-app/skyscope-backend/commit/d762921ccfb957c8f46125dc662603744a918be8))
 
 ## [1.29.13](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.12...v1.29.13) (2024-05-20)
