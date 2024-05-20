@@ -9,7 +9,7 @@ export class VatsimFlightsUsecase {
   constructor(@InjectRedis() private readonly redis: Redis) {}
 
   public async fetchLiveFlights(): Promise<Array<LiveFlight>> {
-    const data = await this.redis.get('ivao_flights');
+    const data = await this.redis.get('vatsim_flights');
 
     if (!data) {
       return [];
