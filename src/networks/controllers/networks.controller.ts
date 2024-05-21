@@ -1,9 +1,5 @@
 import { NavigraphParseRouteUseCase } from '@/navigraph/usecase/parse-route.usecase';
 import { Network } from '@/networks/domain/network';
-import {
-  NetworkATCUseCase,
-  NetworkFlightUseCase,
-} from '@/networks/domain/network-flight-use-case';
 import { LiveATC } from '@/networks/dtos/live-atc.dto';
 import {
   LiveFlight,
@@ -11,17 +7,11 @@ import {
 } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
-import { IvaoATCsUseCase } from '@/networks/usecases/ivao-atcs.usecase';
-import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
-import { PosconFlightsUsecase } from '@/networks/usecases/poscon-flights.usecase';
-import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
-import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
 import { Authenticated } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
   NotFoundException,
-  NotImplementedException,
   Param,
   Query,
 } from '@nestjs/common';
@@ -31,36 +21,17 @@ import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 @ApiTags('Networks')
 @Authenticated()
 export class NetworksController {
-  private readonly flightMap: Record<Network, NetworkFlightUseCase>;
-  private readonly atcMap: Record<Network, NetworkATCUseCase>;
-
   constructor(
-    vatsimFlightsUseCase: VatsimFlightsUsecase,
-    ivaoFlightsUseCase: IvaoFlightsUseCase,
-    posconFlightsUseCase: PosconFlightsUsecase,
-    ivaoATCsUseCase: IvaoATCsUseCase,
-    vatsimATCsUseCase: VatsimATCsUseCase,
     private readonly networksService: NetworksService,
     private readonly flightsSearchService: FlightsSearchService,
     private readonly navigraphParseRouteUseCase: NavigraphParseRouteUseCase,
-  ) {
-    this.flightMap = {
-      [Network.VATSIM]: vatsimFlightsUseCase,
-      [Network.IVAO]: ivaoFlightsUseCase,
-      [Network.POSCON]: posconFlightsUseCase,
-    };
-
-    this.atcMap = {
-      [Network.IVAO]: ivaoATCsUseCase,
-      [Network.VATSIM]: vatsimATCsUseCase,
-      [Network.POSCON]: ivaoATCsUseCase,
-    };
-  }
+  ) {}
 
   @Get('/flights/:flightId')
   @ApiOkResponse({ type: () => LiveFlightWithTracks })
+  @ApiParam({ name: 'flightId', type: String, description: 'Flight UUID' })
   private async liveFlight(@Param('flightId') flightId: string) {
-    const flight = await this.flightsSearchService.findByID(flightId);
+    const flight = await this.networksService.findFlightById(flightId);
 
     if (!flight) {
       throw new NotFoundException();
@@ -72,38 +43,37 @@ export class NetworksController {
   @Get('/flights')
   @ApiOkResponse({ type: () => [LiveFlight] })
   private async liveFlightsSearch(@Query('term') term: string) {
-    return this.flightsSearchService.findByParams(term);
+    return this.flightsSearchService.searchFlight(term);
   }
 
   @Get(':network/flights')
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
-    const service = this.flightMap[network];
-
-    if (!service) {
-      throw new NotImplementedException();
-    }
-
-    const flights = await service.fetchLiveFlights();
+    const flights = await this.networksService.findFlightsByNetwork(network);
 
     return flights;
+  }
+
+  @Get('/atcs/:atcId')
+  @ApiParam({ name: 'atcId', type: String, description: 'ATC UUID' })
+  @ApiOkResponse({ type: [LiveATC] })
+  private async findAtc(@Param('atcId') atcId: string) {
+    const atc = await this.networksService.findATCById(atcId);
+
+    if (!atc) {
+      throw new NotFoundException();
+    }
+
+    return atc;
   }
 
   @Get(':network/atcs')
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveATC] })
   private async liveATCs(@Param('network') network: Network) {
-    await this.networksService.fetchLiveATCs();
+    const atcs = await this.networksService.findATCsByNetwork(network);
 
-    const service = this.atcMap[network];
-
-    if (!service) {
-      throw new NotImplementedException(`${network} not implemented`);
-    }
-
-    const flights = await service.fetchLiveATCs();
-
-    return flights;
+    return atcs;
   }
 }

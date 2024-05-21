@@ -34,11 +34,6 @@ export class LiveATCPoint {
   latitude: number;
   @ApiProperty()
   longitude: number;
-
-  constructor(latitude: number, longitude: number) {
-    this.latitude = latitude;
-    this.longitude = longitude;
-  }
 }
 
 export class LiveATC {
@@ -62,34 +57,6 @@ export class LiveATC {
   longitude: number;
   @ApiProperty()
   facility: ATCFacility;
-  @ApiProperty()
-  geometry: LiveATCPoint[];
-
-  constructor(
-    network: string,
-    callsign: string,
-    rating: string,
-    user: User,
-    onlineAt: string,
-    atis: string[],
-    frequency: string,
-    latitude: number,
-    longitude: number,
-    facility: ATCFacility,
-    points: [number, number][],
-  ) {
-    this.network = network;
-    this.callsign = callsign;
-    this.rating = rating;
-    this.user = user;
-    this.onlineAt = onlineAt;
-    this.atis = atis;
-    this.frequency = frequency;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.facility = facility;
-    this.geometry = points.map(
-      ([latitude, longitude]) => new LiveATCPoint(longitude, latitude),
-    );
-  }
+  @ApiProperty({ isArray: true })
+  geometry: LiveATCPoint[][];
 }
