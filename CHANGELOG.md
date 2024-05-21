@@ -1,3 +1,10 @@
+## [1.29.15](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.14...v1.29.15) (2024-05-21)
+
+
+### Bug Fixes
+
+* **liveflight:** add data from navigraph ([91c621f](https://github.com/skyscope-app/skyscope-backend/commit/91c621ff34d53c020eae81ac32a53552cabbf583))
+
 ## [1.29.14](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.13...v1.29.14) (2024-05-20)
 
 
