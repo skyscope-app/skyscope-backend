@@ -1,3 +1,10 @@
+## [1.29.16](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.15...v1.29.16) (2024-05-21)
+
+
+### Bug Fixes
+
+* **atc:** get atcs from redis ([b607516](https://github.com/skyscope-app/skyscope-backend/commit/b607516bc72e8057287f4463d631d274a21ce442))
+
 ## [1.29.15](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.14...v1.29.15) (2024-05-21)
 
 
