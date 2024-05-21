@@ -1,4 +1,5 @@
 import { Airline } from '@/airlines/domain/airline';
+import { Airport as AirportDomain } from '@/airports/domain/airports.entity';
 import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { getAircraftType } from '@/networks/functions/getAircraftType';
 import { Nullable } from '@/shared/utils/nullable';
@@ -34,14 +35,36 @@ export class Position {
 export class Airport {
   @ApiProperty()
   icao: string;
-  @ApiProperty()
-  iata: string;
+  @ApiProperty({ nullable: true })
+  iata: Nullable<string>;
   @ApiProperty()
   name: string;
   @ApiProperty()
   lat: number;
   @ApiProperty()
   lng: number;
+
+  constructor(airport: Airport) {
+    if (airport) {
+      this.icao = airport.icao;
+      this.iata = airport.iata;
+      this.name = airport.name;
+      this.lat = airport.lat;
+      this.lng = airport.lng;
+    }
+  }
+
+  static fromDomain(airport?: AirportDomain) {
+    if (airport) {
+      return new this({
+        iata: airport.iata,
+        icao: airport.icao,
+        name: airport.name,
+        lat: airport.latitude,
+        lng: airport.longitude,
+      });
+    }
+  }
 }
 
 export enum AircraftType {
@@ -154,6 +177,46 @@ export class LiveFlight {
   flightPlan: Nullable<FlightPlan>;
   @ApiProperty({ nullable: true, type: () => AirlineResponse })
   airline: Nullable<AirlineResponse>;
+
+  enrichAirports(airports: Map<string, AirportDomain>) {
+    if (this.flightPlan) {
+      const departure = Airport.fromDomain(
+        airports.get(this.flightPlan.departure.icao),
+      );
+
+      const arrival = Airport.fromDomain(
+        airports.get(this.flightPlan.arrival.icao),
+      );
+
+      if (departure) {
+        this.flightPlan.departure = departure;
+      }
+
+      if (arrival) {
+        this.flightPlan.arrival = arrival;
+      }
+    }
+
+    if (this.flightPlan?.alternate) {
+      const alternate = Airport.fromDomain(
+        airports.get(this.flightPlan.alternate.icao),
+      );
+
+      if (alternate) {
+        this.flightPlan.alternate = alternate;
+      }
+    }
+
+    if (this.flightPlan?.alternate2) {
+      const alternate = Airport.fromDomain(
+        airports.get(this.flightPlan.alternate2.icao),
+      );
+
+      if (alternate) {
+        this.flightPlan.alternate2 = alternate;
+      }
+    }
+  }
 }
 
 export class LiveFlightTrack {
@@ -211,4 +274,44 @@ export class LiveFlightWithTracks {
   tracks: LiveFlightTrack[];
   @ApiProperty({ type: () => RouteResponse, nullable: true })
   route: Nullable<RouteResponse>;
+
+  enrichAirports(airports: Map<string, AirportDomain>) {
+    if (this.flightPlan) {
+      const departure = Airport.fromDomain(
+        airports.get(this.flightPlan.departure.icao),
+      );
+
+      const arrival = Airport.fromDomain(
+        airports.get(this.flightPlan.arrival.icao),
+      );
+
+      if (departure) {
+        this.flightPlan.departure = departure;
+      }
+
+      if (arrival) {
+        this.flightPlan.arrival = arrival;
+      }
+    }
+
+    if (this.flightPlan?.alternate) {
+      const alternate = Airport.fromDomain(
+        airports.get(this.flightPlan.alternate.icao),
+      );
+
+      if (alternate) {
+        this.flightPlan.alternate = alternate;
+      }
+    }
+
+    if (this.flightPlan?.alternate2) {
+      const alternate = Airport.fromDomain(
+        airports.get(this.flightPlan.alternate2.icao),
+      );
+
+      if (alternate) {
+        this.flightPlan.alternate2 = alternate;
+      }
+    }
+  }
 }

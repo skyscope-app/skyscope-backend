@@ -1,3 +1,4 @@
+import { AirportsService } from '@/airports/airports.service';
 import { Network, NetworkAirportFlights } from '@/networks/domain/network';
 import {
   NetworkATCUseCase,
@@ -9,9 +10,7 @@ import { IvaoATCsUseCase } from '@/networks/usecases/ivao-atcs.usecase';
 import { IvaoFlightsUseCase } from '@/networks/usecases/ivao-flights-usecase';
 import { VatsimATCsUseCase } from '@/networks/usecases/vatsim-atcs.usecase';
 import { VatsimFlightsUsecase } from '@/networks/usecases/vatsim-flights.usecase';
-import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
 
 @Injectable()
 export class NetworksService
@@ -22,16 +21,20 @@ export class NetworksService
     private readonly ivaoFlightsUseCase: IvaoFlightsUseCase,
     private readonly ivaoATCsUseCase: IvaoATCsUseCase,
     private readonly vatsimATCsUseCase: VatsimATCsUseCase,
-    @InjectRedis() private readonly redis: Redis,
+    private readonly airportsService: AirportsService,
   ) {}
 
   async fetchLiveFlights(): Promise<LiveFlight[]> {
-    const [ivao, vatsim] = await Promise.all([
+    const [ivao, vatsim, airports] = await Promise.all([
       this.ivaoFlightsUseCase.fetchLiveFlights(),
       this.vatsimFlightsUseCase.fetchLiveFlights(),
+      this.airportsService.getAirportsMap(),
     ]);
 
-    return [...ivao, ...vatsim];
+    return [...ivao, ...vatsim].map((f) => {
+      f.enrichAirports(airports);
+      return f;
+    });
   }
 
   async fetchLiveATCs(): Promise<LiveATC[]> {

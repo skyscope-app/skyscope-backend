@@ -1,3 +1,4 @@
+import { AirportsService } from '@/airports/airports.service';
 import {
   LiveFlight,
   LiveFlightTrack,
@@ -15,6 +16,7 @@ import Redis from 'ioredis';
 export class FlightsSearchService {
   constructor(
     private readonly networksService: NetworksService,
+    private readonly airportsService: AirportsService,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -43,9 +45,10 @@ export class FlightsSearchService {
   }
 
   async findByID(flightId: string): Promise<Nullable<LiveFlightWithTracks>> {
-    const [data, tracks] = await Promise.all([
+    const [data, tracks, airports] = await Promise.all([
       this.redis.get(`flight:${flightId}`),
       this.fetchTracksForFlight(flightId),
+      this.airportsService.getAirportsMap(),
     ]);
 
     if (!data) {
@@ -56,6 +59,8 @@ export class FlightsSearchService {
 
     const liveFlight = plainToInstance(LiveFlightWithTracks, plain);
     liveFlight.tracks = tracks;
+
+    liveFlight.enrichAirports(airports);
 
     return liveFlight;
   }
