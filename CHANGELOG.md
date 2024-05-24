@@ -1,3 +1,10 @@
+## [1.29.18](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.17...v1.29.18) (2024-05-24)
+
+
+### Bug Fixes
+
+* **atcs:** avoid undefined geometry for atc ([23c7a28](https://github.com/skyscope-app/skyscope-backend/commit/23c7a286b9c5eb9a42250d6d016b5b9216312463))
+
 ## [1.29.17](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.16...v1.29.17) (2024-05-24)
 
 
