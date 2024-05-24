@@ -1,3 +1,10 @@
+## [1.29.17](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.16...v1.29.17) (2024-05-24)
+
+
+### Bug Fixes
+
+* **atc:** remove multiple shapes for atcs ([f155f00](https://github.com/skyscope-app/skyscope-backend/commit/f155f0024ff674d6e8b4197c6d1d1eac391cf181))
+
 ## [1.29.16](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.15...v1.29.16) (2024-05-21)
 
 
