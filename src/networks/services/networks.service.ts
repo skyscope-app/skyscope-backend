@@ -75,7 +75,7 @@ export class NetworksService {
     const raw = JSON.parse(data) as any[];
 
     return raw.map((d) =>
-      plainToInstance(LiveATC, { ...d, geometry: d.geometry[0] }),
+      plainToInstance(LiveATC, { ...d, geometry: d.geometry[0] ?? [] }),
     );
   }
 
