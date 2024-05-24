@@ -58,5 +58,5 @@ export class LiveATC {
   @ApiProperty()
   facility: ATCFacility;
   @ApiProperty({ isArray: true })
-  geometry: LiveATCPoint[][];
+  geometry: LiveATCPoint[];
 }

@@ -72,9 +72,11 @@ export class NetworksService {
       return [];
     }
 
-    const raw = JSON.parse(data) as object[];
+    const raw = JSON.parse(data) as any[];
 
-    return raw.map((d) => plainToInstance(LiveATC, d));
+    return raw.map((d) =>
+      plainToInstance(LiveATC, { ...d, geometry: d.geometry[0] }),
+    );
   }
 
   async findFlightsByNetwork(network: Network) {
