@@ -1,3 +1,10 @@
+## [1.29.19](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.18...v1.29.19) (2024-05-26)
+
+
+### Bug Fixes
+
+* **network:** enable multi shape ([bf65efd](https://github.com/skyscope-app/skyscope-backend/commit/bf65efd747ec4bf5969562297738a93a00d71218))
+
 ## [1.29.18](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.17...v1.29.18) (2024-05-24)
 
 
