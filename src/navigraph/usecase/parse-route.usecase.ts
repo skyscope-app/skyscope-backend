@@ -42,10 +42,9 @@ export class NavigraphParseRouteUseCase extends BaseService {
   }
 
   async run(route: string): Promise<Route> {
-    console.time('start');
     const segments = route.split(' ').map((segment) => segment.split('/')[0]);
 
-    const detailed = await Promise.all(segments.map((s) => this.detailOne(s)));
+    const detailed = await this.detailMany(segments);
 
     const [departure, destination] = await this.getAirports(
       detailed.filter((d) => d),
@@ -67,8 +66,6 @@ export class NavigraphParseRouteUseCase extends BaseService {
     const points = await Promise.all(
       trios.map(([a, b, c]) => this.getSegments(a, b, c)),
     ).then((result) => result.flatMap((r) => r));
-
-    console.timeEnd('start');
 
     return new Route({
       points,
@@ -328,29 +325,39 @@ export class NavigraphParseRouteUseCase extends BaseService {
     return airports;
   }
 
-  private async detailOne(identifier: string): Promise<detail> {
-    if (identifier === 'DCT') {
-      return {
-        type: RoutePointType.DCT,
-        identifier,
-      };
-    }
+  private async detailMany(identifiers: string[]): Promise<detail[]> {
+    const out: detail[] = [];
 
-    //21N165E
-    if (/(\d{2}[NS])(\d{3}[EW])/.test(identifier)) {
-      return {
-        type: RoutePointType.COORDINATES,
-        identifier,
-      };
-    }
+    identifiers.forEach((identifier) => {
+      if (identifier === 'DCT') {
+        out.push({
+          type: RoutePointType.DCT,
+          identifier: identifier,
+        });
+      }
 
-    //2101S16500E
-    if (/(\d{4}[NS])(\d{5}[EW])/.test(identifier)) {
-      return {
-        type: RoutePointType.COORDINATES,
-        identifier,
-      };
-    }
+      //21N165E
+      if (/(\d{2}[NS])(\d{3}[EW])/.test(identifier)) {
+        out.push({
+          type: RoutePointType.COORDINATES,
+          identifier: identifier,
+        });
+      }
+
+      //2101S16500E
+      if (/(\d{4}[NS])(\d{5}[EW])/.test(identifier)) {
+        out.push({
+          type: RoutePointType.COORDINATES,
+          identifier: identifier,
+        });
+      }
+    });
+
+    const unknowIdentifiers = identifiers.filter(
+      (i) => !out.some((o) => o.identifier === i),
+    );
+
+    const queryIn = '(' + unknowIdentifiers.join(',') + ')';
 
     const datasource = this.datasource();
 
@@ -397,7 +404,7 @@ export class NavigraphParseRouteUseCase extends BaseService {
                       OR airports.airport_identifier = $1 LIMIT 1
     `;
 
-    const result = await datasource.query(query, [identifier]);
+    const result = await datasource.query(query, [identifiers]);
 
     return result[0];
   }
