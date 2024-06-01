@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.19...v1.30.0) (2024-06-01)
+
+
+### Features
+
+* **route:** optimize route parser ([#73](https://github.com/skyscope-app/skyscope-backend/issues/73)) ([cf24239](https://github.com/skyscope-app/skyscope-backend/commit/cf2423989d3bbf95c3ff1ed636cf8695ebaf11c9))
+
 ## [1.29.19](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.18...v1.29.19) (2024-05-26)
 
 
