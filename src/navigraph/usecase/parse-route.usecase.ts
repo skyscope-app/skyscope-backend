@@ -42,10 +42,9 @@ export class NavigraphParseRouteUseCase extends BaseService {
   }
 
   async run(route: string): Promise<Route> {
-    console.time('start');
     const segments = route.split(' ').map((segment) => segment.split('/')[0]);
 
-    const detailed = await Promise.all(segments.map((s) => this.detailOne(s)));
+    const detailed = await this.detailMany(segments);
 
     const [departure, destination] = await this.getAirports(
       detailed.filter((d) => d),
@@ -67,8 +66,6 @@ export class NavigraphParseRouteUseCase extends BaseService {
     const points = await Promise.all(
       trios.map(([a, b, c]) => this.getSegments(a, b, c)),
     ).then((result) => result.flatMap((r) => r));
-
-    console.timeEnd('start');
 
     return new Route({
       points,
@@ -328,78 +325,66 @@ export class NavigraphParseRouteUseCase extends BaseService {
     return airports;
   }
 
-  private async detailOne(identifier: string): Promise<detail> {
-    if (identifier === 'DCT') {
-      return {
-        type: RoutePointType.DCT,
-        identifier,
-      };
-    }
+  private async detailMany(identifiers: string[]): Promise<detail[]> {
+    const out: detail[] = [];
 
-    //21N165E
-    if (/(\d{2}[NS])(\d{3}[EW])/.test(identifier)) {
-      return {
-        type: RoutePointType.COORDINATES,
-        identifier,
-      };
-    }
+    identifiers.forEach((identifier) => {
+      if (identifier === 'DCT') {
+        out.push({
+          type: RoutePointType.DCT,
+          identifier: identifier,
+        });
+      }
 
-    //2101S16500E
-    if (/(\d{4}[NS])(\d{5}[EW])/.test(identifier)) {
-      return {
-        type: RoutePointType.COORDINATES,
-        identifier,
-      };
-    }
+      //21N165E
+      if (/(\d{2}[NS])(\d{3}[EW])/.test(identifier)) {
+        out.push({
+          type: RoutePointType.COORDINATES,
+          identifier: identifier,
+        });
+      }
+
+      //2101S16500E
+      if (/(\d{4}[NS])(\d{5}[EW])/.test(identifier)) {
+        out.push({
+          type: RoutePointType.COORDINATES,
+          identifier: identifier,
+        });
+      }
+    });
+
+    const unknowIdentifiers = identifiers.filter(
+      (i) => !out.some((o) => o.identifier === i),
+    );
+
+    const queryValues = unknowIdentifiers
+      .map((identifier) => `('${identifier}')`)
+      .join(',');
 
     const datasource = this.datasource();
 
-    const query = `SELECT CASE
-                              WHEN airports.airport_identifier = $1 THEN 'AIRPORT'
-                              WHEN ewaypoints.waypoint_identifier = $1 THEN 'ENROUTE_WAYPOINT'
-                              WHEN twaypoints.waypoint_identifier = $1 THEN 'TERMINAL_WAYPOINT'
-                              WHEN tea.route_identifier = $1 THEN 'AIRWAY'
-                              WHEN sids.procedure_identifier = $1 THEN 'SID'
-                              WHEN stars.procedure_identifier = $1 THEN 'STAR'
-                              WHEN vors.vor_identifier = $1 THEN 'VOR'
-                              WHEN endbs.ndb_identifier = $1 THEN 'ENROUTE_NDB'
-                              WHEN tndbs.ndb_identifier = $1 THEN 'TERMINAL_NDB'
-                              WHEN $1 = 'DCT' THEN 'DCT'
-                              ELSE 'UNKNOWN'
-                              END AS type,
-                          $1      as identifier
-                   FROM tbl_enroute_airways tea
-                            LEFT JOIN
-                        tbl_sids sids ON sids.procedure_identifier = $1
-                            LEFT JOIN
-                        tbl_stars stars ON stars.procedure_identifier = $1
-                            LEFT JOIN
-                        tbl_vhfnavaids vors ON vors.vor_identifier = $1
-                            LEFT JOIN
-                        tbl_terminal_ndbnavaids tndbs ON tndbs.ndb_identifier = $1
-                            LEFT JOIN
-                        tbl_enroute_waypoints ewaypoints ON ewaypoints.waypoint_identifier = $1
-                            LEFT JOIN
-                        tbl_terminal_waypoints twaypoints ON twaypoints.waypoint_identifier = $1
-                            LEFT JOIN
-                        tbl_enroute_ndbnavaids endbs ON endbs.ndb_identifier = $1
-                            LEFT JOIN
-                        tbl_airports airports ON airports.airport_identifier = $1
-                   WHERE tea.route_identifier = $1
-                      OR sids.procedure_identifier = $1
-                      OR stars.procedure_identifier = $1
-                      OR vors.vor_identifier = $1
-                      OR tndbs.ndb_identifier = $1
-                      OR ewaypoints.waypoint_identifier = $1
-                      OR twaypoints.waypoint_identifier = $1
-                      OR tndbs.ndb_identifier = $1
-                      OR endbs.ndb_identifier = $1
-                      OR airports.airport_identifier = $1 LIMIT 1
+    const query = `WITH identifiers (identifier) AS (VALUES ${queryValues})
+
+              SELECT *,
+              CASE
+              WHEN (select count(*) from tbl_airports airports where airports.airport_identifier = identifier) > 0 THEN 'AIRPORT'
+              WHEN (select count(*) from tbl_enroute_waypoints enroute_waypoints where enroute_waypoints.waypoint_identifier = identifier) > 0 THEN 'ENROUTE_WAYPOINT'
+              WHEN (select count(*) from tbl_terminal_waypoints terminal_waypoints where terminal_waypoints.waypoint_identifier = identifier) > 0 THEN 'TERMINAL_WAYPOINT'
+              WHEN (select count(*) from tbl_enroute_airways airway where airway.route_identifier = identifier) > 0 THEN 'AIRWAY'
+              WHEN (select count(*) from tbl_sids sids where sids.procedure_identifier = identifier) > 0 THEN 'SID'
+              WHEN (select count(*) from tbl_stars stars where stars.procedure_identifier = identifier) > 0 THEN 'STAR'
+              WHEN (select count(*) from tbl_vhfnavaids vors where vors.vor_identifier = identifier) > 0 THEN 'VOR'
+              WHEN (select count(*) from tbl_enroute_ndbnavaids endbs where endbs.ndb_identifier = identifier) > 0 THEN 'ENROUTE_NDB'
+              WHEN (select count(*) from tbl_terminal_ndbnavaids tndbs where tndbs.ndb_identifier = identifier) > 0 THEN 'TERMINAL_NDB'
+              WHEN identifier = 'DCT' THEN 'DCT'
+              END as type
+              FROM identifiers
+
     `;
 
-    const result = await datasource.query(query, [identifier]);
+    const result = await datasource.query(query);
 
-    return result[0];
+    return result;
   }
 
   private async getEnrouteWaypoint(identifier: string): Promise<RoutePoint> {
