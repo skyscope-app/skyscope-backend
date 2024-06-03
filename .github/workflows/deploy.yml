@@ -61,8 +61,8 @@ jobs:
           gcloud auth configure-docker us-central1-docker.pkg.dev
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
           git checkout $LATEST_TAG
-          docker build -t skyscopeapi:$LATEST_TAG .
-          docker tag skyscopeapi:$LATEST_TAG us-central1-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG 
-          docker tag skyscopeapi:$LATEST_TAG us-central1-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:latest
-          docker push us-central1-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi --all-tags
-          gcloud run services update main-skyscope-api --image=us-central1-docker.pkg.dev/skyscopeapp/container-registry/skyscopeapi:$LATEST_TAG --region=us-central1 --project=skyscopeapp
+          docker build -t api:$LATEST_TAG .
+          docker tag api:$LATEST_TAG us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:$LATEST_TAG 
+          docker tag api:$LATEST_TAG us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:latest
+          docker push us-central1-docker.pkg.dev/skyscopeapp/container-registry/api --all-tags
+          gcloud run services update main-api-api --image=us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:$LATEST_TAG --region=us-central1 --project=skyscopeapp
