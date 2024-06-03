@@ -101,7 +101,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
       if (e.name === ForbiddenException.name) {
         throw e;
       }
-      this.logger.error('error to authenticate', e);
+      this.logger.error('error to authenticate user', e);
     }
   }
 
