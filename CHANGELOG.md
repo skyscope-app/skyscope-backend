@@ -1,3 +1,10 @@
+## [1.30.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.30.0...v1.30.1) (2024-06-03)
+
+
+### Bug Fixes
+
+* **auth:** fix log message ([0657fdd](https://github.com/skyscope-app/skyscope-backend/commit/0657fdde9c4bdaa696b738fc8592755bf49f9d20))
+
 # [1.30.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.29.19...v1.30.0) (2024-06-01)
 
 
