@@ -65,4 +65,4 @@ jobs:
           docker tag api:$LATEST_TAG us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:$LATEST_TAG 
           docker tag api:$LATEST_TAG us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:latest
           docker push us-central1-docker.pkg.dev/skyscopeapp/container-registry/api --all-tags
-          gcloud run services update main-api-api --image=us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:$LATEST_TAG --region=us-central1 --project=skyscopeapp
+          gcloud run services update main-skyscope-api --image=us-central1-docker.pkg.dev/skyscopeapp/container-registry/api:$LATEST_TAG --region=us-central1 --project=skyscopeapp
