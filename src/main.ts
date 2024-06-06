@@ -80,6 +80,7 @@ async function bootstrap() {
       'http://localhost:3000',
       'https://skyscope.app',
       'https://www.skyscope.app',
+      'https://skyscope-nine.vercel.app
     ],
     credentials: true,
   });
