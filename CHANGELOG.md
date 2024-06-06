@@ -1,3 +1,10 @@
+## [1.30.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.30.2...v1.30.3) (2024-06-06)
+
+
+### Bug Fixes
+
+* **cors:** add url cors ([1c56547](https://github.com/skyscope-app/skyscope-backend/commit/1c565470667bbc382aa2d128ffe817d2529a13bd))
+
 ## [1.30.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.30.1...v1.30.2) (2024-06-06)
 
 
