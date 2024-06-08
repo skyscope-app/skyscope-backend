@@ -1,3 +1,10 @@
+## [1.31.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.0...v1.31.1) (2024-06-08)
+
+
+### Bug Fixes
+
+* **friend:** improve friend feature ([d2ed872](https://github.com/skyscope-app/skyscope-backend/commit/d2ed872ccdb194cf8af42a199e9d60cda03d971c))
+
 # [1.31.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.30.3...v1.31.0) (2024-06-08)
 
 
