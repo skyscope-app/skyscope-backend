@@ -1,3 +1,10 @@
+# [1.31.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.30.3...v1.31.0) (2024-06-08)
+
+
+### Features
+
+* **airport:** add airport stats to airport summary endpoint ([a92dd01](https://github.com/skyscope-app/skyscope-backend/commit/a92dd01f8ef82782f9eec873a2997c5a0f393784))
+
 ## [1.30.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.30.2...v1.30.3) (2024-06-06)
 
 
