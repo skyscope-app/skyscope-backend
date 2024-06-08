@@ -57,8 +57,8 @@ export class AirportsController {
   async getAirport(@Param('icao') icao: string) {
     const [airport, metar, taf, flights] = await Promise.all([
       this.airportsService.findByICAO(icao.toUpperCase()),
-      this.weatherService.findMetar(icao.toUpperCase()),
-      this.weatherService.findTaf(icao.toUpperCase()),
+      this.weatherService.findMetar(icao.toUpperCase()).catch((error) => null),
+      this.weatherService.findTaf(icao.toUpperCase()).catch((error) => null),
       this.networksService.fetchAirportFlights(icao.toUpperCase()),
     ]);
 

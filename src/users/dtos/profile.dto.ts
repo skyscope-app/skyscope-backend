@@ -7,17 +7,17 @@ export class Profile {
   id: string;
   @ApiProperty()
   name: string;
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   avatarUrl: Nullable<string>;
   @ApiProperty()
   email: string;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   ivaoId: Nullable<string>;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   vatsimId: Nullable<string>;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   navigraphId: Nullable<string>;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   simbriefId: Nullable<string>;
   @ApiProperty({ enum: ['active', 'suspended', 'created'] })
   status: 'active' | 'suspended' | 'created';
