@@ -9,10 +9,11 @@ import { FriendsService } from '@/users/services/friends.service';
 import { UsersService } from '@/users/services/users.service';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Integration } from '@/integrations/domain/integration';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, FriendsService]),
+    TypeOrmModule.forFeature([User, Integration]),
     LoggerModule,
     forwardRef(() => AuthModule),
     CacheModule,
