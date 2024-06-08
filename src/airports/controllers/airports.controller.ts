@@ -24,9 +24,31 @@ export class AirportsController {
   @ApiOperation({ description: 'Get a list of summary airports' })
   @ApiOkResponse({ type: [AirportSummaryResponse] })
   async listAirportsSummary() {
-    const airports = await this.airportsService.list();
+    const [traffic, airports] = await Promise.all([
+      this.networksService.fetchLiveFlights(),
+      this.airportsService.list(),
+    ]);
 
-    return airports.map((airport) => new AirportSummaryResponse(airport));
+    const data = airports.map(
+      (airport) =>
+        new AirportSummaryResponse(
+          airport,
+          traffic.filter((flight) => {
+            return (
+              flight.flightPlan?.departure.icao === airport.icao ||
+              flight.flightPlan?.arrival.icao === airport.icao
+            );
+          }),
+        ),
+    );
+
+    return data.filter(
+      (airport) =>
+        airport.stats.vatsim.departure > 0 ||
+        airport.stats.ivao.departure > 0 ||
+        airport.stats.vatsim.arrival > 0 ||
+        airport.stats.ivao.arrival > 0,
+    );
   }
 
   @Get(':icao')

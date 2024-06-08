@@ -59,8 +59,14 @@ export class NetworksService {
     return liveFlight;
   }
 
-  fetchLiveFlights(): Promise<LiveFlight[]> {
-    throw new Error('Method not implemented.');
+  async fetchLiveFlights(): Promise<LiveFlight[]> {
+    const [ivao, vatsim] = await Promise.all(
+      [Network.IVAO, Network.VATSIM].map((network) =>
+        this.findFlightsByNetwork(network),
+      ),
+    );
+
+    return [...ivao, ...vatsim];
   }
 
   async findATCsByNetwork(network: Network) {

@@ -3,8 +3,50 @@ import { AirportRunway } from '@/airports/domain/airport_runway';
 import { Airport } from '@/airports/domain/airports.entity';
 import { Network, NetworkAirportFlights } from '@/networks/domain/network';
 import { LiveFlight } from '@/networks/dtos/live-flight.dto';
-import { Nullable, assertNullable } from '@/shared/utils/nullable';
+import { assertNullable, Nullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
+
+class AirportSummaryStatsNetwork {
+  @ApiProperty()
+  departure: number;
+  @ApiProperty()
+  arrival: number;
+
+  constructor(departure: number, arrival: number) {
+    this.departure = departure;
+    this.arrival = arrival;
+  }
+}
+
+class AirportSummaryStats {
+  @ApiProperty()
+  ivao: AirportSummaryStatsNetwork;
+  @ApiProperty()
+  vatsim: AirportSummaryStatsNetwork;
+
+  constructor(icao: string, flights: LiveFlight[]) {
+    const ivao = flights.filter((flight) => flight.network === Network.IVAO);
+    const vatsim = flights.filter(
+      (flight) => flight.network === Network.VATSIM,
+    );
+
+    this.ivao = new AirportSummaryStatsNetwork(
+      ivao.filter(
+        (flight) => flight.flightPlan?.departure.icao === icao,
+      ).length,
+      ivao.filter((flight) => flight.flightPlan?.arrival.icao === icao).length,
+    );
+
+    this.vatsim = new AirportSummaryStatsNetwork(
+      vatsim.filter(
+        (flight) => flight.flightPlan?.departure.icao === icao,
+      ).length,
+      vatsim.filter(
+        (flight) => flight.flightPlan?.arrival.icao === icao,
+      ).length,
+    );
+  }
+}
 
 export class AirportSummaryResponse {
   @ApiProperty()
@@ -17,13 +59,16 @@ export class AirportSummaryResponse {
   lat: number;
   @ApiProperty()
   lng: number;
+  @ApiProperty()
+  stats: AirportSummaryStats;
 
-  constructor(airport: Airport) {
+  constructor(airport: Airport, flights: LiveFlight[]) {
     this.iata = assertNullable(airport.iata);
     this.name = airport.name;
     this.icao = airport.icao;
     this.lat = airport.latitude;
     this.lng = airport.longitude;
+    this.stats = new AirportSummaryStats(airport.icao, flights);
   }
 }
 
