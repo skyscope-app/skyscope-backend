@@ -1,3 +1,10 @@
+## [1.31.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.2...v1.31.3) (2024-06-15)
+
+
+### Bug Fixes
+
+* **route:** add route parsing to endpoint ([bc94bdf](https://github.com/skyscope-app/skyscope-backend/commit/bc94bdfaed22ad843b643b9b5de98ae2eab515b8))
+
 ## [1.31.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.1...v1.31.2) (2024-06-15)
 
 
