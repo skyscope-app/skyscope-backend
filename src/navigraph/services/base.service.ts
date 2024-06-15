@@ -13,6 +13,7 @@ export class BaseService {
     const subscription = this.clsService.get<Airac>('airac_subscription');
 
     if (
+      !subscription ||
       subscription.status.toUpperCase() === AiracStatus.OUTDATED.toUpperCase()
     ) {
       return this.outdatedDataSource.getRepository(entity);
@@ -25,6 +26,7 @@ export class BaseService {
     const subscription = this.clsService.get<Airac>('airac_subscription');
 
     if (
+      !subscription ||
       subscription.status.toUpperCase() === AiracStatus.OUTDATED.toUpperCase()
     ) {
       return this.outdatedDataSource.createQueryBuilder();
@@ -37,6 +39,7 @@ export class BaseService {
     const subscription = this.clsService.get<Airac>('airac_subscription');
 
     if (
+      !subscription ||
       subscription.status.toUpperCase() === AiracStatus.OUTDATED.toUpperCase()
     ) {
       return this.outdatedDataSource.createEntityManager();
@@ -49,6 +52,7 @@ export class BaseService {
     const subscription = this.clsService.get<Airac>('airac_subscription');
 
     if (
+      !subscription ||
       subscription.status.toUpperCase() === AiracStatus.OUTDATED.toUpperCase()
     ) {
       return this.outdatedDataSource;

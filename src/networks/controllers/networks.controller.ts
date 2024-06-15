@@ -7,7 +7,6 @@ import {
 } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
-import { Authenticated } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
@@ -19,7 +18,7 @@ import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('networks')
 @ApiTags('Networks')
-@Authenticated()
+//@Authenticated()
 export class NetworksController {
   constructor(
     private readonly networksService: NetworksService,
