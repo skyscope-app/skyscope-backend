@@ -1,3 +1,10 @@
+## [1.31.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.1...v1.31.2) (2024-06-15)
+
+
+### Bug Fixes
+
+* **networks:** remove authentication of networks controller ([c811b9c](https://github.com/skyscope-app/skyscope-backend/commit/c811b9cb0277fa23d8a10b7471c80310fe23cc5d))
+
 ## [1.31.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.0...v1.31.1) (2024-06-08)
 
 
