@@ -7,6 +7,7 @@ import {
 } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
+import { Authenticated, cacheControl } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
@@ -18,7 +19,6 @@ import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('networks')
 @ApiTags('Networks')
-//@Authenticated()
 export class NetworksController {
   constructor(
     private readonly networksService: NetworksService,
@@ -26,14 +26,27 @@ export class NetworksController {
     private readonly navigraphParseRouteUseCase: NavigraphParseRouteUseCase,
   ) {}
 
+  @Authenticated()
   @Get('/flights/:flightId')
   @ApiOkResponse({ type: () => LiveFlightWithTracks })
   @ApiParam({ name: 'flightId', type: String, description: 'Flight UUID' })
+  @cacheControl.CacheControl({
+    directive: cacheControl.Directive.PRIVATE,
+    maxAge: 15,
+  })
   private async liveFlight(@Param('flightId') flightId: string) {
     const flight = await this.networksService.findFlightById(flightId);
 
     if (!flight) {
       throw new NotFoundException();
+    }
+
+    if (flight.flightPlan) {
+      try {
+        flight.route = await this.navigraphParseRouteUseCase.run(
+          `${flight.flightPlan.departure.icao} ${flight.flightPlan.route} ${flight.flightPlan?.arrival.icao}`,
+        );
+      } catch {}
     }
 
     return flight;
