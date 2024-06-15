@@ -1,3 +1,10 @@
+## [1.31.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.3...v1.31.4) (2024-06-15)
+
+
+### Bug Fixes
+
+* remove route parsing from flight get detail ([317f17d](https://github.com/skyscope-app/skyscope-backend/commit/317f17db5df4f306d0cb4413cab3ad5288696762))
+
 ## [1.31.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.2...v1.31.3) (2024-06-15)
 
 
