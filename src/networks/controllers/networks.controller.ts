@@ -41,13 +41,13 @@ export class NetworksController {
       throw new NotFoundException();
     }
 
-    if (flight.flightPlan) {
-      try {
-        flight.route = await this.navigraphParseRouteUseCase.run(
-          `${flight.flightPlan.departure.icao} ${flight.flightPlan.route} ${flight.flightPlan?.arrival.icao}`,
-        );
-      } catch {}
-    }
+    // if (flight.flightPlan) {
+    //   try {
+    //     flight.route = await this.navigraphParseRouteUseCase.run(
+    //       `${flight.flightPlan.departure.icao} ${flight.flightPlan.route} ${flight.flightPlan?.arrival.icao}`,
+    //     );
+    //   } catch {}
+    // }
 
     return flight;
   }
