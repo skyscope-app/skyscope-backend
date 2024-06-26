@@ -62,7 +62,7 @@ async function bootstrap() {
 
   await validateConfiguration(Configuration);
 
-  await copyFiles();
+  copyFiles().catch(() => {});
 
   const app = await NestFactory.create(AppModule);
 
