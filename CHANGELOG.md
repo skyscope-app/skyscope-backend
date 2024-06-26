@@ -1,3 +1,10 @@
+## [1.31.5](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.4...v1.31.5) (2024-06-26)
+
+
+### Bug Fixes
+
+* not wait copy files to start service ([4c892c2](https://github.com/skyscope-app/skyscope-backend/commit/4c892c248605cc61fcba6423d9e79cb11eb15fcf))
+
 ## [1.31.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.3...v1.31.4) (2024-06-15)
 
 
