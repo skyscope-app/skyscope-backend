@@ -9,7 +9,7 @@ import {
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
 import { FeatureFlagService } from '@/shared/services/feature-flag.service';
-import { Authenticated, cacheControl } from '@/shared/utils/decorators';
+import { cacheControl } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
@@ -29,7 +29,6 @@ export class NetworksController {
     private readonly featureFlagService: FeatureFlagService,
   ) {}
 
-  @Authenticated()
   @Get('/flights/:flightId')
   @ApiOkResponse({ type: () => LiveFlightWithTracks })
   @ApiParam({ name: 'flightId', type: String, description: 'Flight UUID' })
