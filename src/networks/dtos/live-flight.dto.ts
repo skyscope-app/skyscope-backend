@@ -2,7 +2,7 @@ import { Airline } from '@/airlines/domain/airline';
 import { Airport as AirportDomain } from '@/airports/domain/airports.entity';
 import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { getAircraftType } from '@/networks/functions/getAircraftType';
-import { Nullable } from '@/shared/utils/nullable';
+import { Nullable, assertNullable } from '@/shared/utils/nullable';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
@@ -159,6 +159,87 @@ export class AirlineResponse {
       this.image = airline.image;
       this.callsign = airline.callsign;
     }
+  }
+}
+
+export class ReducedLiveFlight {
+  @ApiProperty()
+  id: string;
+  @ApiProperty()
+  callsign: string;
+  @ApiProperty({ nullable: true })
+  departure: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  departureLat: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  departureLng: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  arrival: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  arrivalLat: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  arrivalLng: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  alternative: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  alternativeLat: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  alternativeLng: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  alternative2: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  alternative2Lat: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  alternative2Lng: Nullable<number>;
+  @ApiProperty({ nullable: true })
+  aircraft: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  aircraftRegistration: Nullable<string>;
+  @ApiProperty({ nullable: true })
+  aircraftType: Nullable<string>;
+  @ApiProperty()
+  transponder: string;
+  @ApiProperty()
+  network: string;
+  @ApiProperty()
+  pilotId: string;
+  @ApiProperty()
+  lat: number;
+  @ApiProperty()
+  lng: number;
+  @ApiProperty()
+  heading: number;
+
+  constructor(liveFlight: LiveFlight) {
+    this.id = liveFlight.id;
+    this.callsign = liveFlight.callsign;
+    this.departure = assertNullable(liveFlight.flightPlan?.departure.icao);
+    this.departureLat = assertNullable(liveFlight.flightPlan?.departure.lat);
+    this.departureLng = assertNullable(liveFlight.flightPlan?.departure.lng);
+    this.arrival = assertNullable(liveFlight.flightPlan?.arrival.icao);
+    this.arrivalLat = assertNullable(liveFlight.flightPlan?.arrival.lat);
+    this.arrivalLng = assertNullable(liveFlight.flightPlan?.arrival.lng);
+    this.alternative = assertNullable(liveFlight.flightPlan?.alternate?.icao);
+    this.alternativeLat = assertNullable(liveFlight.flightPlan?.alternate?.lat);
+    this.alternativeLng = assertNullable(liveFlight.flightPlan?.alternate?.lng);
+    this.alternative2 = assertNullable(liveFlight.flightPlan?.alternate2?.icao);
+    this.alternative2Lat = assertNullable(
+      liveFlight.flightPlan?.alternate2?.lat,
+    );
+    this.alternative2Lng = assertNullable(
+      liveFlight.flightPlan?.alternate2?.lng,
+    );
+    this.aircraft = assertNullable(liveFlight.flightPlan?.aircraft.icao);
+    this.aircraftRegistration = assertNullable(
+      liveFlight.flightPlan?.aircraft.registration,
+    );
+    this.aircraftType = assertNullable(liveFlight.flightPlan?.aircraft.type);
+    this.transponder = liveFlight.position.transponder;
+    this.network = liveFlight.network;
+    this.pilotId = String(liveFlight.pilot.id);
+    this.lat = liveFlight.position.lat;
+    this.lng = liveFlight.position.lng;
+    this.heading = liveFlight.position.heading;
   }
 }
 

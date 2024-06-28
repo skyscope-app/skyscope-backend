@@ -9,6 +9,7 @@ import { NetworksController } from '@/networks/controllers/networks.controller';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
 import { VatSpyService } from '@/networks/services/vatspy.service';
+import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
 
 @Module({
@@ -20,6 +21,7 @@ import { Module } from '@nestjs/common';
     NavigraphModule,
     AirlinesModule,
     ConfigurationsModule,
+    SharedModule,
   ],
   controllers: [NetworksController],
   providers: [NetworksService, FlightsSearchService, VatSpyService],

@@ -4,9 +4,11 @@ import { LiveATC } from '@/networks/dtos/live-atc.dto';
 import {
   LiveFlight,
   LiveFlightWithTracks,
+  ReducedLiveFlight,
 } from '@/networks/dtos/live-flight.dto';
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
+import { FeatureFlagService } from '@/shared/services/feature-flag.service';
 import { Authenticated, cacheControl } from '@/shared/utils/decorators';
 import {
   Controller,
@@ -24,6 +26,7 @@ export class NetworksController {
     private readonly networksService: NetworksService,
     private readonly flightsSearchService: FlightsSearchService,
     private readonly navigraphParseRouteUseCase: NavigraphParseRouteUseCase,
+    private readonly featureFlagService: FeatureFlagService,
   ) {}
 
   @Authenticated()
@@ -62,7 +65,16 @@ export class NetworksController {
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
+    const reducePayloadActivated = await this.featureFlagService.findById(
+      'network_flight_reduced_payload',
+      true,
+    );
+
     const flights = await this.networksService.findFlightsByNetwork(network);
+
+    if (reducePayloadActivated) {
+      return flights.map((flight) => new ReducedLiveFlight(flight));
+    }
 
     return flights;
   }
