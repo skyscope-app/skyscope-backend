@@ -1,3 +1,10 @@
+## [1.32.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.1...v1.32.2) (2024-06-28)
+
+
+### Bug Fixes
+
+* **networks:** remove cache control of headers in get flight by id ([14bb40b](https://github.com/skyscope-app/skyscope-backend/commit/14bb40b369ebcf5f2849d45e8da5a9bcf41761ad))
+
 ## [1.32.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.0...v1.32.1) (2024-06-28)
 
 
