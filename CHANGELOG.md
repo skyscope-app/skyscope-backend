@@ -1,3 +1,10 @@
+## [1.32.1](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.0...v1.32.1) (2024-06-28)
+
+
+### Bug Fixes
+
+* **networks:** remove authentication of endpoint to get flight ([c07c398](https://github.com/skyscope-app/skyscope-backend/commit/c07c39834121bea55b1b676cc9fe5c6d67d1bf70))
+
 # [1.32.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.5...v1.32.0) (2024-06-28)
 
 
