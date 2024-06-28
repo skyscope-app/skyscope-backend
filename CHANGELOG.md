@@ -1,3 +1,10 @@
+# [1.32.0](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.5...v1.32.0) (2024-06-28)
+
+
+### Features
+
+* **networks:** enable networks reduced payload ([342ccc6](https://github.com/skyscope-app/skyscope-backend/commit/342ccc69e983adc936789dc503f8027c2619f15e))
+
 ## [1.31.5](https://github.com/skyscope-app/skyscope-backend/compare/v1.31.4...v1.31.5) (2024-06-26)
 
 
