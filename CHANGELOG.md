@@ -1,3 +1,10 @@
+## [1.32.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.2...v1.32.3) (2024-07-01)
+
+
+### Bug Fixes
+
+* **authentication:** remove authentication of some endpoints ([3a63d51](https://github.com/skyscope-app/skyscope-backend/commit/3a63d51c2d1d5c9d55c00559e671db3f19fa2c4e))
+
 ## [1.32.2](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.1...v1.32.2) (2024-06-28)
 
 
