@@ -1,9 +1,11 @@
+import { JwtGuard } from '@/auth/jwt.guard';
 import { clsService } from '@/main';
 import { User } from '@/users/domain/user.entity';
 import {
   CanActivate,
   createParamDecorator,
   Header,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -64,10 +66,10 @@ export const WaitListAuthenticated = (
   };
 };
 
-export const Authenticated = (
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  ...guards: (CanActivate | Function)[]
-): MethodDecorator & ClassDecorator => {
+export const Authenticated = (props?: {
+  optional?: boolean;
+  guards?: (CanActivate | Function)[];
+}): MethodDecorator & ClassDecorator => {
   return (
     target: any,
     propertyKey?: string | symbol,
@@ -80,8 +82,8 @@ export const Authenticated = (
         description: 'The user has no permission to use this resource',
       }),
       ApiBearerAuth(),
-      UseGuards(...guards),
-      UseGuards(AuthGuard('firebase'), ...guards),
+      SetMetadata('isAuthenticationOptional', props?.optional ?? false),
+      UseGuards(JwtGuard, ...(props?.guards ?? [])),
       ApiBearerAuth('JWT-auth'),
     ];
 

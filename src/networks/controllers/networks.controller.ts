@@ -9,6 +9,7 @@ import {
 import { FlightsSearchService } from '@/networks/services/flights-search.service';
 import { NetworksService } from '@/networks/services/networks.service';
 import { FeatureFlagService } from '@/shared/services/feature-flag.service';
+import { Authenticated } from '@/shared/utils/decorators';
 import {
   Controller,
   Get,
@@ -31,6 +32,7 @@ export class NetworksController {
   @Get('/flights/:flightId')
   @ApiOkResponse({ type: () => LiveFlightWithTracks })
   @ApiParam({ name: 'flightId', type: String, description: 'Flight UUID' })
+  @Authenticated({ optional: true })
   private async liveFlight(@Param('flightId') flightId: string) {
     const flight = await this.networksService.findFlightById(flightId);
 
@@ -59,18 +61,8 @@ export class NetworksController {
   @ApiParam({ name: 'network', enum: Network })
   @ApiOkResponse({ type: [LiveFlight] })
   private async liveFlights(@Param('network') network: Network) {
-    const reducePayloadActivated = await this.featureFlagService.findById(
-      'network_flight_reduced_payload',
-      true,
-    );
-
     const flights = await this.networksService.findFlightsByNetwork(network);
-
-    if (reducePayloadActivated) {
-      return flights.map((flight) => new ReducedLiveFlight(flight));
-    }
-
-    return flights;
+    return flights.map((flight) => new ReducedLiveFlight(flight));
   }
 
   @Get('/atcs/:atcId')

@@ -4,7 +4,6 @@ import { EnvironmentConfiguration } from '@/configurations/configuration';
 import { ConfigurationsModule } from '@/configurations/configuration.module';
 import { getDatabaseModule } from '@/database/typeorm.module';
 import { FilesModule } from '@/files/files.module';
-import { InfoModule } from '@/info/info.module';
 import { IntegrationsModule } from '@/integrations/integrations.module';
 import { LoggingInterceptor } from '@/logger/logger.interceptor';
 import { LoggerModule } from '@/logger/logger.module';
@@ -59,7 +58,6 @@ import { NetworksModule } from './networks/networks.module';
     AuthModule,
     IntegrationsModule,
     LoggerModule,
-    InfoModule,
     FilesModule,
     RouterModule.register([
       {

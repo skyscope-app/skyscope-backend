@@ -1,8 +1,7 @@
-import { CacheService } from '@/cache/cache.service';
 import { RouteResponse } from '@/navdata/dtos/route.dto';
 import { NavigraphParseRouteUseCase } from '@/navigraph/usecase/parse-route.usecase';
 import { Authenticated } from '@/shared/utils/decorators';
-import { Controller, Get, Logger, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiOperation,
@@ -13,13 +12,8 @@ import {
 
 @Controller('route')
 @ApiTags('Navigraph')
-@Authenticated()
 export class RouteController {
-  constructor(
-    private parseRouteUseCase: NavigraphParseRouteUseCase,
-    private logger: Logger,
-    private cache: CacheService,
-  ) {}
+  constructor(private parseRouteUseCase: NavigraphParseRouteUseCase) {}
 
   @Get()
   @ApiOperation({
@@ -37,6 +31,7 @@ export class RouteController {
   @ApiUnprocessableEntityResponse({
     description: 'Invalid route for navigraph data',
   })
+  @Authenticated({ optional: true })
   async getCurrent(@Query('route') route: string) {
     const parsedRoute = await this.parseRouteUseCase.run(route);
 
