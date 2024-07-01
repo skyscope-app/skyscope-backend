@@ -11,7 +11,6 @@ import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('/airports')
-@Authenticated()
 @ApiTags('Airports')
 export class AirportsController {
   constructor(
@@ -21,6 +20,7 @@ export class AirportsController {
   ) {}
 
   @Get('/summary')
+  @Authenticated({ optional: true })
   @ApiOperation({ description: 'Get a list of summary airports' })
   @ApiOkResponse({ type: [AirportSummaryResponse] })
   async listAirportsSummary() {
@@ -54,6 +54,7 @@ export class AirportsController {
   @Get(':icao')
   @ApiOperation({ description: 'Get an airport by its ICAO code' })
   @ApiOkResponse({ type: AirportResponse })
+  @Authenticated({ optional: true })
   async getAirport(@Param('icao') icao: string) {
     const [airport, metar, taf, flights] = await Promise.all([
       this.airportsService.findByICAO(icao.toUpperCase()),

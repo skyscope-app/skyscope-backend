@@ -13,7 +13,6 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('airac')
 @ApiTags('Navigraph', 'AIRAC')
-@Authenticated()
 export class AiracController {
   constructor(
     private airacService: AiracService,
@@ -30,7 +29,19 @@ export class AiracController {
     type: AiracResponse,
     description: 'Current airac available for user',
   })
+  @Authenticated({ optional: true })
   async getCurrent(@AuthenticatedUser() user: User) {
+    if (!user) {
+      const airac = await this.airacService.findOutdated();
+
+      if (!airac) {
+        this.logger.error({ message: 'No AIRAC found' });
+        throw new InternalServerErrorException();
+      }
+
+      return new AiracResponse(airac);
+    }
+
     const airac = await this.cache.handle(
       `navdata/airac/${user.id}`,
       () => this.airacService.findByUser(user),
