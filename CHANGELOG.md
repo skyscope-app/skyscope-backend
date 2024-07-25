@@ -1,3 +1,10 @@
+## [1.32.4](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.3...v1.32.4) (2024-07-25)
+
+
+### Bug Fixes
+
+* **main:** await copy tmp files before start ([84a672e](https://github.com/skyscope-app/skyscope-backend/commit/84a672efd0f24a0f47564189d5d77e2d01d69da9))
+
 ## [1.32.3](https://github.com/skyscope-app/skyscope-backend/compare/v1.32.2...v1.32.3) (2024-07-01)
 
 
