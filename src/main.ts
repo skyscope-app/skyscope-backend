@@ -62,7 +62,7 @@ async function bootstrap() {
 
   await validateConfiguration(Configuration);
 
-  copyFiles().catch(() => {console.error('error to copy files')});
+  await copyFiles().catch(() => {console.error('error to copy files')});
 
   const app = await NestFactory.create(AppModule);
 
